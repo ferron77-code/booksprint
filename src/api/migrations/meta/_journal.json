@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1776975779066,
+      "tag": "0000_wide_nebula",
+      "breakpoints": true
+    }
+  ]
+}

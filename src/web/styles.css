@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+:root {
+  --radius: 0.25rem;
+  --background: #0e0e0e;
+  --foreground: #f5f0eb;
+  --card: #161616;
+  --card-foreground: #f5f0eb;
+  --popover: #1e1e1e;
+  --popover-foreground: #f5f0eb;
+  --primary: #e85d26;
+  --primary-foreground: #ffffff;
+  --secondary: #1e1e1e;
+  --secondary-foreground: #f5f0eb;
+  --muted: #1e1e1e;
+  --muted-foreground: #a09890;
+  --accent: #e85d26;
+  --accent-foreground: #ffffff;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: #2a2a2a;
+  --input: #1a1a1a;
+  --ring: #e85d26;
+  --sidebar: #161616;
+  --sidebar-foreground: #f5f0eb;
+  --sidebar-primary: #e85d26;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1e1e1e;
+  --sidebar-accent-foreground: #f5f0eb;
+  --sidebar-border: #2a2a2a;
+  --sidebar-ring: #e85d26;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    background-color: #0e0e0e;
+    color: #f5f0eb;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-body);
+    font-weight: 700;
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* ── LIGHT MODE ── */
+html.light {
+  --background: #f5f5f5;
+  --foreground: #1a1a1a;
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a1a;
+  --secondary: #f0f0f0;
+  --secondary-foreground: #1a1a1a;
+  --muted: #f0f0f0;
+  --muted-foreground: #555555;
+  --border: #e0e0e0;
+  --input: #f0f0f0;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1a1a1a;
+  --sidebar-border: #e0e0e0;
+}
+
+html.light body {
+  background-color: #f5f5f5;
+  color: #1a1a1a;
+}
+
+/* Remap all hardcoded dark bg/text classes in light mode */
+html.light .bg-\[\#0e0e0e\] { background-color: #f5f5f5 !important; }
+html.light .bg-\[\#161616\] { background-color: #ffffff !important; }
+html.light .bg-\[\#1a1a1a\] { background-color: #f0f0f0 !important; }
+html.light .bg-\[\#1e1e1e\] { background-color: #ebebeb !important; }
+html.light .bg-\[\#2a2a2a\] { background-color: #e0e0e0 !important; }
+html.light .border-\[\#2a2a2a\] { border-color: #e0e0e0 !important; }
+html.light .border-\[\#1a1a1a\] { border-color: #e0e0e0 !important; }
+html.light .text-\[\#f5f0eb\] { color: #1a1a1a !important; }
+html.light .text-\[\#a09890\] { color: #555555 !important; }
+html.light .text-white { color: #1a1a1a !important; }
+html.light .bg-\[\#0e0e0e\]\/95 { background-color: rgba(245,245,245,0.95) !important; }
+html.light .bg-\[\#e85d26\]\/10 { background-color: rgba(232,93,38,0.08) !important; }
+
+/* Editor prose in light mode */
+html.light .ProseMirror h1,
+html.light .ProseMirror h2,
+html.light .ProseMirror h3 { color: #1a1a1a !important; }
+html.light .ProseMirror p { color: #333333 !important; }
+html.light .ProseMirror strong { color: #1a1a1a !important; }
+html.light .ProseMirror ul,
+html.light .ProseMirror ol,
+html.light .ProseMirror li { color: #333333 !important; }
+
+/* Editor toolbar button hovers in light mode */
+html.light .hover\:bg-\[\#2a2a2a\]:hover { background-color: #e8e8e8 !important; }
+html.light .hover\:bg-\[\#1a1a1a\]:hover { background-color: #ebebeb !important; }
+html.light .hover\:bg-\[\#3a3a3a\]:hover { background-color: #d8d8d8 !important; }
+html.light .hover\:bg-\[\#161616\]:hover { background-color: #f0f0f0 !important; }
+html.light .hover\:bg-\[\#0e0e0e\]:hover { background-color: #e8e8e8 !important; }
+
+/* hover:text-white → dark text in light mode across all pages */
+html.light .hover\:text-white:hover { color: #1a1a1a !important; }
+
+/* Active toolbar button — keep white text on orange */
+html.light .bg-\[\#e85d26\] .text-white,
+html.light .bg-\[\#e85d26\].text-white { color: #ffffff !important; }
+html.light .bg-\[\#2a2a2a\] { background-color: #e0e0e0 !important; }
+
+/* ProseMirror text selection in light mode */
+html.light .ProseMirror ::selection { background-color: rgba(232,93,38,0.25) !important; color: inherit !important; }
+html.light .ProseMirror ::-moz-selection { background-color: rgba(232,93,38,0.25) !important; color: inherit !important; }
+html.light .ProseMirror { caret-color: #e85d26 !important; }
+
+/* Navbar in light mode */
+html.light nav { background-color: rgba(245,245,245,0.95) !important; border-color: #e0e0e0 !important; }
+
+/* Orange glow hover for cards */
+.book-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(232, 93, 38, 0.2);
+}
+
+/* Progress step indicator */
+.step-active {
+  color: #e85d26;
+  border-color: #e85d26;
+}
+.step-done {
+  background: #e85d26;
+  border-color: #e85d26;
+  color: white;
+}
+.step-pending {
+  color: #a09890;
+  border-color: #2a2a2a;
+}
