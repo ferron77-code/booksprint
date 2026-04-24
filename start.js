@@ -1,7 +1,7 @@
 import { serve } from 'hono/node-server';
 import app from './src/api/index.ts';
 
-const port = parseInt(process.env.PORT || '3000', 10);
+const port = 8080; // Hardcoded for Fly.io
 const hostname = '0.0.0.0';
 
 console.log(`Starting server on ${hostname}:${port}`);
@@ -16,5 +16,6 @@ serve({
 });
 
 console.log(`🚀 Server listening on http://${hostname}:${port}`);
+
 
 
