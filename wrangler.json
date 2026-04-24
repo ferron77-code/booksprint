@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "sandbox-website-template",
+  "name": "booksprint",
   "compatibility_date": "2025-10-08",
   "compatibility_flags": [
     "nodejs_compat"
@@ -22,7 +22,6 @@
       "migrations_dir": "src/api/migrations"
     }
   ],
-
   "vars": {
     "OPENAI_API_KEY": ""
   }
