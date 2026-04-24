@@ -20,17 +20,12 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "qhek59hodgvu1irr1j45lr3t3v6oi3z8",
-      "database_id": "459b630e-df44-44c2-8fb4-9049fdd94268",
+      "database_name": "booksprint",
+      "database_id": "ffd411dc-66fb-44f5-83ee-bb59cbf53801",
       "migrations_dir": "src/api/migrations"
     }
   ],
-  "r2_buckets": [
-    {
-      "bucket_name": "qhek59hodgvu1irr1j45lr3t3v6oi3z8",
-      "binding": "BUCKET"
-    }
-  ],
+
   "vars": {
     "OPENAI_API_KEY": ""
   }
