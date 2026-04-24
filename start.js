@@ -1,13 +1,20 @@
 import { serve } from 'hono/node-server';
 import app from './src/api/index.ts';
 
-const port = process.env.PORT || 3000;
+const port = parseInt(process.env.PORT || '3000', 10);
+const hostname = '0.0.0.0';
+
+console.log(`Starting server on ${hostname}:${port}`);
 
 serve({
   fetch: app.fetch,
   port,
-  hostname: '0.0.0.0',
+  hostname,
+}).catch(err => {
+  console.error('Server failed to start:', err);
+  process.exit(1);
 });
 
-console.log(`🚀 Server running on http://0.0.0.0:${port}`);
+console.log(`🚀 Server listening on http://${hostname}:${port}`);
+
 
