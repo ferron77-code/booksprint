@@ -1,19 +1,13 @@
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { serve } from 'hono/node-server';
 import app from './src/api/index.ts';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const port = process.env.PORT || 3000;
 
-const server = app.listen(port, () => {
-  console.log(`🚀 Server running on http://localhost:${port}`);
+serve({
+  fetch: app.fetch,
+  port,
+  hostname: '0.0.0.0',
 });
 
-process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received: closing HTTP server');
-  server.close(() => {
-    console.log('HTTP server closed');
-  });
-});
+console.log(`🚀 Server running on http://0.0.0.0:${port}`);
+
