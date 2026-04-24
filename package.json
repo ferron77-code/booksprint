@@ -61,7 +61,7 @@
     "wrangler": "^4.71.0"
   },
   "scripts": {
-    "build": "vite build",
+    "build": "npx vite build",
     "start": "node dist/booksprint/index.js",
     "dev": "vite",
     "cf-typegen": "wrangler types",
