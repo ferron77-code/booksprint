@@ -11,6 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
 
@@ -25,3 +30,4 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
