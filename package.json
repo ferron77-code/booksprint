@@ -61,10 +61,11 @@
     "wrangler": "^4.71.0"
   },
   "scripts": {
-    "build": "vite build --mode client",
+    "build": "vite build",
+    "start": "node dist/booksprint/index.js",
+    "dev": "vite",
     "cf-typegen": "wrangler types",
     "check": "tsgo && vite build && wrangler deploy --dry-run",
-    "dev": "vite",
     "lint": "eslint .",
     "preview": "bun run build && vite preview",
     "db:generate": "drizzle-kit generate",
