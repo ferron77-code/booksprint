@@ -47,4 +47,9 @@ app.get("/me", async (c) => {
 
 app.get("/ping", (c) => c.json({ message: `Pong! ${Date.now()}` }));
 
+// Fallback to frontend for non-API routes (handled by Cloudflare Assets)
+app.all("*", (c) => {
+  return c.notFound();
+});
+
 export default app;
