@@ -62,7 +62,7 @@
   },
   "scripts": {
     "build": "vite build",
-    "start": "bun start.js",
+    "start": "node server.mjs",
     "dev": "vite",
     "cf-typegen": "wrangler types",
     "check": "tsgo && vite build && wrangler deploy --dry-run",
