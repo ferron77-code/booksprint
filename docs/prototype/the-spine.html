@@ -1,0 +1,706 @@
+<title>The Spine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500&display=swap">
+
+<style>
+:root{
+  --ink:#0B0D0F;
+  --graphite:#16191D;
+  --line:#2A2F36;
+  --line-2:#3A424B;
+  --tung:#F2C879;
+  --tung-deep:#B9741A;
+  --steel:#9AA3AD;
+  --bone:#F4F1EC;
+  --bone-mute:#9C978F;
+  --signal:#7FA3D8;
+  --f-d:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-b:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,sans-serif;
+  --f-m:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --pad:clamp(20px,5vw,64px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:auto}
+body{
+  margin:0;background:var(--ink);color:var(--bone);
+  font-family:var(--f-b);line-height:1.6;-webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+.wrap{max-width:1320px;margin:0 auto;padding:0 var(--pad)}
+
+/* ── stage ── */
+#stage{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0}
+.grain{
+  position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.16;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='.55'/></svg>");
+}
+.vig{
+  position:fixed;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(120% 88% at 50% 50%,transparent 42%,rgba(6,7,9,.82) 100%);
+}
+
+/* ── film track ── */
+#film{position:relative;height:760vh;z-index:3}
+
+/* ── chrome ── */
+.chrome{position:fixed;inset:0;z-index:6;pointer-events:none}
+.chrome a,.chrome button{pointer-events:auto}
+.topbar{
+  position:absolute;top:0;left:0;right:0;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:20px;
+  padding:22px var(--pad);
+}
+.mark{display:flex;flex-direction:column;gap:3px;text-decoration:none;color:var(--bone)}
+.mark b{
+  font-family:var(--f-d);font-variation-settings:"wdth" 114,"wght" 800;
+  font-size:13px;letter-spacing:.03em;text-transform:uppercase;line-height:1;
+}
+.mark span{font-family:var(--f-m);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--bone-mute)}
+.readout{
+  font-family:var(--f-m);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--bone-mute);text-align:right;line-height:1.9;
+}
+.readout b{color:var(--tung);font-weight:500;display:block;font-size:10px}
+.readout .dep{font-variant-numeric:tabular-nums}
+
+/* progress rail */
+.rail{position:absolute;left:var(--pad);top:50%;transform:translateY(-50%);width:1px;height:min(46vh,340px);background:var(--line)}
+.rail i{position:absolute;left:-1px;width:3px;background:var(--tung);top:0;height:0;box-shadow:0 0 10px rgba(242,200,121,.7)}
+.rail .tick{position:absolute;left:-4px;width:9px;height:1px;background:var(--line-2)}
+@media(max-width:860px){.rail{display:none}}
+
+/* ── beats ── */
+.beats{position:fixed;inset:0;z-index:4;pointer-events:none;display:flex;align-items:center;justify-content:center;padding:0 var(--pad)}
+.scrim{
+  position:fixed;inset:0;z-index:3;pointer-events:none;
+  background:radial-gradient(58% 46% at 50% 50%,rgba(7,8,10,.78) 0%,rgba(7,8,10,.52) 48%,rgba(7,8,10,0) 76%);
+}
+.beat{
+  position:absolute;text-align:center;max-width:min(92vw,900px);
+  opacity:0;transform:translateY(16px);will-change:opacity,transform;
+}
+.beat .ix{
+  font-family:var(--f-m);font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--tung);display:block;margin-bottom:16px;
+}
+.beat h2{
+  font-family:var(--f-d);font-variation-settings:"wdth" 120,"wght" 850;
+  font-size:clamp(40px,11vw,150px);text-transform:uppercase;line-height:.86;
+  letter-spacing:-.02em;margin:0;text-wrap:balance;
+}
+.beat p{
+  margin:20px auto 0;max-width:44ch;font-size:clamp(14px,1.7vw,17px);
+  color:var(--bone-mute);line-height:1.6;
+}
+.beat.title h2{font-size:clamp(34px,8.6vw,116px)}
+.beat.title .lede{
+  font-family:var(--f-d);font-variation-settings:"wdth" 104,"wght" 620;
+  font-size:clamp(14px,2vw,22px);text-transform:uppercase;letter-spacing:.02em;
+  color:var(--bone);margin-top:18px;
+}
+
+.cue{
+  position:absolute;left:50%;bottom:30px;transform:translateX(-50%);
+  font-family:var(--f-m);font-size:9px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--bone-mute);
+}
+.cue::after{content:"";display:block;width:1px;height:26px;background:linear-gradient(var(--bone-mute),transparent);margin:9px auto 0}
+
+/* ── after film ── */
+#after{position:relative;z-index:5;background:var(--ink);border-top:1px solid var(--line)}
+.sec{padding:clamp(64px,11vh,140px) 0}
+.eyebrow{font-family:var(--f-m);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--tung);margin:0 0 16px}
+.sec h2{
+  font-family:var(--f-d);font-variation-settings:"wdth" 116,"wght" 820;
+  font-size:clamp(28px,5vw,62px);text-transform:uppercase;line-height:.96;
+  letter-spacing:-.015em;margin:0;text-wrap:balance;
+}
+.sec .lead{margin:20px 0 0;color:var(--bone-mute);font-size:clamp(15px,1.8vw,18px);max-width:58ch}
+
+.notecard{
+  border:1px solid var(--line);border-left:3px solid var(--tung);
+  background:var(--graphite);padding:clamp(22px,3vw,34px);margin:34px 0 0;max-width:70ch;
+}
+.notecard b{
+  display:block;font-family:var(--f-m);font-size:10px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--tung);margin-bottom:10px;
+}
+.notecard p{margin:0 0 12px;color:var(--bone-mute);font-size:15px;line-height:1.6}
+.notecard p:last-child{margin-bottom:0}
+
+.two{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--line);margin-top:44px}
+@media(max-width:820px){.two{grid-template-columns:1fr}}
+.cell{background:var(--ink);padding:clamp(24px,3vw,38px)}
+.cell h3{
+  font-family:var(--f-d);font-variation-settings:"wdth" 106,"wght" 760;
+  font-size:19px;text-transform:uppercase;margin:0 0 10px;
+}
+.cell p{margin:0;color:var(--bone-mute);font-size:14.5px;line-height:1.6}
+.cell ul{margin:12px 0 0;padding-left:18px;color:var(--bone-mute);font-size:14px}
+.cell li{margin-bottom:6px}
+
+.btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}
+.btn{
+  font-family:var(--f-m);font-size:11.5px;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;padding:15px 22px;text-decoration:none;display:inline-block;
+  border:1px solid transparent;cursor:pointer;transition:.2s;
+}
+.btn-p{background:var(--tung);color:var(--ink)}
+.btn-p:hover{background:var(--bone)}
+.btn-s{border-color:var(--line-2);color:var(--bone);background:none}
+.btn-s:hover{border-color:var(--tung);color:var(--tung)}
+
+footer{border-top:1px solid var(--line);padding:32px 0 60px;font-family:var(--f-m);font-size:11px;line-height:1.9;color:var(--bone-mute)}
+
+/* reduced motion */
+.rm-note{display:none}
+@media(prefers-reduced-motion:reduce){
+  .beat{opacity:1!important;transform:none!important;position:relative!important;margin:0 auto 22vh}
+  .beats{position:relative;flex-direction:column;padding-top:16vh;padding-bottom:10vh}
+  #film{height:auto}
+  #stage{position:fixed}
+  .cue{display:none}
+  .rm-note{display:block}
+}
+a:focus-visible,button:focus-visible{outline:2px solid var(--tung);outline-offset:3px}
+</style>
+
+<canvas id="stage" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+<div class="vig" aria-hidden="true"></div>
+<div class="scrim" aria-hidden="true"></div>
+
+<div class="chrome" aria-hidden="true">
+  <div class="topbar">
+    <a class="mark" href="#after">
+      <b>Worldwide Distributors</b>
+      <span>E-Lighting · E-Built · Supply</span>
+    </a>
+    <div class="readout">
+      <b id="rChapter">Source</b>
+      <span class="dep" id="rDepth">0 m</span>
+    </div>
+  </div>
+  <div class="rail"><i id="railFill"></i></div>
+  <div class="cue" id="cue">Scroll</div>
+</div>
+
+<div id="film">
+  <div class="beats" id="beats">
+
+    <div class="beat title" data-in="0" data-out="0.085">
+      <span class="ix">Miami · Serving Florida</span>
+      <h2>Lighting.<br>Electrical.<br>Construction.</h2>
+      <p class="lede">One number. One company accountable.</p>
+    </div>
+
+    <div class="beat" data-in="0.10" data-out="0.235">
+      <span class="ix">01 — Source</span>
+      <h2>It starts<br>on a pallet</h2>
+      <p>Direct purchasing with a resale certificate. Fixtures, doors, windows and materials at distributor pricing — before a single crew is scheduled.</p>
+    </div>
+
+    <div class="beat" data-in="0.25" data-out="0.385">
+      <span class="ix">02 — Design</span>
+      <h2>Drawn<br>before it's built</h2>
+      <p>Lighting layouts, photometrics and LED conversion planning. The free energy survey happens here, not after the invoice.</p>
+    </div>
+
+    <div class="beat" data-in="0.40" data-out="0.535">
+      <span class="ix">03 — Supply</span>
+      <h2>Or just<br>take the package</h2>
+      <p>Buy the fixtures outright and hand them to your own crew. We source it either way — installation is your choice, not a condition.</p>
+    </div>
+
+    <div class="beat" data-in="0.55" data-out="0.685">
+      <span class="ix">04 — Install</span>
+      <h2>Then the<br>lights come on</h2>
+      <p>Licensed electrical, panels, service and troubleshooting. Parking lots, common areas, landscape, architectural — from the ground and from the bucket.</p>
+    </div>
+
+    <div class="beat" data-in="0.70" data-out="0.835">
+      <span class="ix">05 — Build</span>
+      <h2>Walls, floors,<br>a working room</h2>
+      <p>Demolition through finishes. Restaurants, medical offices, retail, barber shops — an empty leased shell turned into an open business.</p>
+    </div>
+
+    <div class="beat" data-in="0.85" data-out="0.96">
+      <span class="ix">06 — Maintain</span>
+      <h2>And it stays<br>that way</h2>
+      <p>Quarterly landscape lighting care and ongoing property service, so the work keeps performing long after the last invoice clears.</p>
+    </div>
+
+    <div class="beat" data-in="0.955" data-out="1.01">
+      <span class="ix">One partner · From source to finish</span>
+      <h2>These guys can<br>handle my project</h2>
+      <p>That is the reaction the whole page is built to produce. Not “these guys sell lights.”</p>
+    </div>
+
+  </div>
+</div>
+
+<main id="after">
+  <section class="sec">
+    <div class="wrap">
+      <p class="eyebrow">Concept 2 · The Spine</p>
+      <h2>What you just<br>scrolled through</h2>
+      <p class="lead">One continuous forward move — the camera never turns around and never cuts. You travel from a raw unfinished shell into a finished, wired, lit room, and the six capabilities are the distance you cover getting there.</p>
+
+      <div class="notecard">
+        <b>Read this before showing it to anyone</b>
+        <p>Every frame here is drawn live in code — geometry and light computed in the browser, in real time. There is no photography on this page, no stock footage, and no AI-generated imagery. Nothing on screen depicts a real Worldwide Distributors project, and nothing should be presented as one.</p>
+        <p>This is a demonstration of the <em>mechanic</em> and the feel: the forward vector, the transformation, the light behaviour, the pacing of the copy against the movement. In production the same structure carries real footage of real jobs.</p>
+      </div>
+
+      <div class="two">
+        <div class="cell">
+          <h3>What survives to production</h3>
+          <p>The structure is the deliverable, and it does not change when the footage arrives:</p>
+          <ul>
+            <li>One unbroken forward camera vector</li>
+            <li>Six beats, each tied to a capability</li>
+            <li>Raw at the start, finished and lit at the end</li>
+            <li>Type that holds still while the world moves</li>
+            <li>Chapter and depth readout as the only chrome</li>
+          </ul>
+        </div>
+        <div class="cell">
+          <h3>What a real shoot would replace</h3>
+          <p>The drawn corridor stands in for footage that has to be filmed:</p>
+          <ul>
+            <li>A pallet breaking open in the warehouse</li>
+            <li>A lighting plan on the design table</li>
+            <li>Loading the truck</li>
+            <li>Conduit, panels and fixtures going in</li>
+            <li>Framing, drywall, finishes</li>
+            <li>The same room at night, fully lit</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-top:0">
+    <div class="wrap">
+      <p class="eyebrow">How it ships</p>
+      <h2>The hero is<br>a swappable slot</h2>
+      <p class="lead">This is the reason the launch does not wait on a shoot. The homepage ships with a drawn hero that already looks like this. When the footage is cut, it drops into the same slot — same structure, same beats, same code. No rebuild, no redesign, no second invoice for the scaffolding.</p>
+      <div class="btnrow">
+        <a class="btn btn-p" href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Run it again</a>
+        <a class="btn btn-s" href="#after">Back to the notes</a>
+      </div>
+      <p class="rm-note" style="margin-top:28px;color:var(--bone-mute);font-size:14px">Reduced motion is enabled in your system settings, so the film is shown as stills rather than a scrubbed sequence.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      Worldwide Distributors — cinematic direction demo · Concept 2, “The Spine”<br>
+      Drawn in code. No photography, stock, or AI imagery. Not a depiction of an actual project.
+    </div>
+  </footer>
+</main>
+
+<script>
+(function(){
+"use strict";
+var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ───────── canvas + camera ───────── */
+var cv = document.getElementById('stage'), ctx = cv.getContext('2d', {alpha:false});
+var W=0, H=0, DPR=1, MOBILE=false;
+
+function resize(){
+  DPR = Math.min(devicePixelRatio||1, 1.5);
+  W = innerWidth; H = innerHeight;
+  MOBILE = W < 760;
+  cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  BW = Math.max(2, Math.round(W/BS)); BH = Math.max(2, Math.round(H/BS));
+  bloom.width = BW; bloom.height = BH;
+}
+
+/* corridor constants */
+var BAY   = 42;      // spacing between structural bays
+var NBAY  = 34;      // total bays
+var ZMAX  = BAY*NBAY;
+var HALF  = 132;     // half corridor width
+var CEIL  = 96;      // ceiling height above eye
+var FLOOR = 74;      // floor below eye
+var NEAR  = 26;      // near clip
+var FAR   = 640;     // far clip
+var FOCAL = 0;       // set in resize-dependent draw
+
+var CONDUIT = [-52,-18,18,52];
+var camZ = -60, camTarget = -60;
+
+/* pre-rendered radial light sprite — drawImage beats createRadialGradient per light per frame */
+var SPR = 256, sprite = document.createElement('canvas');
+sprite.width = sprite.height = SPR;
+(function(){
+  var sc = sprite.getContext('2d');
+  var g = sc.createRadialGradient(SPR/2,SPR/2,0,SPR/2,SPR/2,SPR/2);
+  g.addColorStop(0,   'rgba(255,236,196,0.92)');
+  g.addColorStop(0.10,'rgba(255,222,163,0.34)');
+  g.addColorStop(0.26,'rgba(242,200,121,0.11)');
+  g.addColorStop(0.55,'rgba(200,140,50,0.030)');
+  g.addColorStop(1,   'rgba(185,116,26,0)');
+  sc.fillStyle = g; sc.fillRect(0,0,SPR,SPR);
+})();
+
+/* half-resolution bloom buffer — 4x less fill, and the upscale IS the bloom */
+var BS = 3;
+var bloom = document.createElement('canvas'), bctx = bloom.getContext('2d');
+var BW=0, BH=0;
+resize();
+
+/* progress 0..1 from scroll over #film */
+var film = document.getElementById('film');
+function progress(){
+  var top = film.offsetTop, h = film.offsetHeight - innerHeight;
+  if(h <= 0) return 0;
+  return Math.max(0, Math.min(1, (scrollY - top) / h));
+}
+
+/* finish state of a bay: 0 = raw shell, 1 = finished + lit */
+function finishAt(z){
+  var t = z / ZMAX;
+  return Math.max(0, Math.min(1, (t - 0.08) / 0.80));
+}
+
+function lerp(a,b,t){ return a + (b-a)*t; }
+function mixHex(c1,c2,t){
+  return 'rgb(' + Math.round(lerp(c1[0],c2[0],t)) + ',' +
+                  Math.round(lerp(c1[1],c2[1],t)) + ',' +
+                  Math.round(lerp(c1[2],c2[2],t)) + ')';
+}
+
+/* palette */
+var C_SLAB_RAW=[22,25,28],  C_SLAB_FIN=[46,50,55];
+var C_WALL_RAW=[16,19,22],  C_WALL_FIN=[54,58,63];
+var C_CEIL_RAW=[10,12,14],  C_CEIL_FIN=[38,42,47];
+var C_STUD    =[104,113,122];
+
+/* fixtures: one per bay from a start index, plus floor uplights later */
+var lights = [];
+function buildLights(){
+  lights = [];
+  for(var i=0;i<NBAY;i++){
+    var z = i*BAY;
+    var f = finishAt(z);
+    if(f > 0.30){
+      var st = Math.min(1,(f-0.30)/0.34);
+      lights.push({z:z, x:-58, y:-CEIL+8, r:126+(i%3)*16, str:st});
+      lights.push({z:z, x: 58, y:-CEIL+8, r:126+(i%3)*16, str:st});
+    }
+    if(f > 0.55 && i%2===0){
+      lights.push({z:z, x:-HALF+14, y:FLOOR-6, r:104, warm:1, str:Math.min(1,(f-0.55)/0.30)});
+      lights.push({z:z, x: HALF-14, y:FLOOR-6, r:104, warm:1, str:Math.min(1,(f-0.55)/0.30)});
+    }
+  }
+}
+buildLights();
+
+/* project a point */
+function proj(x,y,z){
+  var d = z - camZ;
+  if(d < NEAR) d = NEAR;
+  var s = FOCAL / d;
+  return { x: W*0.5 + x*s, y: H*0.5 + y*s, s: s, d: d };
+}
+
+function quad(p1,p2,p3,p4,fill){
+  ctx.beginPath();
+  ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y);
+  ctx.lineTo(p3.x,p3.y); ctx.lineTo(p4.x,p4.y);
+  ctx.closePath(); ctx.fillStyle = fill; ctx.fill();
+}
+
+/* depth fade toward black */
+function fog(d){
+  return Math.max(0, Math.min(1, 1 - (d - NEAR) / FAR));
+}
+/* brightness of a source at distance d: fades out as it passes the camera AND with depth */
+function lum(d){
+  var near = Math.max(0, Math.min(1, (d - 18) / 120));
+  return near * fog(d);
+}
+
+function drawWorld(){
+  FOCAL = MOBILE ? H*0.86 : H*0.98;
+
+  ctx.fillStyle = '#07080A';
+  ctx.fillRect(0,0,W,H);
+
+  /* far glow — the finished end of the corridor, always ahead */
+  var endD = ZMAX - camZ;
+  if(endD > NEAR){
+    var er = Math.max(70, (FOCAL/endD)*260 + 100);
+    ctx.globalAlpha = 0.42;
+    ctx.drawImage(sprite, W*0.5-er, H*0.5-er, er*2, er*2);
+    ctx.globalAlpha = 1;
+  }
+
+  /* ── the finished room at the end of the corridor ── */
+  var dEnd = ZMAX - camZ;
+  if(dEnd > NEAR){
+    var e1=proj(-HALF,-CEIL,ZMAX), e2=proj(HALF,-CEIL,ZMAX),
+        e3=proj( HALF, FLOOR,ZMAX), e4=proj(-HALF,FLOOR,ZMAX);
+    var ea = fog(dEnd);
+    ctx.globalAlpha = 1;
+    quad(e1,e2,e3,e4, 'rgb(' + Math.round(lerp(7,58,ea)) + ',' +
+                               Math.round(lerp(8,60,ea)) + ',' +
+                               Math.round(lerp(10,64,ea)) + ')');
+    /* a lit doorway through to the next finished space */
+    var d1=proj(-34,-CEIL*0.34,ZMAX), d2=proj(34,-CEIL*0.34,ZMAX),
+        d3=proj( 34, FLOOR,ZMAX),     d4=proj(-34,FLOOR,ZMAX);
+    var dg = ctx.createLinearGradient(0, d1.y, 0, d3.y);
+    dg.addColorStop(0,   'rgba(255,232,186,'+(0.92*ea).toFixed(3)+')');
+    dg.addColorStop(0.75,'rgba(238,193,116,'+(0.80*ea).toFixed(3)+')');
+    dg.addColorStop(1,   'rgba(206,150,68,' +(0.62*ea).toFixed(3)+')');
+    quad(d1,d2,d3,d4, dg);
+  }
+
+  /* ── continuous surfaces: 4 gradient fills instead of 80 stacked quads ── */
+  var zN = camZ + NEAR + 1;
+  var zF = Math.min(ZMAX, camZ + FAR);
+
+  function fogMix(rgb, d){
+    var f = fog(d);
+    return 'rgb(' + Math.round(lerp(7,  rgb[0], f)) + ',' +
+                    Math.round(lerp(8,  rgb[1], f)) + ',' +
+                    Math.round(lerp(10, rgb[2], f)) + ')';
+  }
+  function shadeAt(z, cRaw, cFin, k){
+    var f = finishAt(z) * k;
+    return [lerp(cRaw[0],cFin[0],f), lerp(cRaw[1],cFin[1],f), lerp(cRaw[2],cFin[2],f)];
+  }
+
+  if(zF > zN){
+    /* horizontal planes — gradient sampled in SCREEN space, inverted back to depth */
+    [[FLOOR, C_SLAB_RAW, C_SLAB_FIN, 1.0],
+     [-CEIL, C_CEIL_RAW, C_CEIL_FIN, 1.0]].forEach(function(cfg){
+      var y = cfg[0];
+      var p1=proj(-HALF,y,zN), p2=proj(HALF,y,zN), p3=proj(HALF,y,zF), p4=proj(-HALF,y,zF);
+      var g = ctx.createLinearGradient(0, p1.y, 0, p3.y);
+      for(var k=0;k<=5;k++){
+        var t = k/5;
+        var sy = lerp(p1.y, p3.y, t);
+        var dy = sy - H*0.5;
+        var d  = Math.abs(dy) < 0.4 ? FAR : (y*FOCAL)/dy;
+        d = Math.max(NEAR, Math.min(FAR, d));
+        g.addColorStop(t, fogMix(shadeAt(camZ+d, cfg[1], cfg[2], cfg[3]), d));
+      }
+      quad(p1,p2,p3,p4,g);
+    });
+
+    /* side walls */
+    [[-HALF, 0.92],[HALF, 0.78]].forEach(function(cfg){
+      var x = cfg[0];
+      var q1=proj(x,-CEIL,zN), q2=proj(x,-CEIL,zF), q3=proj(x,FLOOR,zF), q4=proj(x,FLOOR,zN);
+      var g = ctx.createLinearGradient(q1.x, 0, q2.x, 0);
+      for(var k=0;k<=5;k++){
+        var t = k/5;
+        var sx = lerp(q1.x, q2.x, t);
+        var dx = sx - W*0.5;
+        var d  = Math.abs(dx) < 0.4 ? FAR : (x*FOCAL)/dx;
+        d = Math.max(NEAR, Math.min(FAR, d));
+        g.addColorStop(t, fogMix(shadeAt(camZ+d, C_WALL_RAW, C_WALL_FIN, cfg[1]), d));
+      }
+      quad(q1,q2,q3,q4,g);
+    });
+  }
+
+  /* ── per-bay detail: strokes and small props only ── */
+  var first = Math.max(0, Math.floor((camZ + NEAR)/BAY));
+  var last  = Math.min(NBAY-1, Math.ceil((camZ + FAR)/BAY));
+
+  for(var i=last; i>=first; i--){
+    var z0 = i*BAY, z1 = z0 + BAY;
+    var f  = finishAt(z0);
+    var d  = z0 - camZ;
+    if(d < NEAR*0.6) continue;
+    var a  = fog(d);
+    if(a <= 0.006) continue;
+
+    var TL0=proj(-HALF,-CEIL,z0), TR0=proj(HALF,-CEIL,z0),
+        BL0=proj(-HALF, FLOOR,z0), BR0=proj(HALF, FLOOR,z0);
+
+    /* exposed studs early, gone once the walls close up */
+    var studVis = 1 - Math.min(1, f/0.62);
+    if(studVis > 0.02){
+      ctx.globalAlpha = a * studVis * 0.85;
+      ctx.strokeStyle = 'rgb('+C_STUD[0]+','+C_STUD[1]+','+C_STUD[2]+')';
+      ctx.lineWidth = Math.max(0.6, 1.5*(FOCAL/d)*0.05);
+      ctx.beginPath();
+      for(var k=0;k<=2;k++){
+        var zz = z0 + (BAY/3)*k;
+        var t1=proj(-HALF,-CEIL,zz), b1=proj(-HALF,FLOOR,zz);
+        var t2=proj( HALF,-CEIL,zz), b2=proj( HALF,FLOOR,zz);
+        ctx.moveTo(t1.x,t1.y); ctx.lineTo(b1.x,b1.y);
+        ctx.moveTo(t2.x,t2.y); ctx.lineTo(b2.x,b2.y);
+      }
+      ctx.stroke();
+    }
+
+    /* ceiling conduit — appears mid-journey and stays */
+    var condVis = Math.min(1, Math.max(0, (f-0.16)/0.28));
+    if(condVis > 0.02){
+      ctx.globalAlpha = a*condVis*0.9;
+      ctx.strokeStyle = '#5E6771';
+      ctx.lineWidth = Math.max(0.7, 2.4*(FOCAL/d)*0.05);
+      ctx.beginPath();
+      for(var ci=0;ci<4;ci++){
+        var ox = CONDUIT[ci];
+        var c0=proj(ox,-CEIL+5,z0), c1=proj(ox,-CEIL+5,z1);
+        ctx.moveTo(c0.x,c0.y); ctx.lineTo(c1.x,c1.y);
+      }
+      ctx.stroke();
+    }
+
+    /* structural rhythm */
+    ctx.globalAlpha = a*0.45;
+    ctx.strokeStyle = f > 0.6 ? 'rgba(168,178,188,.30)' : 'rgba(96,106,116,.34)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(BL0.x,BL0.y); ctx.lineTo(TL0.x,TL0.y);
+    ctx.lineTo(TR0.x,TR0.y); ctx.lineTo(BR0.x,BR0.y);
+    ctx.stroke();
+
+    /* pallets and cartons, early-to-mid */
+    var palVis = 1 - Math.min(1, Math.abs(f-0.16)/0.30);
+    if(palVis > 0.05 && i%2===0){
+      ctx.globalAlpha = a*palVis;
+      var side = (i%4===0) ? -1 : 1;
+      var px = side*(HALF-40), pw = 26, ph = 20;
+      var q1=proj(px-pw,FLOOR-ph,z0+8), q2=proj(px+pw,FLOOR-ph,z0+8),
+          q3=proj(px+pw,FLOOR,z0+8),    q4=proj(px-pw,FLOOR,z0+8);
+      quad(q1,q2,q3,q4,'#2C3138');
+      ctx.strokeStyle='rgba(180,150,100,.35)'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(q1.x,q1.y); ctx.lineTo(q2.x,q2.y); ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  /* ── light pass: half-res buffer, sprite blits, upscaled as bloom ── */
+  bctx.clearRect(0,0,BW,BH);
+  bctx.globalCompositeOperation = 'lighter';
+  var drawn = 0;
+  for(var L=lights.length-1; L>=0; L--){
+    var li = lights[L];
+    var dd = li.z - camZ;
+    if(dd < NEAR*0.5 || dd > FAR) continue;
+    var p = proj(li.x, li.y, li.z);
+    var rad = Math.min(li.r * p.s, H*0.42);
+    if(rad < 1.6) continue;
+    var af = lum(dd) * li.str;
+    if(af <= 0.03) continue;
+
+    bctx.globalAlpha = Math.min(0.5, af*0.44);
+    bctx.drawImage(sprite, (p.x-rad)/BS, (p.y-rad)/BS, (rad*2)/BS, (rad*2)/BS);
+    drawn++;
+    if(drawn > 20) break;
+  }
+  bctx.globalAlpha = 1;
+  bctx.globalCompositeOperation = 'source-over';
+
+  ctx.globalCompositeOperation = 'lighter';
+  ctx.globalAlpha = 0.90;
+  ctx.drawImage(bloom, 0, 0, W, H);
+  ctx.globalAlpha = 1;
+  ctx.globalCompositeOperation = 'source-over';
+
+  /* hot cores at full res — the bloom buffer is too soft to sell a source */
+  for(var L2=0; L2<lights.length; L2++){
+    var l2 = lights[L2];
+    var d2 = l2.z - camZ;
+    if(d2 < NEAR*0.5 || d2 > FAR*0.6) continue;
+    var p2 = proj(l2.x, l2.y, l2.z);
+    var a2 = lum(d2) * l2.str;
+    if(a2 <= 0.05) continue;
+    var core = Math.min(Math.max(0.9, 3.2*p2.s*0.55), 26);
+    ctx.fillStyle = 'rgba(255,244,220,'+(0.82*a2).toFixed(3)+')';
+    ctx.beginPath(); ctx.arc(p2.x,p2.y,core,0,6.2832); ctx.fill();
+  }
+}
+
+/* ───────── beats ───────── */
+var beats = [].slice.call(document.querySelectorAll('.beat')).map(function(el){
+  return { el:el, in:parseFloat(el.dataset.in), out:parseFloat(el.dataset.out) };
+});
+var CHAPTERS = ['Source','Source','Design','Supply','Install','Build','Maintain','Finish'];
+
+function updateBeats(p){
+  for(var i=0;i<beats.length;i++){
+    var b = beats[i], o = 0, ty = 16;
+    if(p >= b.in && p <= b.out){
+      var span = b.out - b.in;
+      var local = (p - b.in) / span;
+      /* the opening beat is already on screen when the page lands — it must not fade up from nothing */
+      var fadeIn  = (b.in <= 0) ? 1 : Math.min(1, local/0.22);
+      var fadeOut = Math.min(1, (1-local)/0.22);
+      o = Math.min(fadeIn, fadeOut);
+      ty = (1-o)*16 - local*10;
+    }
+    b.el.style.opacity = o.toFixed(3);
+    b.el.style.transform = 'translateY(' + ty.toFixed(1) + 'px)';
+  }
+}
+
+var rChapter = document.getElementById('rChapter'),
+    rDepth   = document.getElementById('rDepth'),
+    railFill = document.getElementById('railFill'),
+    cue      = document.getElementById('cue');
+var lastCh = '';
+
+function updateChrome(p){
+  var idx = Math.min(CHAPTERS.length-1, Math.floor(p * CHAPTERS.length));
+  var ch = CHAPTERS[idx];
+  if(ch !== lastCh){ rChapter.textContent = ch; lastCh = ch; }
+  rDepth.textContent = Math.round(p * 120) + ' m';
+  railFill.style.height = (p*100).toFixed(1) + '%';
+  cue.style.opacity = p > 0.02 ? 0 : 1;
+}
+
+/* rail ticks */
+(function(){
+  var rail = document.querySelector('.rail');
+  for(var i=1;i<8;i++){
+    var t = document.createElement('span');
+    t.className = 'tick';
+    t.style.top = (i/8*100) + '%';
+    rail.appendChild(t);
+  }
+})();
+
+/* ───────── loop ───────── */
+var lastP = -1;
+function tick(){
+  var p = progress();
+  camTarget = -60 + p * (ZMAX - 300);
+  camZ += (camTarget - camZ) * (reduce ? 1 : 0.10);
+
+  drawWorld();
+
+  if(Math.abs(p - lastP) > 0.0004){
+    updateBeats(p);
+    updateChrome(p);
+    lastP = p;
+  }
+  requestAnimationFrame(tick);
+}
+
+addEventListener('resize', function(){ resize(); buildLights(); }, {passive:true});
+
+if(reduce){
+  camZ = camTarget = ZMAX*0.72;
+  drawWorld();
+  updateChrome(0.72);
+  window.__ready = true;
+}else{
+  requestAnimationFrame(tick);
+  window.__ready = true;
+}
+})();
+</script>
