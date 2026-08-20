@@ -1,0 +1,995 @@
+<title>Worldwide Distributors Homepage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --ink:#0B0D0F;
+  --graphite:#16191D;
+  --graphite-2:#1D2126;
+  --line:#2A2F36;
+  --line-2:#3A424B;
+  --tung:#F2C879;
+  --tung-deep:#B9741A;
+  --tung-glow:rgba(242,200,121,.16);
+  --signal:#7FA3D8;
+  --signal-deep:#25406B;
+  --steel:#9AA3AD;
+  --bone:#F4F1EC;
+  --bone-mute:#9C978F;
+  --safety:#E2622B;
+  --anno:#5BD1C4;
+
+  --f-d:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-b:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --f-m:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+
+  --pad:clamp(20px,5vw,64px);
+  --maxw:1320px;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--bone);
+  font-family:var(--f-b);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad)}
+
+/* ── type ─────────────────────────────── */
+.disp{
+  font-family:var(--f-d);
+  font-variation-settings:"wdth" 118,"wght" 830;
+  text-transform:uppercase;
+  line-height:.94;
+  letter-spacing:-.015em;
+  margin:0;
+  text-wrap:balance;
+}
+.eyebrow{
+  font-family:var(--f-m);
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--tung);
+  margin:0;
+}
+.sub{color:var(--bone-mute);max-width:62ch}
+
+/* ── annotation layer ─────────────────── */
+.anno{
+  position:relative;
+  border:1px dashed var(--anno);
+  background:rgba(91,209,196,.045);
+}
+.anno::after{
+  content:attr(data-anno);
+  position:absolute;
+  top:0;left:0;
+  transform:translateY(-100%);
+  font-family:var(--f-m);
+  font-size:9.5px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--ink);
+  background:var(--anno);
+  padding:2px 6px;
+  white-space:nowrap;
+  max-width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  z-index:6;
+}
+.vflag{
+  display:inline-block;
+  font-family:var(--f-m);
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  color:var(--safety);
+  border:1px solid var(--safety);
+  padding:1px 5px;
+  margin-left:7px;
+  vertical-align:middle;
+  white-space:nowrap;
+}
+body:not(.show-anno) .anno{border-color:transparent;background:none}
+body:not(.show-anno) .anno::after{display:none}
+body:not(.show-anno) .vflag{display:none}
+
+/* ── anno toggle ──────────────────────── */
+.annobar{
+  position:fixed;
+  right:14px;bottom:14px;
+  z-index:90;
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.annobtn{
+  font-family:var(--f-m);
+  font-size:10.5px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--ink);
+  background:var(--anno);
+  border:0;
+  padding:9px 13px;
+  cursor:pointer;
+  line-height:1;
+  font-weight:600;
+}
+.annobtn.off{background:var(--graphite-2);color:var(--bone-mute);border:1px solid var(--line-2)}
+.annobtn:focus-visible{outline:2px solid var(--bone);outline-offset:2px}
+@media(max-width:640px){.annobar{right:10px;bottom:70px}}
+
+/* ── header ───────────────────────────── */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:80;
+  transition:background .3s ease,border-color .3s ease;
+  border-bottom:1px solid transparent;
+}
+header.stuck{background:rgba(11,13,15,.88);backdrop-filter:blur(14px);border-bottom-color:var(--line)}
+.hdr{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 0}
+.logo{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--bone)}
+.logo b{
+  font-family:var(--f-d);
+  font-variation-settings:"wdth" 112,"wght" 800;
+  font-size:15px;letter-spacing:.02em;text-transform:uppercase;line-height:1;
+}
+.logo span{font-family:var(--f-m);font-size:8.5px;letter-spacing:.17em;text-transform:uppercase;color:var(--bone-mute)}
+nav.main{display:flex;gap:26px;align-items:center}
+nav.main a{
+  color:var(--bone-mute);text-decoration:none;font-size:13.5px;
+  letter-spacing:.01em;transition:color .2s;
+}
+nav.main a:hover{color:var(--tung)}
+.hdr-cta{
+  font-family:var(--f-m);font-size:11px;font-weight:600;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--ink);background:var(--tung);
+  padding:11px 16px;text-decoration:none;white-space:nowrap;
+}
+.hdr-cta:hover{background:var(--bone)}
+@media(max-width:960px){nav.main{display:none}}
+
+/* ── hero ─────────────────────────────── */
+.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden}
+#heroCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero-veil{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(11,13,15,.72) 0%,rgba(11,13,15,.15) 38%,rgba(11,13,15,.82) 88%,var(--ink) 100%);
+}
+.hero-inner{position:relative;z-index:3;width:100%;padding-bottom:clamp(48px,8vh,96px);padding-top:120px}
+.hero h1{font-size:clamp(38px,8.4vw,116px)}
+.hero h1 .l{display:block}
+.hero h1 .l:nth-child(2){color:var(--tung)}
+.hero-claim{
+  font-family:var(--f-d);
+  font-variation-settings:"wdth" 104,"wght" 620;
+  font-size:clamp(17px,2.5vw,30px);
+  text-transform:uppercase;letter-spacing:.005em;line-height:1.15;
+  margin:22px 0 0;max-width:20ch;
+}
+.hero-note{
+  margin:18px 0 0;font-size:15px;color:var(--bone-mute);max-width:52ch;
+}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+.btn{
+  font-family:var(--f-m);font-size:11.5px;font-weight:600;letter-spacing:.11em;
+  text-transform:uppercase;padding:15px 22px;text-decoration:none;
+  display:inline-block;transition:.2s;cursor:pointer;border:1px solid transparent;
+}
+.btn-p{background:var(--tung);color:var(--ink)}
+.btn-p:hover{background:var(--bone)}
+.btn-s{border-color:var(--line-2);color:var(--bone)}
+.btn-s:hover{border-color:var(--tung);color:var(--tung)}
+.hero-meta{
+  position:absolute;left:var(--pad);bottom:0;z-index:3;
+  display:none;
+}
+.scrollcue{
+  position:absolute;right:var(--pad);bottom:clamp(48px,8vh,96px);z-index:3;
+  font-family:var(--f-m);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--bone-mute);writing-mode:vertical-rl;
+}
+@media(max-width:900px){.scrollcue{display:none}}
+
+/* ── section frame ────────────────────── */
+section{position:relative}
+.sec{padding:clamp(64px,10vh,132px) 0}
+.sec-head{margin-bottom:clamp(30px,5vh,56px);max-width:74ch}
+.sec-head .eyebrow{margin-bottom:14px}
+.sec-head h2{font-size:clamp(26px,4.4vw,54px)}
+.sec-head p{margin:16px 0 0;color:var(--bone-mute);font-size:clamp(15px,1.7vw,17px);max-width:60ch}
+.rule{height:1px;background:var(--line);border:0;margin:0}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(14px);filter:saturate(.4) brightness(.6)}
+.rv.on{opacity:1;transform:none;filter:none;transition:opacity .75s cubic-bezier(.2,.7,.3,1),transform .75s cubic-bezier(.2,.7,.3,1),filter .95s cubic-bezier(.2,.7,.3,1)}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rv{opacity:1;transform:none;filter:none}
+}
+
+/* ── audience fork ────────────────────── */
+.fork{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line)}
+@media(max-width:860px){.fork{grid-template-columns:1fr}}
+.door{
+  background:var(--ink);padding:clamp(24px,3.4vw,44px);text-decoration:none;color:var(--bone);
+  display:flex;flex-direction:column;gap:12px;position:relative;transition:background .35s;min-height:230px;
+}
+.door::before{
+  content:"";position:absolute;inset:0;opacity:0;transition:opacity .45s;
+  background:radial-gradient(120% 80% at 50% 108%,var(--tung-glow),transparent 68%);
+}
+.door:hover{background:var(--graphite)}
+.door:hover::before{opacity:1}
+.door .n{font-family:var(--f-m);font-size:10px;letter-spacing:.16em;color:var(--tung);position:relative}
+.door h3{
+  font-family:var(--f-d);font-variation-settings:"wdth" 106,"wght" 750;
+  font-size:clamp(19px,2.2vw,27px);text-transform:uppercase;line-height:1.05;margin:0;position:relative;
+}
+.door p{margin:0;font-size:14px;color:var(--bone-mute);line-height:1.55;position:relative;flex:1}
+.door .go{
+  font-family:var(--f-m);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--bone);position:relative;display:flex;align-items:center;gap:8px;
+}
+.door:hover .go{color:var(--tung)}
+.door .go i{font-style:normal;transition:transform .3s}
+.door:hover .go i{transform:translateX(5px)}
+
+/* ── spine ────────────────────────────── */
+.spine-scroll{overflow-x:auto;padding-bottom:10px;-webkit-overflow-scrolling:touch}
+.spine{display:grid;grid-template-columns:repeat(6,minmax(178px,1fr));gap:2px;background:var(--line);min-width:1060px}
+.stage{background:var(--graphite);padding:22px 20px 26px;position:relative;overflow:hidden}
+.stage .bar{position:absolute;top:0;left:0;right:0;height:2px;background:var(--line-2)}
+.stage .bar span{display:block;height:100%;width:0;background:var(--tung);transition:width 1.1s cubic-bezier(.2,.7,.3,1)}
+.stage.on .bar span{width:100%}
+.stage .ix{font-family:var(--f-m);font-size:10px;color:var(--bone-mute);letter-spacing:.13em}
+.stage h4{
+  font-family:var(--f-d);font-variation-settings:"wdth" 104,"wght" 780;
+  font-size:17px;text-transform:uppercase;margin:10px 0 8px;letter-spacing:.01em;
+}
+.stage p{margin:0;font-size:13px;line-height:1.5;color:var(--bone-mute)}
+.stage .own{
+  margin-top:14px;font-family:var(--f-m);font-size:9.5px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--tung-deep);
+}
+.stage:nth-child(n+5) .own{color:var(--steel)}
+
+/* ── proof strip ──────────────────────── */
+.proof{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--graphite)}
+.proof-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line)}
+@media(max-width:980px){.proof-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.proof-grid{grid-template-columns:1fr}}
+.pf{background:var(--graphite);padding:26px 22px}
+.pf b{
+  display:block;font-family:var(--f-d);font-variation-settings:"wdth" 108,"wght" 780;
+  font-size:clamp(20px,2.4vw,28px);text-transform:uppercase;line-height:1.05;margin-bottom:7px;
+}
+.pf span{font-family:var(--f-m);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--bone-mute);display:block;line-height:1.6}
+
+/* ── divisions ────────────────────────── */
+.divs{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line)}
+@media(max-width:900px){.divs{grid-template-columns:1fr}}
+.dv{background:var(--ink);padding:0;display:flex;flex-direction:column;text-decoration:none;color:var(--bone)}
+.dv .top{height:3px;width:100%}
+.dv-l .top{background:linear-gradient(90deg,var(--tung),var(--tung-deep))}
+.dv-b .top{background:linear-gradient(90deg,var(--steel),var(--safety))}
+.dv-s .top{background:linear-gradient(90deg,var(--signal),var(--signal-deep))}
+.dv .body{padding:clamp(24px,3vw,38px);display:flex;flex-direction:column;gap:11px;flex:1}
+.dv .kind{font-family:var(--f-m);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--bone-mute)}
+.dv h3{font-family:var(--f-d);font-variation-settings:"wdth" 110,"wght" 800;font-size:clamp(22px,2.6vw,32px);text-transform:uppercase;margin:0;line-height:1}
+.dv-l h3{color:var(--tung)}
+.dv-b h3{color:var(--bone)}
+.dv-s h3{color:var(--signal)}
+.dv p{margin:0;font-size:14px;color:var(--bone-mute);line-height:1.55;flex:1}
+.dv ul{margin:6px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:5px}
+.dv li{font-family:var(--f-m);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--bone-mute);border:1px solid var(--line-2);padding:3px 7px}
+.dv .go{font-family:var(--f-m);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;margin-top:8px}
+.dv:hover .go{color:var(--tung)}
+.dv:hover{background:var(--graphite)}
+
+/* ── split state ──────────────────────── */
+.split{position:relative;user-select:none;touch-action:pan-y;background:#07090B;border:1px solid var(--line)}
+.split svg{display:block;width:100%;height:auto}
+.split .after{position:absolute;inset:0;clip-path:inset(0 50% 0 0)}
+.split .after svg{position:absolute;top:0;left:0;width:100%;height:100%}
+.seam{
+  position:absolute;top:0;bottom:0;width:2px;background:var(--tung);
+  box-shadow:0 0 18px 2px rgba(242,200,121,.55);cursor:ew-resize;z-index:4;
+}
+.seam::before{
+  content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:44px;height:44px;border:2px solid var(--tung);border-radius:50%;
+  background:rgba(11,13,15,.72);backdrop-filter:blur(3px);
+}
+.seam::after{
+  content:"◄ ►";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-size:10px;color:var(--tung);letter-spacing:.06em;white-space:nowrap;
+}
+.split-lbl{
+  position:absolute;bottom:12px;z-index:5;font-family:var(--f-m);font-size:9.5px;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--bone);
+  background:rgba(11,13,15,.7);padding:5px 9px;pointer-events:none;
+}
+.split-lbl.l{left:12px}
+.split-lbl.r{right:12px;color:var(--tung)}
+.case-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);margin-top:2px}
+@media(max-width:760px){.case-meta{grid-template-columns:repeat(2,1fr)}}
+.case-meta div{background:var(--graphite);padding:16px 18px}
+.case-meta b{display:block;font-family:var(--f-m);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--bone-mute);margin-bottom:5px}
+.case-meta span{font-size:14px;color:var(--bone)}
+
+/* ── facade portfolio ─────────────────── */
+.facade{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--line)}
+@media(max-width:900px){.facade{grid-template-columns:repeat(2,1fr)}}
+.win{
+  position:relative;background:#0D1013;aspect-ratio:4/3;overflow:hidden;
+  text-decoration:none;color:var(--bone);display:flex;align-items:flex-end;padding:18px;
+}
+.win .glow{
+  position:absolute;inset:0;opacity:.12;transition:opacity .5s cubic-bezier(.2,.7,.3,1);
+  background:
+    radial-gradient(70% 55% at 50% 62%,rgba(242,200,121,.85),transparent 72%),
+    linear-gradient(180deg,transparent 40%,rgba(185,116,26,.35));
+}
+.win:hover .glow,.win:focus-visible .glow{opacity:1}
+.win .cap{position:relative;z-index:2}
+.win .cat{font-family:var(--f-m);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--tung);display:block;margin-bottom:5px}
+.win h4{font-family:var(--f-d);font-variation-settings:"wdth" 104,"wght" 740;font-size:16px;text-transform:uppercase;margin:0;line-height:1.05}
+.win .ph{
+  position:absolute;top:14px;left:14px;z-index:2;
+  font-family:var(--f-m);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--bone-mute);border:1px solid var(--line-2);padding:2px 6px;
+}
+
+/* ── PM block ─────────────────────────── */
+.pm{background:var(--graphite);border:1px solid var(--line);display:grid;grid-template-columns:1.15fr .85fr;gap:0}
+@media(max-width:900px){.pm{grid-template-columns:1fr}}
+.pm-l{padding:clamp(28px,4vw,52px);border-right:1px solid var(--line)}
+@media(max-width:900px){.pm-l{border-right:0;border-bottom:1px solid var(--line)}}
+.pm-l h2{font-size:clamp(24px,3.4vw,42px);margin-bottom:16px}
+.pm-l p{color:var(--bone-mute);max-width:52ch}
+.pm-r{padding:clamp(28px,4vw,52px);display:flex;flex-direction:column;gap:0}
+.pm-r h4{font-family:var(--f-m);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--bone-mute);margin:0 0 16px}
+.docrow{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--line)}
+.docrow:last-of-type{border-bottom:0}
+.docrow span{font-size:14px}
+.docrow em{font-family:var(--f-m);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;font-style:normal;color:var(--tung)}
+
+/* ── testimonials ─────────────────────── */
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line)}
+@media(max-width:900px){.quotes{grid-template-columns:1fr}}
+.q{background:var(--ink);padding:clamp(24px,3vw,38px);display:flex;flex-direction:column;gap:16px}
+.q .vid{
+  aspect-ratio:16/10;background:var(--graphite);display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);
+}
+.q .vid span{font-family:var(--f-m);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--bone-mute);text-align:center;padding:0 14px}
+.q blockquote{margin:0;font-size:15.5px;line-height:1.6;color:var(--bone);flex:1}
+.q cite{font-style:normal;font-family:var(--f-m);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--bone-mute)}
+
+/* ── maintenance ──────────────────────── */
+.maint{border:1px solid var(--line);background:linear-gradient(180deg,var(--graphite),var(--ink));padding:clamp(28px,4.5vw,64px)}
+.maint-top{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-end;justify-content:space-between;margin-bottom:34px}
+.maint h2{font-size:clamp(24px,3.6vw,44px)}
+.cycle{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--line)}
+@media(max-width:760px){.cycle{grid-template-columns:repeat(2,1fr)}}
+.cycle div{background:var(--ink);padding:20px 18px}
+.cycle b{display:block;font-family:var(--f-m);font-size:9.5px;letter-spacing:.13em;color:var(--tung);margin-bottom:8px}
+.cycle p{margin:0;font-size:13.5px;color:var(--bone-mute);line-height:1.5}
+
+/* ── learn ────────────────────────────── */
+.learn{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line)}
+@media(max-width:900px){.learn{grid-template-columns:1fr}}
+.lc{background:var(--ink);padding:clamp(22px,2.8vw,34px);text-decoration:none;color:var(--bone);display:flex;flex-direction:column;gap:11px;transition:background .3s}
+.lc:hover{background:var(--graphite)}
+.lc .k{font-family:var(--f-m);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--signal)}
+.lc h4{font-family:var(--f-d);font-variation-settings:"wdth" 102,"wght" 700;font-size:18px;text-transform:uppercase;margin:0;line-height:1.12}
+.lc p{margin:0;font-size:13.5px;color:var(--bone-mute);line-height:1.55}
+
+/* ── close ────────────────────────────── */
+.close{position:relative;overflow:hidden;border-top:1px solid var(--line)}
+.close::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(90% 100% at 50% 120%,rgba(242,200,121,.14),transparent 70%);
+}
+.close .wrap{position:relative;z-index:2}
+.close h2{font-size:clamp(30px,6vw,76px)}
+.close .sub{margin:20px auto 0;font-size:17px}
+.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);margin-top:clamp(38px,6vh,64px);border:1px solid var(--line)}
+@media(max-width:820px){.contact{grid-template-columns:1fr}}
+.ci{background:var(--ink);padding:26px 24px}
+.ci b{display:block;font-family:var(--f-m);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-mute);margin-bottom:9px}
+.ci p{margin:0;font-size:15px;line-height:1.6}
+.ci a{color:var(--tung);text-decoration:none}
+.ci a:hover{text-decoration:underline}
+
+footer{border-top:1px solid var(--line);padding:34px 0 110px;font-family:var(--f-m);font-size:11px;line-height:1.85;color:var(--bone-mute)}
+.foot{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between}
+
+/* sticky mobile call */
+.callbar{
+  position:fixed;left:0;right:0;bottom:0;z-index:85;display:none;
+  background:var(--tung);color:var(--ink);text-align:center;padding:15px;
+  font-family:var(--f-m);font-size:12px;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;text-decoration:none;
+}
+@media(max-width:640px){.callbar{display:block}}
+
+a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--tung);outline-offset:3px}
+</style>
+
+<header id="hdr">
+  <div class="wrap hdr">
+    <a class="logo" href="#top">
+      <b>Worldwide Distributors</b>
+      <span>E-Lighting · E-Built · Supply</span>
+    </a>
+    <nav class="main">
+      <a href="#fork">Commercial</a>
+      <a href="#fork">Residential</a>
+      <a href="#divisions">Divisions</a>
+      <a href="#projects">Projects</a>
+      <a href="#pm">Property Managers</a>
+      <a href="#learn">Learn</a>
+    </nav>
+    <a class="hdr-cta" href="#close">Start a project</a>
+  </div>
+</header>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="top">
+  <canvas id="heroCanvas" aria-hidden="true"></canvas>
+  <div class="hero-veil"></div>
+  <div class="hero-inner">
+    <div class="wrap">
+      <div class="anno" data-anno="Hero slot — swappable. Ships as this drawn light sequence; the Spine film drops in here later with no rebuild." style="padding:2px">
+        <p class="eyebrow">Headquartered in Miami · Serving Florida</p>
+        <h1 class="disp" style="margin-top:18px">
+          <span class="l">Lighting.</span>
+          <span class="l">Electrical.</span>
+          <span class="l">Construction.</span>
+        </h1>
+        <p class="hero-claim">One number.<br>One company accountable.</p>
+        <p class="hero-note">We source the product, design the lighting, run the electrical, build the space, and maintain it afterward — so you are not managing four companies who each blame the other three.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-p" href="#close">Start a commercial project</a>
+          <a class="btn btn-s" href="#divisions">Request a lighting package</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scrollcue">Scroll</div>
+</section>
+
+<!-- ══ FORK ══ -->
+<section class="sec" id="fork" style="padding-top:clamp(52px,7vh,88px)">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Where do you fit</p>
+      <h2 class="disp">Three ways in</h2>
+      <p>Commercial buyers shop on risk and schedule. Homeowners shop on how it looks at night. Pick your path and the site stops trying to be both at once.</p>
+    </div>
+    <div class="fork rv">
+      <a class="door" href="#pm">
+        <span class="n">01</span>
+        <h3>I own or manage<br>a property</h3>
+        <p>Common-area and parking lot lighting, electrical service, panel work, unit turns, and recurring maintenance — from a vendor already cleared through compliance.</p>
+        <span class="go">Property services <i>→</i></span>
+      </a>
+      <a class="door" href="#divisions">
+        <span class="n">02</span>
+        <h3>I'm opening<br>a business</h3>
+        <p>Restaurant, medical office, retail, barber shop, professional office. Empty shell to open doors — permits, build, electrical and lighting under one contract.</p>
+        <span class="go">Commercial buildouts <i>→</i></span>
+      </a>
+      <a class="door" href="#projects">
+        <span class="n">03</span>
+        <h3>I'm a<br>homeowner</h3>
+        <p>Landscape and permanent lighting, exterior design, panel upgrades, troubleshooting, and remodelling — with a showroom you can actually walk into.</p>
+        <span class="go">Residential work <i>→</i></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SPINE ══ -->
+<section class="sec" id="spine" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">The one-stop-shop, made literal</p>
+      <h2 class="disp">Source → Maintain</h2>
+      <p>Most contractors own one or two of these stages and subcontract the rest. Owning all six is why there is only one number to call when something goes wrong.</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="spine-scroll rv">
+      <div class="spine" id="spine">
+        <div class="stage"><div class="bar"><span></span></div><span class="ix">01</span><h4>Source</h4><p>Direct purchasing with a resale certificate — fixtures, doors, windows, materials, at distributor pricing.</p><span class="own">Supply</span></div>
+        <div class="stage"><div class="bar"><span></span></div><span class="ix">02</span><h4>Design</h4><p>Lighting layouts, photometrics, LED conversion planning and free energy surveys.</p><span class="own">E-Lighting</span></div>
+        <div class="stage"><div class="bar"><span></span></div><span class="ix">03</span><h4>Supply</h4><p>Buy the package outright and hand it to your own crew. No installation required.</p><span class="own">Supply</span></div>
+        <div class="stage"><div class="bar"><span></span></div><span class="ix">04</span><h4>Install</h4><p>Licensed electrical, lighting installation, panels, service, troubleshooting, bucket truck work.</p><span class="own">E-Lighting</span></div>
+        <div class="stage"><div class="bar"><span></span></div><span class="ix">05</span><h4>Build</h4><p>Demolition through finishes. Commercial buildouts, tenant improvements, remodelling.</p><span class="own">E-Built</span></div>
+        <div class="stage"><div class="bar"><span></span></div><span class="ix">06</span><h4>Maintain</h4><p>Quarterly landscape lighting care and ongoing property maintenance so the work keeps performing.</p><span class="own">E-Lighting</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROOF ══ -->
+<section class="proof">
+  <div class="wrap" style="padding-left:0;padding-right:0;max-width:none">
+    <div class="proof-grid anno" data-anno="Proof strip — every value below is verification-gated. Nothing here publishes until confirmed.">
+      <div class="pf"><b>Licensed<br>&amp; Insured</b><span>EC # pending<span class="vflag">Verify 01</span></span></div>
+      <div class="pf"><b>30+ Years</b><span>In lighting<span class="vflag">Verify 03</span></span></div>
+      <div class="pf"><b>Compliance<br>Approved</b><span>PM vendor networks<span class="vflag">Verify 09</span></span></div>
+      <div class="pf"><b>Miami<br>Showroom</b><span>Walk in and see it lit</span></div>
+      <div class="pf"><b>Statewide<br>Capable</b><span>Miami HQ · serving Florida</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DIVISIONS ══ -->
+<section class="sec" id="divisions">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">One company, three divisions</p>
+      <h2 class="disp">Breadth, with depth behind it</h2>
+      <p>The divisions are not separate companies. They are the proof that the umbrella is real — each one deep enough to stand on its own, all three under one contract and one point of accountability.</p>
+    </div>
+    <div class="divs rv">
+      <a class="dv dv-l" href="#projects">
+        <div class="top"></div>
+        <div class="body">
+          <span class="kind">Division 01 · Design &amp; Install</span>
+          <h3>E-Lighting</h3>
+          <p>Lighting design, electrical contracting, installation, service and maintenance. The oldest part of the business and the name most of Miami already knows.</p>
+          <ul><li>Landscape</li><li>Permanent</li><li>Parking lot</li><li>Architectural</li><li>Panels</li><li>Service</li><li>LED retrofit</li></ul>
+          <span class="go">Explore E-Lighting →</span>
+        </div>
+      </a>
+      <a class="dv dv-b" href="#projects">
+        <div class="top"></div>
+        <div class="body">
+          <span class="kind">Division 02 · Build</span>
+          <h3>E-Built</h3>
+          <p>Commercial buildouts and construction. Empty leased shell to open business — restaurants, medical, retail, offices, barber shops, tenant improvements.</p>
+          <ul><li>Buildouts</li><li>Tenant improvement</li><li>Remodelling</li><li>Demolition</li><li>Framing</li><li>Plumbing</li><li>Finishes</li></ul>
+          <span class="go">Explore E-Built →</span>
+        </div>
+      </a>
+      <a class="dv dv-s" href="#close">
+        <div class="top"></div>
+        <div class="body">
+          <span class="kind">Division 03 · Source &amp; Supply<span class="vflag">Name TBC</span></span>
+          <h3>Supply</h3>
+          <p>Buy the lighting package outright. We source it at distributor pricing, you install it with your own crew — or we install it. Your call, either way.</p>
+          <ul><li>Lighting packages</li><li>Fixtures</li><li>Doors</li><li>Windows</li><li>Materials</li><li>Spec &amp; substitute</li></ul>
+          <span class="go">Request a package →</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CASE STUDY / SPLIT STATE ══ -->
+<section class="sec" id="projects" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Featured project · Drag the seam</p>
+      <h2 class="disp">As found → Finished</h2>
+      <p>The same transformation mechanic runs across the whole site: empty to built, day to night, before to after. It needs only stills, which means it works with the library you already have.</p>
+    </div>
+
+    <div class="anno rv" data-anno="Split State — drawn here as geometry. In production these are two real photographs of the same project.">
+      <div class="split" id="split">
+        <!-- BEFORE -->
+        <svg viewBox="0 0 1200 620" role="img" aria-label="Storefront as found: dark, empty, unlit">
+          <rect width="1200" height="620" fill="#0A0C0E"/>
+          <rect y="470" width="1200" height="150" fill="#111417"/>
+          <rect x="180" y="140" width="840" height="330" fill="#15181C"/>
+          <rect x="180" y="140" width="840" height="46" fill="#191D21"/>
+          <rect x="225" y="215" width="230" height="185" fill="#0E1114" stroke="#22262B" stroke-width="2"/>
+          <rect x="745" y="215" width="230" height="185" fill="#0E1114" stroke="#22262B" stroke-width="2"/>
+          <rect x="540" y="245" width="120" height="225" fill="#0C0F12" stroke="#22262B" stroke-width="2"/>
+          <rect x="500" y="150" width="200" height="26" fill="#1C2126"/>
+          <g fill="#1A1E22">
+            <rect x="250" y="500" width="90" height="12"/><rect x="380" y="500" width="60" height="12"/>
+            <rect x="820" y="500" width="110" height="12"/>
+          </g>
+          <text x="40" y="580" font-family="IBM Plex Mono,monospace" font-size="15" fill="#3A424B" letter-spacing="3">VACANT · UNLIT · NO SERVICE</text>
+        </svg>
+
+        <!-- AFTER -->
+        <div class="after" id="after">
+          <svg viewBox="0 0 1200 620" role="img" aria-label="Same storefront finished: lit sign, warm interior, facade uplighting">
+            <defs>
+              <radialGradient id="up1" cx="50%" cy="100%" r="70%">
+                <stop offset="0%" stop-color="#F2C879" stop-opacity=".62"/>
+                <stop offset="100%" stop-color="#F2C879" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="win" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#FFE3AC"/><stop offset="100%" stop-color="#E0A44A"/>
+              </linearGradient>
+              <radialGradient id="sky" cx="50%" cy="90%" r="80%">
+                <stop offset="0%" stop-color="#1A1D22"/><stop offset="100%" stop-color="#0A0C0E"/>
+              </radialGradient>
+            </defs>
+            <rect width="1200" height="620" fill="url(#sky)"/>
+            <rect y="470" width="1200" height="150" fill="#14171A"/>
+            <rect x="180" y="140" width="840" height="330" fill="#20252A"/>
+            <rect x="180" y="140" width="840" height="46" fill="#272D33"/>
+            <!-- facade uplight pools -->
+            <ellipse cx="230" cy="470" rx="150" ry="200" fill="url(#up1)"/>
+            <ellipse cx="600" cy="470" rx="170" ry="220" fill="url(#up1)"/>
+            <ellipse cx="970" cy="470" rx="150" ry="200" fill="url(#up1)"/>
+            <!-- windows lit -->
+            <rect x="225" y="215" width="230" height="185" fill="url(#win)" opacity=".92"/>
+            <rect x="745" y="215" width="230" height="185" fill="url(#win)" opacity=".92"/>
+            <rect x="540" y="245" width="120" height="225" fill="#FFEFD0" opacity=".85"/>
+            <!-- sign band -->
+            <rect x="500" y="150" width="200" height="26" fill="#F2C879"/>
+            <rect x="500" y="150" width="200" height="26" fill="none" stroke="#FFF3DA" stroke-width="1"/>
+            <!-- path lights -->
+            <g>
+              <circle cx="295" cy="506" r="5" fill="#FFE3AC"/><ellipse cx="295" cy="512" rx="52" ry="20" fill="#F2C879" opacity=".22"/>
+              <circle cx="410" cy="506" r="5" fill="#FFE3AC"/><ellipse cx="410" cy="512" rx="52" ry="20" fill="#F2C879" opacity=".22"/>
+              <circle cx="875" cy="506" r="5" fill="#FFE3AC"/><ellipse cx="875" cy="512" rx="52" ry="20" fill="#F2C879" opacity=".22"/>
+            </g>
+            <rect x="180" y="186" width="840" height="2" fill="#F2C879" opacity=".5"/>
+            <text x="40" y="580" font-family="IBM Plex Mono,monospace" font-size="15" fill="#F2C879" letter-spacing="3">BUILT · WIRED · LIT · MAINTAINED</text>
+          </svg>
+        </div>
+
+        <span class="split-lbl l">As found</span>
+        <span class="split-lbl r">Finished</span>
+        <div class="seam" id="seam" role="slider" tabindex="0" aria-label="Reveal finished state" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"></div>
+      </div>
+
+      <div class="case-meta">
+        <div><b>Project type</b><span>Retail tenant buildout<span class="vflag">Placeholder</span></span></div>
+        <div><b>Scope</b><span>Build · Electrical · Lighting</span></div>
+        <div><b>Divisions</b><span>All three</span></div>
+        <div><b>Location</b><span>Miami-Dade</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FACADE PORTFOLIO ══ -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Portfolio · The Facade</p>
+      <h2 class="disp">Every window is a project</h2>
+      <p>Hover, or tap on mobile. Each tile lights to reveal the work behind it — a portfolio index that is also a lighting metaphor, built entirely from stills.</p>
+    </div>
+    <div class="facade rv anno" data-anno="Each tile = one real project photograph, mined from the 802 Instagram posts.">
+      <a class="win" href="#"><div class="glow"></div><span class="ph">Photo needed</span><div class="cap"><span class="cat">Commercial Lighting</span><h4>Parking Structure Retrofit</h4></div></a>
+      <a class="win" href="#"><div class="glow"></div><span class="ph">Photo needed</span><div class="cap"><span class="cat">Landscape</span><h4>Estate Uplighting</h4></div></a>
+      <a class="win" href="#"><div class="glow"></div><span class="ph">Photo needed</span><div class="cap"><span class="cat">Buildout</span><h4>Medical Office Fit-Out</h4></div></a>
+      <a class="win" href="#"><div class="glow"></div><span class="ph">Photo needed</span><div class="cap"><span class="cat">Electrical</span><h4>Panel Upgrade · Doral</h4></div></a>
+      <a class="win" href="#"><div class="glow"></div><span class="ph">Photo needed</span><div class="cap"><span class="cat">Multifamily</span><h4>Common Area Lighting</h4></div></a>
+      <a class="win" href="#"><div class="glow"></div><span class="ph">Photo needed</span><div class="cap"><span class="cat">Buildout</span><h4>Restaurant Buildout</h4></div></a>
+      <a class="win" href="#"><div class="glow"></div><span class="ph">Photo needed</span><div class="cap"><span class="cat">Permanent Lighting</span><h4>Roofline System</h4></div></a>
+      <a class="win" href="#"><div class="glow"></div><span class="ph">Photo needed</span><div class="cap"><span class="cat">Coastal</span><h4>Turtle-Safe Installation</h4></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROPERTY MANAGERS ══ -->
+<section class="sec" id="pm" style="padding-top:0">
+  <div class="wrap">
+    <div class="pm rv">
+      <div class="pm-l">
+        <p class="eyebrow">For property &amp; association managers</p>
+        <h2 class="disp">Already cleared<br>to be on site</h2>
+        <p style="margin-top:16px">You know the problem. The lighting vendor and the electrician and the GC are three companies, three insurance certificates, three schedules, and three chances for someone to fail a compliance check the week the board meets.</p>
+        <p>We are one vendor covering all three, with the paperwork already filed and the crews already vetted. Common-area and parking lot lighting, electrical service and panels, unit turns, landscape lighting, and building repairs — on one COI and one invoice.</p>
+        <div class="hero-ctas" style="margin-top:26px">
+          <a class="btn btn-p" href="#close">Property manager services</a>
+          <a class="btn btn-s" href="#close">Download vendor packet</a>
+        </div>
+      </div>
+      <div class="pm-r">
+        <h4>Vendor packet — ready now</h4>
+        <div class="docrow"><span>Certificate of insurance</span><em>PDF</em></div>
+        <div class="docrow"><span>W-9</span><em>PDF</em></div>
+        <div class="docrow"><span>Electrical contractor licence</span><em class="vflag" style="margin:0">Verify 01</em></div>
+        <div class="docrow"><span>General contractor licence</span><em class="vflag" style="margin:0">Verify 02</em></div>
+        <div class="docrow"><span>Compliance network registrations</span><em class="vflag" style="margin:0">Verify 09</em></div>
+        <div class="docrow"><span>References — multifamily &amp; condo</span><em>PDF</em></div>
+        <p style="margin:24px 0 0;font-size:13px;color:var(--bone-mute);line-height:1.55">This page exists because it removes the exact friction that stalls property-management deals. Almost no competitor builds it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS ══ -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Customers</p>
+      <h2 class="disp">When customers<br>become friends</h2>
+      <p>The owner's own framing, and the right editorial angle. Video first where it exists — these are long relationships, not transactions.</p>
+    </div>
+    <div class="quotes rv anno" data-anno="Real testimonials required — with written permission. Text below is structural placeholder, not a real quote.">
+      <div class="q">
+        <div class="vid"><span>Video testimonial<br>02:14</span></div>
+        <blockquote>Placeholder — a multifamily property manager on consolidating three vendors into one.</blockquote>
+        <cite>Property manager · Miami-Dade <span class="vflag">Verify 13</span></cite>
+      </div>
+      <div class="q">
+        <div class="vid"><span>Video testimonial<br>01:38</span></div>
+        <blockquote>Placeholder — a restaurant owner on opening on schedule after a full buildout.</blockquote>
+        <cite>Restaurant owner · Doral <span class="vflag">Verify 13</span></cite>
+      </div>
+      <div class="q">
+        <div class="vid"><span>Video testimonial<br>03:02</span></div>
+        <blockquote>Placeholder — a homeowner on landscape lighting and the maintenance that kept it working.</blockquote>
+        <cite>Homeowner · Coral Gables <span class="vflag">Verify 13</span></cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MAINTENANCE ══ -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="maint rv">
+      <div class="maint-top">
+        <div>
+          <p class="eyebrow">Landscape lighting care · Launching</p>
+          <h2 class="disp">Lights fail slowly,<br>then all at once</h2>
+        </div>
+        <a class="btn btn-p" href="#close">Join the program waitlist</a>
+      </div>
+      <p class="sub" style="margin-bottom:30px;max-width:60ch">Fixtures are built to last. Landscapers, root growth, shifting soil and three-year lamp life are what actually kill a system. Every quarter we come out and put it back to the day it was installed.</p>
+      <div class="cycle">
+        <div><b>Q1</b><p>Clean lenses, inspect every fixture, check transformer load and timer programming.</p></div>
+        <div><b>Q2</b><p>Clear foliage growth, reposition fixtures that have shifted or been buried.</p></div>
+        <div><b>Q3</b><p>Re-bury wiring exposed by settling ground, test connections, replace failing lamps.</p></div>
+        <div><b>Q4</b><p>Full system troubleshoot and a written condition report before the season.</p></div>
+      </div>
+      <p style="margin:24px 0 0;font-size:13px;color:var(--bone-mute)">Program launching — no pricing or terms published until confirmed.<span class="vflag">Verify 10</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ LEARN ══ -->
+<section class="sec" id="learn" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Learn</p>
+      <h2 class="disp">Shot in the field,<br>not in a studio</h2>
+      <p>Polish is not what makes these credible. These are the pieces that answer what buyers actually search for — which is also what makes them the SEO engine.</p>
+    </div>
+    <div class="learn rv anno" data-anno="Content hub — owner-to-camera, filmed on a phone on site.">
+      <a class="lc" href="#"><span class="k">Video · Property managers</span><h4>What to require from a lighting vendor</h4><p>The five questions that separate a vendor who shows up from one who does not.</p></a>
+      <a class="lc" href="#"><span class="k">Video · Commercial</span><h4>LED retrofit payback, honestly</h4><p>What the energy survey actually measures, and when the maths does not work.</p></a>
+      <a class="lc" href="#"><span class="k">Video · Residential</span><h4>Why landscape lighting dies at year two</h4><p>It is almost never the fixtures. Here is what it actually is.</p></a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CLOSE ══ -->
+<section class="close sec" id="close">
+  <div class="wrap" style="text-align:center">
+    <p class="eyebrow rv">Start here</p>
+    <h2 class="disp rv" style="margin-top:16px">Tell us what<br>you're building</h2>
+    <p class="sub rv" style="text-align:center">Five ways in, each routed to the person who handles it. Commercial buildout · Property management · Lighting package · Free energy survey · Service &amp; repair.</p>
+    <div class="hero-ctas rv" style="justify-content:center;margin-top:30px">
+      <a class="btn btn-p" href="#">Start a project</a>
+      <a class="btn btn-s" href="#">Request a lighting package</a>
+    </div>
+    <div class="contact rv anno" data-anno="One routed intake replaces the current single generic form.">
+      <div class="ci"><b>Showroom</b><p>12130 SW 114th Pl<br>Miami, FL 33176<br>Mon–Fri 8:00–4:00<span class="vflag">Verify</span></p></div>
+      <div class="ci"><b>Talk to us</b><p><a href="tel:+13059698769">(305) 969-8769</a><span class="vflag">Verify 08 — two numbers live</span><br><a href="mailto:info@elighting.org">info@elighting.org</a></p></div>
+      <div class="ci"><b>Service area</b><p>Headquartered in Miami.<br>Miami-Dade · Broward · Palm Beach · the Keys<br>Statewide for commercial &amp; supply<span class="vflag">Verify 07</span></p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <strong style="color:var(--bone)">Worldwide Distributors</strong><br>
+      E-Lighting · E-Built · Supply<br>
+      EC #____ · CGC #____ <span class="vflag">Required in FL advertising</span>
+    </div>
+    <div style="max-width:46ch">
+      Prototype — homepage direction only. No project photography, stock, or AI imagery is used anywhere on this page; all light is drawn in canvas and SVG. Every image slot is a labelled placeholder.
+    </div>
+  </div>
+</footer>
+
+<a class="callbar" href="tel:+13059698769">Call (305) 969-8769</a>
+
+<div class="annobar">
+  <button class="annobtn" id="annoToggle" aria-pressed="true">Annotations on</button>
+</div>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── annotation toggle ── */
+  var body = document.body, btn = document.getElementById('annoToggle');
+  body.classList.add('show-anno');
+  btn.addEventListener('click', function(){
+    var on = body.classList.toggle('show-anno');
+    btn.textContent = on ? 'Annotations on' : 'Annotations off';
+    btn.classList.toggle('off', !on);
+    btn.setAttribute('aria-pressed', String(on));
+  });
+
+  /* ── sticky header ── */
+  var hdr = document.getElementById('hdr');
+  var onScroll = function(){ hdr.classList.toggle('stuck', window.scrollY > 40); };
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+  /* ── reveal ── */
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); }
+    });
+  }, {rootMargin:'0px 0px -8% 0px', threshold:.08});
+  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+
+  /* ── spine stage ignition ── */
+  var sio = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var stages = e.target.querySelectorAll('.stage');
+      stages.forEach(function(s,i){
+        setTimeout(function(){ s.classList.add('on'); }, reduce ? 0 : i*140);
+      });
+      sio.unobserve(e.target);
+    });
+  }, {threshold:.25});
+  var spine = document.getElementById('spine');
+  if(spine) sio.observe(spine);
+
+  /* ── split state ── */
+  var split = document.getElementById('split'),
+      after = document.getElementById('after'),
+      seam  = document.getElementById('seam');
+  var pos = 50;
+  function setPos(p){
+    pos = Math.max(0, Math.min(100, p));
+    after.style.clipPath = 'inset(0 ' + (100 - pos) + '% 0 0)';
+    seam.style.left = pos + '%';
+    seam.setAttribute('aria-valuenow', Math.round(pos));
+  }
+  setPos(50);
+  function fromEvent(ev){
+    var r = split.getBoundingClientRect();
+    var x = (ev.touches ? ev.touches[0].clientX : ev.clientX) - r.left;
+    setPos(x / r.width * 100);
+  }
+  var dragging = false;
+  function down(ev){ dragging = true; fromEvent(ev); }
+  function move(ev){ if(!dragging) return; fromEvent(ev); if(ev.cancelable) ev.preventDefault(); }
+  function up(){ dragging = false; }
+  split.addEventListener('mousedown', down);
+  window.addEventListener('mousemove', move);
+  window.addEventListener('mouseup', up);
+  split.addEventListener('touchstart', down, {passive:true});
+  window.addEventListener('touchmove', move, {passive:false});
+  window.addEventListener('touchend', up);
+  seam.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowLeft'){ setPos(pos - 4); e.preventDefault(); }
+    if(e.key === 'ArrowRight'){ setPos(pos + 4); e.preventDefault(); }
+  });
+
+  /* ── hero: drawn light ── */
+  var cv = document.getElementById('heroCanvas');
+  if(!cv) return;
+  var ctx = cv.getContext('2d'), W = 0, H = 0, dpr = 1;
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    build();
+  }
+
+  var lamps = [];
+  function build(){
+    lamps = [];
+    var ground = H * 0.80;
+    // facade uplight pools along the base
+    var n = W < 700 ? 5 : 9;
+    for(var i=0;i<n;i++){
+      var t = (i + 0.5) / n;
+      lamps.push({
+        x: t * W,
+        y: ground,
+        r: (W < 700 ? 150 : 230) * (0.72 + ((i*37)%10)/22),
+        delay: 260 + i * 210 + ((i*53)%7)*40,
+        warm: 1,
+        lit: 0
+      });
+    }
+    // a few high fixtures — parking-lot / architectural
+    var highs = W < 700 ? 2 : 4;
+    for(var j=0;j<highs;j++){
+      lamps.push({
+        x: (0.16 + j * (0.68/Math.max(highs-1,1))) * W,
+        y: H * (0.30 + ((j*29)%5)/28),
+        r: (W < 700 ? 110 : 170),
+        delay: 1500 + j * 320,
+        warm: 0.86,
+        lit: 0
+      });
+    }
+  }
+
+  var start = null;
+  function frame(ts){
+    if(start === null) start = ts;
+    var t = ts - start;
+
+    ctx.clearRect(0,0,W,H);
+
+    // ground plane
+    var g = ctx.createLinearGradient(0, H*0.72, 0, H);
+    g.addColorStop(0, '#0C0E11');
+    g.addColorStop(1, '#08090B');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, H*0.72, W, H*0.28);
+
+    // horizon
+    ctx.fillStyle = 'rgba(42,47,54,.55)';
+    ctx.fillRect(0, H*0.80, W, 1);
+
+    ctx.globalCompositeOperation = 'lighter';
+    for(var i=0;i<lamps.length;i++){
+      var L = lamps[i];
+      var target = t > L.delay ? 1 : 0;
+      // warm-up curve: fast rise, slight settle
+      L.lit += (target - L.lit) * (reduce ? 1 : 0.045);
+      if(L.lit < 0.002) continue;
+
+      var flicker = reduce ? 1 : (1 + Math.sin((t + i*900) / 1400) * 0.035);
+      var a = L.lit * flicker;
+
+      var rg = ctx.createRadialGradient(L.x, L.y, 0, L.x, L.y, L.r);
+      rg.addColorStop(0,    'rgba(255,226,172,' + (0.30 * a * L.warm) + ')');
+      rg.addColorStop(0.35, 'rgba(242,200,121,' + (0.13 * a * L.warm) + ')');
+      rg.addColorStop(1,    'rgba(185,116,26,0)');
+      ctx.fillStyle = rg;
+      ctx.beginPath();
+      ctx.arc(L.x, L.y, L.r, 0, Math.PI*2);
+      ctx.fill();
+
+      // the source itself
+      ctx.fillStyle = 'rgba(255,238,206,' + (0.85 * a) + ')';
+      ctx.beginPath();
+      ctx.arc(L.x, L.y, 2.1, 0, Math.PI*2);
+      ctx.fill();
+    }
+    ctx.globalCompositeOperation = 'source-over';
+
+    requestAnimationFrame(frame);
+  }
+
+  resize();
+  window.addEventListener('resize', function(){ start = null; resize(); });
+  requestAnimationFrame(frame);
+})();
+</script>
