@@ -153,7 +153,7 @@ footer{margin-top:40px;padding:20px 0 0;border-top:1px solid var(--rule);font-fa
   <p class="eyebrow">Worldwide Distributors · New website</p>
   <h1>What we still<br>need from you</h1>
   <p class="stand">The site is built. These are the facts we can't invent — licence numbers, the real service area, which phone number is the right one. <b>Nothing here is a design question.</b> It's the things that have to be true before anything goes live.</p>
-  <p class="stand"><b>Part 1 takes about ten minutes</b> and unblocks the launch. Part 2 can wait until the weekend. Your answers save automatically as you type — close it and come back.</p>
+  <p class="stand"><b>Part 1 takes about ten minutes</b> and unblocks the launch. Part 2 is about pictures — and there you have choices, including having us generate what you don't have. Your answers save automatically as you type; close it and come back.</p>
 </header>
 
 <!-- ══════ PART 1 ══════ -->
@@ -264,10 +264,23 @@ footer{margin-top:40px;padding:20px 0 0;border-top:1px solid var(--rule);font-fa
 <!-- ══════ PART 2 ══════ -->
 <section class="part">
   <div class="part-h">
-    <h2>When you get a minute</h2>
+    <h2>Pictures &amp; proof</h2>
     <span class="est">≈ 15 min</span>
   </div>
-  <p class="part-note">None of this stops the site going live. All of it makes it better, and the first two are worth more than the rest combined.</p>
+  <p class="part-note">None of this stops the site going live. Where you don't have something, there's an option to have us make it instead — just know what each choice costs you, because we've said so plainly under every one.</p>
+
+  <div class="q" data-q>
+    <div class="q-top"><span class="ref">—</span><span class="chip c-ok">Answered</span></div>
+    <label class="ask">First, the big one: how do you feel about AI-generated images?</label>
+    <p class="why">We can generate almost anything — buildings, interiors, night lighting, even short films. <b>But a generated image of a job is not a photograph of that job</b>, and we label every one as a rendering. Real work always sells harder. Your answer sets the rule for everything below.</p>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="qai" value="Real photos only, no AI anywhere" data-k="qai"><span>Real photos only</span></label>
+      <label class="opt"><input type="radio" name="qai" value="Real photos for projects; AI for concepts and atmosphere, labelled" data-k="qai"><span>Real for projects, AI for concepts</span></label>
+      <label class="opt"><input type="radio" name="qai" value="AI is fine anywhere as long as it is labelled" data-k="qai"><span>AI anywhere, if labelled</span></label>
+      <label class="opt"><input type="radio" name="qai" value="Not sure, walk me through it" data-k="qai"><span>Not sure</span></label>
+    </div>
+    <input type="text" id="qaib" data-k="qaib" placeholder="Anything you would never want generated?">
+  </div>
 
   <div class="q" data-q>
     <div class="q-top"><span class="ref">V09</span><span class="chip c-ok">Answered</span></div>
@@ -278,23 +291,54 @@ footer{margin-top:40px;padding:20px 0 0;border-top:1px solid var(--rule);font-fa
 
   <div class="q" data-q>
     <div class="q-top"><span class="ref">V13 · V14</span><span class="chip c-ok">Answered</span></div>
-    <label class="ask" for="q12">Your ten best jobs — and can we show them?</label>
-    <p class="why">Posting a property to Instagram isn't the same as permission to feature it in a portfolio. Medical offices and private homes especially. Give us the list and flag any that are off-limits.</p>
+    <label class="ask">Your ten best jobs — and can we show them?</label>
+    <p class="why">Posting to Instagram isn't the same as permission to feature a property in a portfolio — medical offices and private homes especially. If permission is the problem, there's a way around it.</p>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q12r" value="We have photos and permission" data-k="q12r"><span>Photos + permission</span></label>
+      <label class="opt"><input type="radio" name="q12r" value="We have photos but need to ask the clients first" data-k="q12r"><span>Need to ask first</span></label>
+      <label class="opt"><input type="radio" name="q12r" value="Show the work but keep clients unnamed" data-k="q12r"><span>Show work, no names</span></label>
+      <label class="opt"><input type="radio" name="q12r" value="Photos are poor, generate representative examples instead" data-k="q12r"><span>Generate examples instead</span></label>
+    </div>
+    <p class="why" style="margin:-2px 0 10px">Pick the last one and those become labelled renderings of <b>typical</b> work rather than case studies. Visitors can tell, and commercial buyers ask.</p>
     <textarea id="q12" data-k="q12" placeholder="Project, type of work, roughly when, and whether we can name the client"></textarea>
   </div>
 
   <div class="q" data-q>
     <div class="q-top"><span class="ref">V13</span><span class="chip c-ok">Answered</span></div>
-    <label class="ask" for="q13">Which customers would go on camera?</label>
-    <p class="why">You mentioned a few who'd be happy to — the ones who became friends. Two or three short videos outperform any amount of written copy on a contractor site.</p>
+    <label class="ask">Which customers would go on camera?</label>
+    <p class="why">You mentioned a few who'd be happy to — the ones who became friends. Two or three short videos outperform any amount of written copy. <b>This is the one thing we will not generate</b>: invented testimonials are illegal, so this section only exists if the people are real.</p>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q13r" value="Yes, some will do video" data-k="q13r"><span>Some will do video</span></label>
+      <label class="opt"><input type="radio" name="q13r" value="Written quotes only" data-k="q13r"><span>Written quotes only</span></label>
+      <label class="opt"><input type="radio" name="q13r" value="Nothing yet, leave the section out" data-k="q13r"><span>Leave it out for now</span></label>
+    </div>
     <textarea id="q13" data-k="q13" placeholder="Names, what they'd talk about, best way to reach them"></textarea>
   </div>
 
   <div class="q" data-q>
     <div class="q-top"><span class="ref">—</span><span class="chip c-ok">Answered</span></div>
-    <label class="ask" for="q14">Which five or six finished jobs can we photograph twice?</label>
-    <p class="why">Same frame at <b>2pm and again at 9pm</b>, tripod in the same spot. That's the whole shoot. It's what makes the site light up as the day goes — and it costs one afternoon and one evening.</p>
-    <textarea id="q14" data-k="q14" placeholder="Properties, and who to call for access after dark"></textarea>
+    <label class="ask">The day/night pairs — how do you want to get them?</label>
+    <p class="why">The site re-lights as the day goes, so it needs the same frame twice. Going back at night is the part nobody actually does — so here's the shortcut: <b>shoot the daylight frame only and we'll render the night from it.</b> That's your real property with proposed lighting on it, labelled as a design — which is exactly how you'd sell the job anyway.</p>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q14r" value="We will shoot both day and night ourselves" data-k="q14r"><span>We'll shoot both</span></label>
+      <label class="opt"><input type="radio" name="q14r" value="We shoot daytime only, you render the night from it" data-k="q14r"><span>We shoot day, you render night</span></label>
+      <label class="opt"><input type="radio" name="q14r" value="Use existing Instagram photos as the source" data-k="q14r"><span>Use our Instagram photos</span></label>
+      <label class="opt"><input type="radio" name="q14r" value="Generate both for now, replace with real work later" data-k="q14r"><span>Generate both for now</span></label>
+    </div>
+    <textarea id="q14" data-k="q14" placeholder="Which properties, and who to call for access"></textarea>
+  </div>
+
+  <div class="q" data-q>
+    <div class="q-top"><span class="ref">—</span><span class="chip c-ok">Answered</span></div>
+    <label class="ask">Your crew, your trucks, your showroom</label>
+    <p class="why">Photographs of actual people doing the work are the strongest trust signal a contractor site has — and the thing generated images are worst at. A phone photo of your guys on a real job beats anything we could make.</p>
+    <div class="opts">
+      <label class="opt"><input type="radio" name="q20" value="We have photos to send" data-k="q20"><span>We have photos</span></label>
+      <label class="opt"><input type="radio" name="q20" value="We will take some this week" data-k="q20"><span>We'll grab some</span></label>
+      <label class="opt"><input type="radio" name="q20" value="Use generic stand-ins for now" data-k="q20"><span>Stand-ins for now</span></label>
+      <label class="opt"><input type="radio" name="q20" value="We would rather not show faces" data-k="q20"><span>No faces, please</span></label>
+    </div>
+    <input type="text" id="q20b" data-k="q20b" placeholder="Showroom, bucket truck, vans, crew on site — what exists?">
   </div>
 
   <div class="q" data-q>
@@ -338,7 +382,7 @@ footer{margin-top:40px;padding:20px 0 0;border-top:1px solid var(--rule);font-fa
 
   <div class="note">
     <span class="t">One thing to know</span>
-    <p>Every image on the prototypes right now is an <b>AI-generated conceptual rendering</b> — the buildings, the interiors, the parking deck, the pool. None of them are your jobs. They're there to show how the site behaves before we shoot the real thing, and they're labelled as renderings throughout. <b>They all get replaced with your actual work.</b></p>
+    <p>Every image on the prototypes right now is an <b>AI-generated conceptual rendering</b> — the buildings, the interiors, the parking deck, the pool. None of them are your jobs. They exist to show how the site behaves before anyone picks up a camera, and they're labelled as renderings throughout.<br><br>How many get replaced with real work is the choice you made above. <b>Our recommendation: real photographs for anything you call a project, generated imagery only for concepts and atmosphere.</b> Someone deciding whether to hand you a buildout can tell the difference — and the whole argument of this site is that you actually did the work.</p>
   </div>
 </section>
 
@@ -354,7 +398,7 @@ footer{margin-top:40px;padding:20px 0 0;border-top:1px solid var(--rule);font-fa
 <div class="bar">
   <div class="bar-in">
     <div class="prog">
-      <span class="n" id="pn">0 of 19 answered</span>
+      <span class="n" id="pn">0 of 21 answered</span>
       <div class="track"><div class="fill" id="pf"></div></div>
     </div>
     <button class="btn" id="copy" type="button">Copy answers</button>
