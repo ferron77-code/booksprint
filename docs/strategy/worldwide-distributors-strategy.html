@@ -1,0 +1,1217 @@
+<title>Worldwide Distributors Repositioning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    --paper:        #F8F6F2;
+    --surface:      #FFFFFF;
+    --surface-sunk: #F1EEE8;
+    --ink:          #14161A;
+    --ink-2:        #3E3A35;
+    --ink-mute:     #6B6560;
+    --rule:         #E2DDD5;
+    --rule-strong:  #C9C2B7;
+    --tungsten:     #B9741A;
+    --tungsten-bg:  #F6EADA;
+    --indigo:       #25406B;
+    --indigo-bg:    #E6EAF1;
+    --clay:         #A6362A;
+    --clay-bg:      #F7E7E4;
+    --green:        #3F6B43;
+    --green-bg:     #E7EFE7;
+    --shadow:       0 1px 2px rgba(20,22,26,.05), 0 8px 24px -16px rgba(20,22,26,.18);
+
+    --k-scale: linear-gradient(90deg,#F0A93E 0%,#F5C77A 22%,#F7E3C0 42%,#F2F1EC 58%,#D8E2EE 76%,#A9C3E2 100%);
+
+    --f-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --f-body:    "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --f-mono:    "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:        #101215;
+      --surface:      #171A1E;
+      --surface-sunk: #1C2025;
+      --ink:          #EDEAE4;
+      --ink-2:        #CFC8BE;
+      --ink-mute:     #948C82;
+      --rule:         #2A2E34;
+      --rule-strong:  #3C424A;
+      --tungsten:     #E3A34A;
+      --tungsten-bg:  #2A2113;
+      --indigo:       #8FAEDC;
+      --indigo-bg:    #182131;
+      --clay:         #E08874;
+      --clay-bg:      #2E1B17;
+      --green:        #86B98B;
+      --green-bg:     #16231A;
+      --shadow:       0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:        #101215;
+    --surface:      #171A1E;
+    --surface-sunk: #1C2025;
+    --ink:          #EDEAE4;
+    --ink-2:        #CFC8BE;
+    --ink-mute:     #948C82;
+    --rule:         #2A2E34;
+    --rule-strong:  #3C424A;
+    --tungsten:     #E3A34A;
+    --tungsten-bg:  #2A2113;
+    --indigo:       #8FAEDC;
+    --indigo-bg:    #182131;
+    --clay:         #E08874;
+    --clay-bg:      #2E1B17;
+    --green:        #86B98B;
+    --green-bg:     #16231A;
+    --shadow:       0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .kbar { height: 3px; background: var(--k-scale); }
+
+  .shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 28px 96px;
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead { padding: 56px 0 36px; border-bottom: 1px solid var(--rule-strong); }
+  .eyebrow {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--tungsten);
+    margin: 0 0 20px;
+  }
+  h1 {
+    font-family: var(--f-display);
+    font-variation-settings: "wdth" 112, "wght" 780;
+    font-size: clamp(34px, 6.2vw, 68px);
+    line-height: .98;
+    letter-spacing: -.018em;
+    text-transform: uppercase;
+    margin: 0 0 22px;
+    text-wrap: balance;
+  }
+  .standfirst {
+    font-size: clamp(16px, 1.9vw, 19px);
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 62ch;
+    margin: 0 0 32px;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 40px;
+    font-family: var(--f-mono);
+    font-size: 12px;
+    color: var(--ink-mute);
+  }
+  .meta div { display: flex; flex-direction: column; gap: 3px; }
+  .meta b {
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-size: 10px;
+    color: var(--ink-mute);
+    opacity: .75;
+  }
+  .meta span { color: var(--ink); font-size: 13px; }
+
+  /* ---------- layout ---------- */
+  .cols {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 56px;
+    align-items: start;
+  }
+  @media (max-width: 900px) { .cols { grid-template-columns: 1fr; gap: 0; } }
+
+  .index { position: sticky; top: 28px; padding-top: 44px; }
+  @media (max-width: 900px) {
+    .index {
+      position: static;
+      padding: 32px 0 8px;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 8px;
+    }
+  }
+  .index h2 {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: 0 0 14px;
+    font-weight: 500;
+  }
+  .index ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; }
+  @media (max-width: 900px) {
+    .index ol { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 2px 20px; }
+  }
+  .index a {
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    gap: 8px;
+    color: var(--ink-2);
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 1.35;
+    padding: 4px 0;
+    border-bottom: 1px solid transparent;
+  }
+  .index a i {
+    font-family: var(--f-mono);
+    font-style: normal;
+    font-size: 11px;
+    color: var(--ink-mute);
+    opacity: .8;
+  }
+  .index a:hover { color: var(--tungsten); }
+  .index a:hover i { color: var(--tungsten); opacity: 1; }
+  .index a:focus-visible { outline: 2px solid var(--tungsten); outline-offset: 3px; }
+
+  .body { padding-top: 12px; min-width: 0; }
+
+  /* ---------- sections ---------- */
+  section { padding: 44px 0 8px; scroll-margin-top: 20px; }
+  .sechead {
+    display: grid;
+    grid-template-columns: 46px 1fr;
+    gap: 14px;
+    align-items: baseline;
+    padding-bottom: 14px;
+    margin-bottom: 26px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .sechead .num {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--tungsten);
+    letter-spacing: .04em;
+  }
+  .sechead h2 {
+    font-family: var(--f-display);
+    font-variation-settings: "wdth" 106, "wght" 700;
+    font-size: clamp(21px, 2.9vw, 29px);
+    line-height: 1.08;
+    letter-spacing: -.01em;
+    text-transform: uppercase;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-family: var(--f-display);
+    font-variation-settings: "wdth" 100, "wght" 680;
+    font-size: 16px;
+    letter-spacing: .01em;
+    text-transform: uppercase;
+    margin: 34px 0 10px;
+    color: var(--ink);
+  }
+  h4 {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: 24px 0 8px;
+  }
+
+  p { margin: 0 0 15px; max-width: 68ch; }
+  .body ul, .body ol { max-width: 68ch; margin: 0 0 15px; padding-left: 20px; }
+  .body li { margin-bottom: 7px; }
+  .body li::marker { color: var(--ink-mute); }
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--ink-2); }
+
+  a.ref { color: var(--indigo); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+  a.ref:hover { color: var(--tungsten); }
+
+  .lede {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    border-left: 2px solid var(--tungsten);
+    padding-left: 18px;
+    margin: 0 0 26px;
+    max-width: 64ch;
+  }
+
+  /* ---------- quote ---------- */
+  blockquote {
+    margin: 22px 0;
+    padding: 18px 22px;
+    background: var(--surface-sunk);
+    border-left: 3px solid var(--rule-strong);
+    max-width: 66ch;
+  }
+  blockquote p { margin: 0; font-size: 15.5px; line-height: 1.55; color: var(--ink-2); }
+  blockquote cite {
+    display: block;
+    margin-top: 10px;
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    font-style: normal;
+  }
+
+  /* ---------- callouts ---------- */
+  .note {
+    border: 1px solid var(--rule-strong);
+    border-left-width: 3px;
+    padding: 16px 18px;
+    margin: 22px 0;
+    background: var(--surface);
+    max-width: 68ch;
+    box-shadow: var(--shadow);
+  }
+  .note p:last-child { margin-bottom: 0; }
+  .note .tag {
+    display: inline-block;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .note.verify { border-left-color: var(--clay); background: var(--clay-bg); }
+  .note.verify .tag { color: var(--clay); }
+  .note.find { border-left-color: var(--tungsten); background: var(--tungsten-bg); }
+  .note.find .tag { color: var(--tungsten); }
+  .note.tech { border-left-color: var(--indigo); background: var(--indigo-bg); }
+  .note.tech .tag { color: var(--indigo); }
+
+  /* ---------- chips ---------- */
+  .chip {
+    display: inline-block;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border: 1px solid currentColor;
+    white-space: nowrap;
+    line-height: 1.5;
+  }
+  .c-keep    { color: var(--green); background: var(--green-bg); }
+  .c-improve { color: var(--indigo); background: var(--indigo-bg); }
+  .c-replace { color: var(--tungsten); background: var(--tungsten-bg); }
+  .c-remove  { color: var(--ink-mute); background: var(--surface-sunk); }
+  .c-verify  { color: var(--clay); background: var(--clay-bg); }
+
+  /* ---------- tables ---------- */
+  .tw { overflow-x: auto; margin: 22px 0; border: 1px solid var(--rule); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 14px; }
+  th {
+    text-align: left;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--rule-strong);
+    background: var(--surface-sunk);
+    white-space: nowrap;
+  }
+  td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    line-height: 1.5;
+    font-variant-numeric: tabular-nums;
+  }
+  tr:last-child td { border-bottom: 0; }
+  td.mono { font-family: var(--f-mono); font-size: 12.5px; white-space: nowrap; }
+
+  /* ---------- cards ---------- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 14px;
+    margin: 22px 0;
+  }
+  .card {
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    padding: 0 0 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+  }
+  .card .k { height: 3px; background: var(--k-scale); }
+  .card .inner { padding: 14px 16px 0; }
+  .card h5 {
+    font-family: var(--f-display);
+    font-variation-settings: "wdth" 100, "wght" 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    margin: 0 0 4px;
+  }
+  .card .role {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--tungsten);
+    margin: 0 0 9px;
+  }
+  .card p { font-size: 13.5px; line-height: 1.5; margin: 0; color: var(--ink-2); }
+
+  /* ---------- spine ---------- */
+  .spine {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: stretch;
+    margin: 22px 0 26px;
+  }
+  .spine div {
+    flex: 1 1 110px;
+    border: 1px solid var(--rule-strong);
+    background: var(--surface);
+    padding: 12px 12px 14px;
+  }
+  .spine b {
+    display: block;
+    font-family: var(--f-display);
+    font-variation-settings: "wdth" 100, "wght" 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    margin-bottom: 5px;
+  }
+  .spine span { font-size: 12px; line-height: 1.45; color: var(--ink-mute); display: block; }
+
+  /* ---------- sitemap / wireframe ---------- */
+  pre.map {
+    font-family: var(--f-mono);
+    font-size: 12.5px;
+    line-height: 1.75;
+    background: var(--surface-sunk);
+    border: 1px solid var(--rule);
+    padding: 18px 20px;
+    overflow-x: auto;
+    margin: 20px 0;
+    color: var(--ink-2);
+  }
+  pre.map b { color: var(--ink); font-weight: 600; }
+  pre.map i { color: var(--tungsten); font-style: normal; }
+
+  .wire { border: 1px solid var(--rule-strong); margin: 22px 0; background: var(--surface); }
+  .wire .row {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 16px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .wire .row:last-child { border-bottom: 0; }
+  .wire .row > i {
+    font-family: var(--f-mono);
+    font-style: normal;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--tungsten);
+    padding-top: 2px;
+  }
+  .wire h5 {
+    font-family: var(--f-display);
+    font-variation-settings: "wdth" 100, "wght" 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    margin: 0 0 5px;
+  }
+  .wire p { margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--ink-2); max-width: none; }
+
+  /* ---------- palette swatches ---------- */
+  .sw { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+  .sw div { flex: 1 1 120px; border: 1px solid var(--rule); background: var(--surface); }
+  .sw .chipc { height: 46px; }
+  .sw p {
+    margin: 0;
+    padding: 8px 10px 10px;
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: var(--ink-mute);
+  }
+  .sw p b { display: block; color: var(--ink); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; }
+
+  /* ---------- closing ---------- */
+  .closer {
+    border: 2px solid var(--ink);
+    padding: 28px 30px;
+    margin: 44px 0 0;
+    background: var(--surface);
+  }
+  .closer h3 { margin-top: 0; }
+  .closer ol { max-width: 66ch; }
+
+  footer {
+    margin-top: 60px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--f-mono);
+    font-size: 11.5px;
+    line-height: 1.7;
+    color: var(--ink-mute);
+  }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  a:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--tungsten); outline-offset: 2px; }
+</style>
+
+<div class="kbar"></div>
+
+<div class="shell">
+
+  <header class="masthead">
+    <p class="eyebrow">Phase 1–5 · Strategy &amp; Architecture · For Approval</p>
+    <h1>One Company,<br>Many Capabilities</h1>
+    <p class="standfirst">A repositioning and rebuild strategy for Worldwide Distributors — the umbrella over E-Lighting, E-Built, and an unnamed lighting distribution arm that may be the most profitable line in the business. This document covers research findings, brand architecture, sitemap, homepage structure, visual direction, cinematic concepts, content gaps, and the technical approach. No code has been written yet.</p>
+    <div class="meta">
+      <div><b>Prepared</b><span>20 August 2026</span></div>
+      <div><b>Status</b><span>Awaiting owner approval</span></div>
+      <div><b>Sources</b><span>Owner interview · Business Intelligence · Web research</span></div>
+      <div><b>Open verifications</b><span>17 items</span></div>
+    </div>
+  </header>
+
+  <div class="cols">
+
+    <nav class="index" aria-label="Contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#s00"><i>00</i><span>Research method &amp; limits</span></a></li>
+        <li><a href="#s01"><i>01</i><span>Business analysis</span></a></li>
+        <li><a href="#s02"><i>02</i><span>Brand architecture</span></a></li>
+        <li><a href="#s03"><i>03</i><span>Competitive positioning</span></a></li>
+        <li><a href="#s04"><i>04</i><span>Target customers</span></a></li>
+        <li><a href="#s05"><i>05</i><span>Website audit</span></a></li>
+        <li><a href="#s06"><i>06</i><span>Instagram audit</span></a></li>
+        <li><a href="#s07"><i>07</i><span>Sitemap</span></a></li>
+        <li><a href="#s08"><i>08</i><span>Homepage wireframe</span></a></li>
+        <li><a href="#s09"><i>09</i><span>Visual direction</span></a></li>
+        <li><a href="#s10"><i>10</i><span>Content strategy</span></a></li>
+        <li><a href="#s11"><i>11</i><span>SEO strategy</span></a></li>
+        <li><a href="#s12"><i>12</i><span>Conversion strategy</span></a></li>
+        <li><a href="#s13"><i>13</i><span>Cinematic concepts</span></a></li>
+        <li><a href="#s14"><i>14</i><span>Content gaps</span></a></li>
+        <li><a href="#s15"><i>15</i><span>Technical approach</span></a></li>
+        <li><a href="#s16"><i>16</i><span>Verification register</span></a></li>
+        <li><a href="#s17"><i>17</i><span>Decisions needed</span></a></li>
+      </ol>
+    </nav>
+
+    <main class="body">
+
+      <!-- 00 -->
+      <section id="s00">
+        <div class="sechead"><span class="num">00</span><h2>Research Method &amp; What I Could Not Reach</h2></div>
+
+        <p class="lede">Read this section first — it sets the confidence level for everything that follows.</p>
+
+        <p>I read the full brief: the raw owner interview, the Business Intelligence extraction, and the instructions. Those are complete and I treated the interview as primary source.</p>
+
+        <p>The live research was constrained. This build environment routes all outbound traffic through an egress proxy that blocked direct access to <strong>worldwidedistributorsinc.com</strong>, <strong>elighting.org</strong>, <strong>instagram.com</strong>, and the founder podcast episode. I could not render those pages, view the Instagram grid, or inspect page source, performance, or mobile behaviour. What I could do was mine the search index, which surfaced page titles, meta descriptions, indexed body copy, URL structures, and business listing data.</p>
+
+        <p>So: the audit below is <em>reconstructed from indexed content, not observed directly</em>. It is strong enough to make architecture and positioning decisions on, and it already surfaced several things the brief does not mention. It is not strong enough to grade the current site's performance, accessibility, or mobile UX, and it cannot tell me which of the 802 Instagram posts are worth using.</p>
+
+        <div class="note tech">
+          <span class="tag">What would close the gap</span>
+          <p>Send me any of: a screen recording or screenshots of both sites (desktop and mobile), a PageSpeed Insights report for each, Google Search Console and Analytics access, and either Instagram login access or an export of the 30–50 best posts. With those I can upgrade this from a reconstructed audit to a measured one before we build.</p>
+        </div>
+      </section>
+
+      <!-- 01 -->
+      <section id="s01">
+        <div class="sechead"><span class="num">01</span><h2>Business Analysis — What This Company Actually Is</h2></div>
+
+        <p>The Business Intelligence section frames this as three divisions. That is accurate as an org chart and misleading as a strategy. Read the raw interview and a different, sharper business appears.</p>
+
+        <p><strong>This is not a lighting company that also does electrical and construction. It is an access-and-accountability business that happens to express itself through lighting, electrical, and construction.</strong></p>
+
+        <p>Three forms of access make the money:</p>
+
+        <h3>1 · Access to product at distributor pricing</h3>
+        <blockquote>
+          <p>"Buying a light fixture package from us is beautiful business. I don't even have to mess with it… I buy the package at $20,000 and I sell it for $32,000. Happy. I flipped it. Never even touch it."</p>
+          <cite>Owner interview</cite>
+        </blockquote>
+        <p>This is the highest-margin activity described anywhere in the interview — roughly 60% markup with no labour, no crew, no callback risk. It is also <strong>completely invisible on both current websites and has no brand name.</strong> A buyer today cannot tell that they can purchase a lighting package from this company without hiring them to install it. That is a revenue line hiding in plain sight, and fixing it is close to free.</p>
+
+        <h3>2 · Access to gatekept commercial properties</h3>
+        <blockquote>
+          <p>"When you walk into a building, you need to be vetted through one of the compliance people. They're either Compliance Depot, [NetVendor], … First Service Residential… That's what I deal with a lot."</p>
+          <cite>Owner interview</cite>
+        </blockquote>
+        <p>Being an approved vendor inside property-management compliance networks is slow, expensive, and paperwork-heavy to obtain — which is exactly what makes it a moat. Most competitors in this space cannot get in the door at all. Almost none of them advertise the fact that they can. A dedicated property-manager pathway on the website, with the compliance paperwork ready to download, would be genuinely differentiated in this category.</p>
+
+        <h3>3 · Access to vetted trades — sold as accountability</h3>
+        <blockquote>
+          <p>"You got to pick and choose the right guy. I got to vet him. I don't have to deal with a headache and my customer doesn't have to deal with it. I deal with it."</p>
+          <cite>Owner interview</cite>
+        </blockquote>
+        <p>This is the single most useful sentence in the transcript. The product being sold is not lighting, electrical, or construction. It is <em>the removal of coordination burden.</em> A commercial property owner running a buildout is managing six vendors, six schedules, six invoices, and six opportunities for someone to blame someone else. The offer here is: one number, one accountable party, one company that absorbs the problem.</p>
+
+        <p>That reframing matters because it solves the central risk of the whole project. "We do lighting and electrical and construction and sourcing and maintenance" normally reads as <em>handyman</em> — an unfocused generalist. "One accountable partner, and here is the depth behind each capability" reads as <em>a firm</em>. Same facts, opposite impression.</p>
+
+        <h3>The fourth line: recurring maintenance — not yet real</h3>
+        <p>The quarterly landscape-lighting service program is described in the interview as an intention, not an operating product: <em>"that's one of the things that we've been trying to work on for a really long time, but we're like so busy that we can't even wrap our…"</em>. It is strategically the best idea in the business — recurring revenue against an installed base they already own — but the website must present it as a program you can register interest in, not a service with published terms, until it actually exists and is staffed.</p>
+
+        <div class="note find">
+          <span class="tag">Strategic read</span>
+          <p>The one-stop-shop story in the brief is right, but it is being justified with the wrong argument. "We can do all of it" is a capability claim, and capability claims invite doubt. "We are the one party accountable for all of it" is a risk claim, and risk is what commercial buyers actually shop on. Same architecture, much stronger frame.</p>
+        </div>
+      </section>
+
+      <!-- 02 -->
+      <section id="s02">
+        <div class="sechead"><span class="num">02</span><h2>Brand Architecture</h2></div>
+
+        <p>Research turned up a structural problem the brief does not mention: <strong>there are at least two live websites, and the parent company's domain is behaving like a division page.</strong></p>
+
+        <div class="tw">
+          <table>
+            <thead><tr><th>Property</th><th>What the index shows</th><th>Problem</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="mono">worldwidedistributorsinc.com</td>
+                <td>Page title reads "A Division of Worldwide Distributors Inc." Thin content: 30-years claim, LED-transition copy, a generic "drop us a line" contact form.</td>
+                <td>The parent domain presents itself as its own subsidiary. Architecturally inverted, and the thinnest of the two properties.</td>
+              </tr>
+              <tr>
+                <td class="mono">elighting.org</td>
+                <td>Substantially deeper: <span class="mono">/about-us</span>, <span class="mono">/products</span>, <span class="mono">/landscape</span>, <span class="mono">/landscape-lighting</span>, <span class="mono">/studio-and-stage-lighting</span>, <span class="mono">/matrix-page</span>, <span class="mono">/contact</span>. Showroom address, hours, warranty and certification claims.</td>
+                <td>The division carries the brand equity, the content, and probably the search authority. The umbrella does not.</td>
+              </tr>
+              <tr>
+                <td class="mono">@elightingdesigns</td>
+                <td>802 posts. Bio: residential &amp; commercial lighting, free energy survey, a phone number.</td>
+                <td>Third identity, third phone number, no connection back to the umbrella.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Brand equity, search authority, and customer memory are split three ways, and the strongest asset sits on the division rather than the parent. Any rebuild has to resolve this before it does anything else.</p>
+
+        <h3>Three options</h3>
+
+        <div class="grid">
+          <div class="card"><div class="k"></div><div class="inner">
+            <h5>A · Branded house</h5>
+            <p class="role">Rejected</p>
+            <p>Rename everything under Worldwide (Worldwide Lighting / Electric / Build). Clean, but it destroys E-Lighting's name recognition, its domain, its Instagram, and whatever search history it holds. Too expensive for the tidiness gained.</p>
+          </div></div>
+          <div class="card"><div class="k"></div><div class="inner">
+            <h5>B · House of brands</h5>
+            <p class="role">Rejected</p>
+            <p>Three separate sites, three identities. This is effectively the current state, and it is the thing that is not working — it fragments SEO and makes the one-stop-shop story impossible to tell.</p>
+          </div></div>
+          <div class="card"><div class="k"></div><div class="inner">
+            <h5>C · Endorsed house</h5>
+            <p class="role">Recommended</p>
+            <p>One domain, one site. E-Lighting and E-Built live as first-class sections inside it, each with its own landing page, accent colour, and conversion path, each signed "A division of Worldwide Distributors."</p>
+          </div></div>
+        </div>
+
+        <p>Option C keeps the divisional names as proof of depth while consolidating every visitor, every backlink and every conversion into one property. The divisions stop being separate companies and start being evidence that the umbrella is real.</p>
+
+        <h3>Name the third division</h3>
+        <p>The distribution arm — the "$20,000 in, $32,000 out, never touched it" business — has no name. That asymmetry is why it keeps disappearing from the story. Give it one and the architecture becomes legible in a single glance:</p>
+
+        <div class="spine">
+          <div><b>Worldwide Supply</b><span>Source &amp; supply — lighting packages, fixtures, doors, windows, materials. Sold with or without installation.</span></div>
+          <div><b>E-Lighting</b><span>Design, electrical contracting, installation, service, maintenance.</span></div>
+          <div><b>E-Built</b><span>Commercial buildouts, tenant improvements, remodelling, construction.</span></div>
+        </div>
+
+        <p><em>Worldwide Supply</em> is a placeholder for approval, not a final name. The structural point stands regardless of what it gets called: three symmetrical divisions covering supply, install, and build, under one parent.</p>
+
+        <div class="note verify">
+          <span class="tag">Verify · Domain consolidation</span>
+          <p>Which domain becomes the primary is a data question I cannot answer from here. If <span class="mono">elighting.org</span> holds materially more search authority than <span class="mono">worldwidedistributorsinc.com</span>, the right move may be to build on the E-Lighting domain and position Worldwide Distributors as the parent brand within it. I need Search Console data for both, plus confirmation that you control both registrations, before recommending direction. Whichever way it goes, the other domain gets 301-redirected page-by-page rather than switched off.</p>
+        </div>
+
+        <div class="note verify">
+          <span class="tag">Verify · Name collision risk</span>
+          <p>"Worldwide Distributors" is a crowded name. Search surfaces a Worldwide Distribution LLLP in Jacksonville, a separate Worldwide Distributors Inc. listed in Dunnellon FL, and a Worldwide Lighting Corp — none of which appear to be you. This makes the parent name hard to own in search and easy to confuse. I am not recommending a rename; that is your call and outside this scope. I am recommending we design around it: lead with capability and location, never with the bare name, and never publish a claim sourced from one of those other entities.</p>
+        </div>
+
+        <div class="note verify">
+          <span class="tag">Verify · E-Built has no public existence</span>
+          <p>I found no website, no licence record, no social presence, and no directory listing for E-Built. Treat this as a brand <em>launch</em>, not a refresh — which changes the content plan significantly, because there is no existing E-Built photography, copy, or proof to inherit. Confirm whether E-Built is a registered entity, what it operates under, and who the qualifying licence holder is.</p>
+        </div>
+      </section>
+
+      <!-- 03 -->
+      <section id="s03">
+        <div class="sechead"><span class="num">03</span><h2>Competitive Positioning</h2></div>
+
+        <p>The competitive field around this business splits into four groups that do not overlap:</p>
+
+        <div class="tw">
+          <table>
+            <thead><tr><th>Category</th><th>Examples found</th><th>What they cannot do</th></tr></thead>
+            <tbody>
+              <tr><td>Landscape lighting installers</td><td>Miami Landscape Lighting, Lampscape Designs, Elite Landscape Lighting</td><td>No electrical contracting depth, no construction, no distribution pricing</td></tr>
+              <tr><td>Wholesale lighting distributors</td><td>Everything Lighting, Eterna Lighting, Jam Lighting, All States Lighting</td><td>Sell boxes; will not design, install, or stand behind the result</td></tr>
+              <tr><td>Electrical contractors</td><td>Fragmented local market</td><td>No product margin, no design capability, no buildout capability</td></tr>
+              <tr><td>General contractors</td><td>Fragmented local market</td><td>Subcontract lighting and electrical out; no sourcing advantage</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>No competitor found spans all four. That gap is real and defensible — and it is the entire strategic argument for this website.</p>
+
+        <p>The danger is equally real. Breadth claims read as weakness unless they are backed by <strong>proof density</strong>. A visitor who reads "lighting, electrical, and construction" and then finds three shallow paragraphs concludes you dabble. A visitor who reads the same headline and then finds three specialist-grade sections — real projects, real process, real depth — concludes you are a firm with divisions. The headline is identical. The proof is what decides which conclusion they reach.</p>
+
+        <p>So the positioning statement I would build toward:</p>
+
+        <div class="note find">
+          <span class="tag">Recommended positioning</span>
+          <p><strong>For commercial property owners, managers, and tenants in Florida, Worldwide Distributors is the single accountable partner for everything between an empty space and a finished, lit, working building</strong> — because it sources the product, designs the lighting, performs the electrical, builds the space, and maintains it afterward, rather than coordinating four companies who each blame the other three.</p>
+        </div>
+
+        <h3>Headline options</h3>
+        <p>The brief's proposal does the categorical work efficiently and I would keep it as the structural H1. What it lacks is the emotional claim, which belongs on the line beneath it.</p>
+
+        <div class="tw">
+          <table>
+            <thead><tr><th>Option</th><th>Line</th><th>Read</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">A</td><td>Lighting. Electrical. Construction.<br><strong>One partner. From source to finish.</strong></td><td>The brief's proposal. Clear, categorical, safe. Recommended as the base.</td></tr>
+              <tr><td class="mono">B</td><td>Lighting. Electrical. Construction.<br><strong>One number. One company accountable.</strong></td><td>Sharper. Sells the risk removal rather than the capability list. My preference.</td></tr>
+              <tr><td class="mono">C</td><td><strong>From the pallet to the panel to the finished space.</strong></td><td>More distinctive, more trade-fluent, weaker for a first-time visitor scanning for what you do.</td></tr>
+              <tr><td class="mono">D</td><td><strong>We underpromise and overdeliver.</strong></td><td>Your own words, and true to the brand philosophy — but it is a support line, not a headline. It does not say what you do.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note verify">
+          <span class="tag">Verify · Public use of the internal phrase</span>
+          <p>The brief flags this and I agree: confirm whether "Underpromise. Overdeliver." should appear publicly. It is strong as an About-page principle and risky as a homepage promise, because it invites measurement against every job.</p>
+        </div>
+      </section>
+
+      <!-- 04 -->
+      <section id="s04">
+        <div class="sechead"><span class="num">04</span><h2>Target Customer Analysis</h2></div>
+
+        <p>Commercial and residential buyers here are not the same person with different budgets. They buy on different criteria, and the site has to serve both without one diluting the other.</p>
+
+        <h4>Commercial — primary</h4>
+        <div class="tw">
+          <table>
+            <thead><tr><th>Audience</th><th>What triggers the call</th><th>What they need to see</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Property &amp; community association managers</strong><br><span class="chip c-keep">Highest priority</span></td>
+                <td>Board complaint, violation notice, failed inspection, dark parking lot (liability), a vendor who no-showed</td>
+                <td>Compliance-network approval, COI and W-9 on demand, licence numbers, response times, one vendor covering multiple trades</td>
+              </tr>
+              <tr>
+                <td><strong>Commercial tenants doing buildouts</strong></td>
+                <td>Signed lease or LOI — the rent clock is running and every dark month is money burned</td>
+                <td>Permit handling, realistic schedules, buildouts in <em>their</em> category, evidence you finish</td>
+              </tr>
+              <tr>
+                <td><strong>GCs &amp; developers</strong></td>
+                <td>Bid stage, value engineering, a lighting package with a lead-time problem</td>
+                <td>Sourcing capability, spec-and-substitute fluency, ability to supply without installing</td>
+              </tr>
+              <tr>
+                <td><strong>Facility &amp; asset managers</strong></td>
+                <td>Energy cost, relamping cycles, parking and common-area lighting failures</td>
+                <td>LED retrofit economics, energy survey offer, bucket-truck capability, maintenance</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Residential — secondary, high margin</h4>
+        <div class="tw">
+          <table>
+            <thead><tr><th>Audience</th><th>What triggers the call</th><th>What they need to see</th></tr></thead>
+            <tbody>
+              <tr><td><strong>High-end homeowners</strong></td><td>New landscaping, a renovation finishing, a neighbour's house that looks incredible at night</td><td>Night photography. Almost nothing else moves this buyer.</td></tr>
+              <tr><td><strong>Homeowners with an electrical problem</strong></td><td>Failed inspection at purchase, panel at capacity, dead landscape lighting</td><td>Licensed, insured, answers the phone, fixes it</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note find">
+          <span class="tag">Design consequence</span>
+          <p>The commercial buyer is risk-driven and reads proof, licences, schedules and process. The residential buyer is emotion-driven and reads photographs. These are opposite design problems on the same page. This is why I am recommending an explicit audience fork high on the homepage rather than a single blended services grid — it lets each buyer self-select into a page built for how they actually decide.</p>
+        </div>
+      </section>
+
+      <!-- 05 -->
+      <section id="s05">
+        <div class="sechead"><span class="num">05</span><h2>Website Audit</h2></div>
+
+        <p>Reconstructed from indexed content — see section 00 for confidence limits. Findings categorised per the brief.</p>
+
+        <div class="tw">
+          <table>
+            <thead><tr><th>Finding</th><th>Call</th><th>Reasoning</th></tr></thead>
+            <tbody>
+              <tr><td>The E-Lighting name and its history</td><td><span class="chip c-keep">Keep</span></td><td>Real equity, real recognition, indexed longevity. Carry it forward as a division, not a separate company.</td></tr>
+              <tr><td><strong>LED conversion consulting + free energy survey</strong></td><td><span class="chip c-keep">Keep</span></td><td>Already in market, already in the Instagram bio, and it is the single strongest commercial lead magnet the company has. <strong>The brief omits it entirely.</strong> It gets a dedicated page.</td></tr>
+              <tr><td>Sea-turtle-safe / FWC-compliant lighting</td><td><span class="chip c-keep">Keep</span> <span class="chip c-verify">Verify</span></td><td>A genuine coastal Florida differentiator with almost no competition, and it maps precisely onto the coastal condo and HOA audience you want. High value if the certification is real.</td></tr>
+              <tr><td>The physical Kendall showroom</td><td><span class="chip c-keep">Keep</span></td><td>A showroom is a major trust asset that most competitors lack. The brief never mentions it. It should be visible on the homepage.</td></tr>
+              <tr><td>Landscape lighting content depth</td><td><span class="chip c-improve">Improve</span></td><td>Good coverage, wrong presentation. Rebuild portfolio-led rather than product-led.</td></tr>
+              <tr><td>The <span class="mono">/products</span> page</td><td><span class="chip c-improve">Improve</span></td><td>Owner has explicitly ruled out a catalog. Convert to a sourcing-capability page: what we can get, how fast, and how to buy a package outright.</td></tr>
+              <tr><td>Split-domain structure</td><td><span class="chip c-replace">Replace</span></td><td>Consolidate to one property with page-level 301s. See section 02.</td></tr>
+              <tr><td>Information architecture</td><td><span class="chip c-replace">Replace</span></td><td>Currently division-inverted and has no commercial pathway at all.</td></tr>
+              <tr><td>Visual identity and template</td><td><span class="chip c-replace">Replace</span></td><td>Nothing in the indexed structure suggests a site capable of carrying the intended positioning.</td></tr>
+              <tr><td>Generic "drop us a line" contact form</td><td><span class="chip c-replace">Replace</span></td><td>One undifferentiated form for five different buyers with five different budgets. Replaced by routed intents — section 12.</td></tr>
+              <tr><td>Manufacturer-led framing</td><td><span class="chip c-remove">Remove</span></td><td>Direct owner instruction: <em>"you don't need to start naming all the different manufacturers."</em></td></tr>
+              <tr><td>Stage &amp; studio lighting page</td><td><span class="chip c-verify">Verify</span></td><td>Live on the current site, absent from the brief. I will not silently delete a working business line — tell me whether it stays.</td></tr>
+              <tr><td>Phone number inconsistency</td><td><span class="chip c-verify">Verify</span></td><td>Two different numbers in market — one on the website, a different one in the Instagram bio. Inconsistent name/address/phone data directly damages local search ranking and reads as sloppy.</td></tr>
+              <tr><td>"Over 30 years of experience"</td><td><span class="chip c-verify">Verify</span></td><td>Currently published. Needs a defensible founding year before it is republished.</td></tr>
+              <tr><td>"Lifetime warranty" on brass/copper fixtures and transformers</td><td><span class="chip c-verify">Verify</span></td><td>Presented on the current site as though it is the company's warranty. If it is a manufacturer warranty, the wording must say so — this is a liability exposure, not a copy preference.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>The largest gap</h3>
+        <p>Neither existing property gives a commercial buyer a path. There is no property-manager page, no buildout page, no tenant-improvement page, no way to buy a lighting package without hiring a crew, and no visible construction capability whatsoever. The company's stated primary market is currently unserved by its own website.</p>
+      </section>
+
+      <!-- 06 -->
+      <section id="s06">
+        <div class="sechead"><span class="num">06</span><h2>Instagram Audit</h2></div>
+
+        <p>I could not open the grid — Instagram is blocked at the proxy. What the index confirms:</p>
+
+        <div class="tw">
+          <table>
+            <thead><tr><th>Signal</th><th>Value</th><th>Read</th></tr></thead>
+            <tbody>
+              <tr><td>Posts</td><td>802</td><td>A large existing media library — very likely the best source of real project footage the company owns.</td></tr>
+              <tr><td>Followers / following</td><td>1,399 / 1,784</td><td>Following exceeds followers, which usually indicates follow-for-follow growth. Audience quality is unknown; do not treat the follower count as a trust signal on the site.</td></tr>
+              <tr><td>Bio</td><td>Residential &amp; commercial lighting · FREE energy survey · phone</td><td>Confirms the energy survey is a live offer. Also introduces the second phone number.</td></tr>
+              <tr><td>Handle vs. display name</td><td>@elightingdesigns / "ELIGHTING"</td><td>Another small identity inconsistency to resolve during consolidation.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p><strong>802 posts is the most valuable unexploited asset in this project.</strong> The brief worries about not being able to return to properties to film the finished result — but three years of field posting probably already contains night shots, installs, panel work, bucket truck jobs, and buildout progress. Before commissioning any new photography, we should mine what exists.</p>
+
+        <div class="note tech">
+          <span class="tag">Proposed next step</span>
+          <p>Export or share the account, and I will triage every post into: <strong>homepage hero candidates</strong>, <strong>portfolio case studies</strong>, <strong>service-page media</strong>, <strong>educational content seeds</strong>, and <strong>unusable</strong>. That triage determines how much new production is actually needed — and my expectation is considerably less than the brief assumes.</p>
+        </div>
+
+        <div class="note verify">
+          <span class="tag">Verify · Rights and permissions</span>
+          <p>Posting a client's property to Instagram is not the same as featuring it in a commercial portfolio. Before any project appears on the website, confirm permission — particularly for medical facilities, private residences, and gated communities such as the ones referenced in the interview.</p>
+        </div>
+      </section>
+
+      <!-- 07 -->
+      <section id="s07">
+        <div class="sechead"><span class="num">07</span><h2>Recommended Sitemap</h2></div>
+
+        <p>Primary navigation is organised by <strong>audience</strong>, not by division. Buyers shop by their own problem, not by your org chart. The divisions still get real, substantial pages — they sit one level in, where they function as proof of depth rather than as a navigation puzzle.</p>
+
+<pre class="map"><b>/</b>                                    Homepage
+
+<b>/commercial</b>                          <i>Primary hub</i>
+├── /commercial/property-management     <i>Highest-value page on the site</i>
+├── /commercial/buildouts               Restaurant · medical · office · retail · barber
+├── /commercial/lighting                Parking lot · architectural · interior · exterior
+├── /commercial/electrical              Panels · troubleshooting · upgrades · service
+└── /commercial/led-retrofit            <i>Free energy survey — lead magnet</i>
+
+<b>/residential</b>
+├── /residential/landscape-lighting
+├── /residential/permanent-lighting
+├── /residential/electrical
+└── /residential/remodeling
+
+<b>/divisions</b>
+├── /e-lighting                         Design · electrical · install · service
+├── /e-built                            Commercial construction <i>(new brand — launch)</i>
+└── /supply                             <i>Buy a lighting package outright</i>
+
+<b>/projects</b>                            Filterable portfolio index
+└── /projects/[slug]                    Individual case study
+
+<b>/maintenance</b>                         Landscape lighting care program <i>(waitlist)</i>
+
+<b>/about</b>
+├── /about/process                      How a project actually runs
+└── /about/team
+
+<b>/learn</b>                               Educational hub — video + article
+└── /learn/[slug]
+
+<b>/service-areas</b>
+└── /service-areas/[city]               <i>Only where genuinely served</i>
+
+<b>/vendor-info</b>                         <i>COI · W-9 · licences · insurance — for PMs</i>
+<b>/contact</b>
+<b>/quote</b>                                Routed multi-path intake
+</pre>
+
+        <p>Two pages here do not exist anywhere in the current market position and are, in my view, the highest-leverage new pages on the site:</p>
+
+        <ul>
+          <li><strong><span class="mono">/commercial/property-management</span></strong> — speaks directly to the audience the owner already has privileged access to, in their own language: compliance, COIs, board approvals, response times, common-area lighting, unit turns.</li>
+          <li><strong><span class="mono">/vendor-info</span></strong> — an unglamorous page holding the insurance certificate, W-9, licence numbers, and compliance-network registrations. It removes the exact friction that stalls property-management deals, and virtually no competitor bothers to build it.</li>
+        </ul>
+      </section>
+
+      <!-- 08 -->
+      <section id="s08">
+        <div class="sechead"><span class="num">08</span><h2>Homepage Wireframe</h2></div>
+
+        <div class="wire">
+          <div class="row"><i>01</i><div><h5>Cinematic hero</h5><p>Full-viewport transformation sequence. H1 with the three capabilities, sub-line carrying the accountability promise, two CTAs: <em>Start a commercial project</em> / <em>Request a lighting package</em>. Built as a swappable slot — see section 13 and 15 — so the still-image version can be upgraded to full motion without a rebuild.</p></div></div>
+          <div class="row"><i>02</i><div><h5>The audience fork</h5><p>Three doors, immediately below the fold: <em>I manage or own a commercial property</em> · <em>I'm opening or building out a business</em> · <em>I'm a homeowner</em>. Highest-conversion section on the page — every visitor self-sorts into a path built for how they decide.</p></div></div>
+          <div class="row"><i>03</i><div><h5>The capability spine</h5><p>Source → Design → Supply → Install → Build → Maintain, as a scroll-driven horizontal sequence. This is the one-stop-shop argument made structurally rather than stated. Each stage links to the division that owns it.</p></div></div>
+          <div class="row"><i>04</i><div><h5>Proof strip</h5><p>Licensed &amp; insured (with numbers), property-management compliance approvals, the Kendall showroom, years in business, service area. Every element verification-gated — nothing publishes until confirmed.</p></div></div>
+          <div class="row"><i>05</i><div><h5>Three divisions</h5><p>E-Lighting · E-Built · Supply. Each with its own accent, a one-line role, and a link through. This is where breadth converts into depth.</p></div></div>
+          <div class="row"><i>06</i><div><h5>Featured case study</h5><p>Full-bleed, one project told properly — before, during, finished, at night. The single strongest trust device on the page.</p></div></div>
+          <div class="row"><i>07</i><div><h5>Portfolio grid</h5><p>Filterable teaser by category — commercial lighting, landscape, buildouts, electrical, multifamily — linking into <span class="mono">/projects</span>.</p></div></div>
+          <div class="row"><i>08</i><div><h5>Property manager block</h5><p>Dedicated section addressing PMs by name, with the vendor-packet CTA. Deliberately unglamorous and specific.</p></div></div>
+          <div class="row"><i>09</i><div><h5>Testimonials</h5><p>Video-first where it exists, written where it does not. The owner's framing — <em>"when your customers become your friends"</em> — is the right editorial angle.</p></div></div>
+          <div class="row"><i>10</i><div><h5>Maintenance program</h5><p>The quarterly landscape lighting service. Presented as a program accepting interest, not a live service with terms. No pricing.</p></div></div>
+          <div class="row"><i>11</i><div><h5>Learn teaser</h5><p>Three most recent educational pieces. Signals ongoing expertise and feeds the SEO strategy.</p></div></div>
+          <div class="row"><i>12</i><div><h5>Close</h5><p>Final CTA, contact block, showroom address and map, service areas, licence numbers in the footer.</p></div></div>
+        </div>
+      </section>
+
+      <!-- 09 -->
+      <section id="s09">
+        <div class="sechead"><span class="num">09</span><h2>Visual Direction</h2></div>
+
+        <p>The brief asks for cinematic, premium, architectural. The trap in that request is the default contractor-premium look — black background, neon accent, chrome gradients — which reads as cheap precisely because everyone reaches for it.</p>
+
+        <p>The direction I would take instead: <strong>light is the medium, so the palette should be built from real colour temperature.</strong> Landscape and architectural lighting lives between 2700K and 3000K. That warm tungsten is the company's actual product, on every job, in every photograph. Making it the brand accent means the site and the work are the same colour.</p>
+
+        <h4>Palette</h4>
+        <div class="sw">
+          <div><div class="chipc" style="background:#0B0D0F"></div><p><b>Ink</b>#0B0D0F<br>Primary ground</p></div>
+          <div><div class="chipc" style="background:#16191D"></div><p><b>Graphite</b>#16191D<br>Panels</p></div>
+          <div><div class="chipc" style="background:#F2C879"></div><p><b>Tungsten 2700K</b>#F2C879<br>Primary accent</p></div>
+          <div><div class="chipc" style="background:#B9741A"></div><p><b>Ochre</b>#B9741A<br>Accent, light ground</p></div>
+          <div><div class="chipc" style="background:#25406B"></div><p><b>Signal</b>#25406B<br>Electrical / technical</p></div>
+          <div><div class="chipc" style="background:#F4F1EC"></div><p><b>Bone</b>#F4F1EC<br>Type on dark</p></div>
+        </div>
+
+        <p>Division accents keep the three sections distinguishable without fracturing the identity: <strong>E-Lighting</strong> takes warm tungsten; <strong>E-Built</strong> takes concrete grey with a narrow safety-orange marker; <strong>Supply</strong> takes the cool signal blue. Same system, three temperatures.</p>
+
+        <h4>Typography</h4>
+        <p>An expanded grotesk for display — signage-derived, architectural, set tight and heavy — paired with a technical sans for body and a monospace for specifications, project codes, and data. Deliberately <em>not</em> the condensed athletic face that every contractor site uses, and not an editorial serif, which would read residential-boutique and undercut the commercial positioning.</p>
+
+        <h4>Photography</h4>
+        <p>Night-heavy, wide, architectural framing. Contrast is the brand — a lit building against a dark sky <em>is</em> the product. Two hard rules: no stock imagery anywhere, and every image labelled by type. The brief is right to insist on this, and I would make it a build-level constraint rather than an editorial guideline:</p>
+
+        <div class="note verify">
+          <span class="tag">Build rule · AI labelling</span>
+          <p>Every image on the site carries a required <span class="mono">mediaType</span> field — <em>Project Photography</em>, <em>Conceptual Rendering</em>, <em>AI Visualization</em>, or <em>Proposed Design</em> — enforced in the content schema so an unlabelled image cannot be published. Renderings and AI visualisations render with a persistent visible caption, not a hover state. This is a legal protection as much as an ethical one, and it should be impossible to bypass by accident.</p>
+        </div>
+
+        <h4>Motion</h4>
+        <p>One governing metaphor: things do not slide or fade in — <strong>they illuminate.</strong> Content arrives as though a fixture just switched on: a fast warm-up curve, a slight bloom, then settle. Used consistently, that single idea does more brand work than a dozen unrelated effects, and it costs almost nothing in performance. Everything respects <span class="mono">prefers-reduced-motion</span>.</p>
+      </section>
+
+      <!-- 10 -->
+      <section id="s10">
+        <div class="sechead"><span class="num">10</span><h2>Content Strategy</h2></div>
+
+        <h4>Priority 1 — mine what exists</h4>
+        <p>Triage the 802 Instagram posts before commissioning anything. Target: 12–15 projects with enough material to become real case studies, and 30–40 supporting images for service pages.</p>
+
+        <h4>Priority 2 — the case study template</h4>
+        <p>Every project follows one structure so they accumulate into a system rather than a scrapbook: <em>the space as found → the problem → what we sourced → what we built → the electrical and lighting → the finished result → the result at night → what the client said.</em> That structure also happens to be the buildout narrative the brief describes, which means every case study restates the one-stop-shop argument without ever asserting it.</p>
+
+        <h4>Priority 3 — what must be filmed new</h4>
+        <ul>
+          <li>Hero footage, if we commit to a motion hero (section 13)</li>
+          <li>2–3 video testimonials — the owner named specific willing customers in the interview</li>
+          <li>One buildout followed end to end, which becomes the flagship case study and doubles as educational content</li>
+          <li>Owner-to-camera pieces for <span class="mono">/learn</span> — these can be shot on a phone in the field and should be, because polish is not what makes them credible</li>
+        </ul>
+
+        <h4>Priority 4 — the educational hub</h4>
+        <p>The interview says the owners want to make educational video. That intention aligns exactly with the SEO strategy, which is unusually convenient. Strongest starting topics, chosen for search demand and sales utility: what a landscape lighting maintenance plan actually includes · when a panel needs upgrading · what a commercial buildout really costs in time · LED retrofit payback maths · why landscape lighting fails after two years · what property managers should require from a lighting vendor.</p>
+
+        <div class="note tech">
+          <span class="tag">Content system requirement</span>
+          <p>These are working field contractors. If publishing a project requires a laptop and fifteen minutes, it will not happen, and the site will be frozen in six months. The admin must accept a phone photo dump plus four or five fields, and do the rest automatically. This is a genuine build requirement, not a nice-to-have — it determines whether the whole content strategy survives launch.</p>
+        </div>
+      </section>
+
+      <!-- 11 -->
+      <section id="s11">
+        <div class="sechead"><span class="num">11</span><h2>SEO Strategy</h2></div>
+
+        <div class="note verify">
+          <span class="tag">Verify · Service area conflict</span>
+          <p><strong>This is the most consequential conflict I found between the brief and the evidence.</strong> The brief instructs that statewide Florida service be communicated prominently. Every verifiable trace points to Miami-Dade: a Kendall showroom, projects in Doral and Ocean Reef, a 305 number. The interview says only <em>"I'm from here, all the way north"</em>, which is ambiguous.<br><br>Claiming "All of Florida" from a single South Florida location does two kinds of damage: a Tampa or Jacksonville commercial buyer will not believe it, and it dilutes the local search signal that generates the highest-intent traffic you have. My recommendation is <strong>"Headquartered in Miami. Serving Florida."</strong> with an honest tiered service area. If there are crews, offices, or licences outside South Florida, tell me and I will build the statewide architecture properly.</p>
+        </div>
+
+        <h4>Sequence</h4>
+        <ol>
+          <li><strong>Fix the foundation first.</strong> One name, one address, one phone, everywhere. Consolidate the domains with page-level 301s. Claim and complete the Google Business Profile.</li>
+          <li><strong>Geographic tiers.</strong> Tier 1 — Miami-Dade (Miami, Kendall, Coral Gables, Doral, Pinecrest, Coconut Grove, Key Biscayne, Aventura). Tier 2 — Broward and Palm Beach. Tier 3 — statewide and the Keys, for commercial and supply only, where the model genuinely travels.</li>
+          <li><strong>Service × audience × geography</strong> pages, built only where real demand supports them.</li>
+          <li><strong>Topical authority</strong> through <span class="mono">/learn</span>.</li>
+        </ol>
+
+        <div class="note verify">
+          <span class="tag">Verify · Keyword demand not yet measured</span>
+          <p>I could not run volume or difficulty tooling from this environment. The targets below are reasoned from market structure and buyer intent, not measured. They need validating in Search Console or a keyword tool before we commit to the page matrix — the brief explicitly asks for this and it is the right instinct.</p>
+        </div>
+
+        <h4>Highest-conviction targets</h4>
+        <div class="tw">
+          <table>
+            <thead><tr><th>Query family</th><th>Why</th><th>Lands on</th></tr></thead>
+            <tbody>
+              <tr><td>parking lot light repair / commercial parking lot lighting Miami</td><td>Urgent, liability-driven, low competition, bucket truck is the qualifier</td><td class="mono">/commercial/lighting</td></tr>
+              <tr><td>commercial LED retrofit + energy survey Miami</td><td>Existing offer, high commercial value, strong lead magnet</td><td class="mono">/commercial/led-retrofit</td></tr>
+              <tr><td>landscape lighting repair / not working</td><td>High intent, feeds directly into the maintenance program</td><td class="mono">/maintenance</td></tr>
+              <tr><td>electrical panel upgrade Miami</td><td>Steady residential demand, inspection-triggered</td><td class="mono">/residential/electrical</td></tr>
+              <tr><td>restaurant / medical office buildout contractor Miami</td><td>High value per lead, category-specific, launches E-Built</td><td class="mono">/commercial/buildouts</td></tr>
+              <tr><td>turtle-friendly / FWC-compliant lighting Florida</td><td>Niche, high-value, very low competition, coastal HOA audience</td><td class="mono">/commercial/lighting</td></tr>
+              <tr><td>property management lighting &amp; electrical vendor Florida</td><td>Directly serves the moat</td><td class="mono">/commercial/property-management</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Technical</h4>
+        <p>Structured data for LocalBusiness / ElectricalContractor / GeneralContractor, Service, Project, FAQ, VideoObject and BreadcrumbList. Per-route titles, descriptions and canonicals. XML sitemap. And crucially — server-rendered or prerendered HTML, which is a stack decision covered in section 15.</p>
+
+        <div class="note verify">
+          <span class="tag">Do not do this</span>
+          <p>No city landing pages carrying addresses you do not occupy, and no Google Business Profile listings at locations you do not staff. In this vertical that is a common tactic and it results in profile suspension. Build city pages around genuine project evidence in those cities instead.</p>
+        </div>
+      </section>
+
+      <!-- 12 -->
+      <section id="s12">
+        <div class="sechead"><span class="num">12</span><h2>Conversion Strategy</h2></div>
+
+        <p>Today there is one generic form serving buyers whose deal sizes differ by two orders of magnitude. Replace it with five routed intents, each with its own qualifying questions, its own destination, and its own response commitment.</p>
+
+        <div class="tw">
+          <table>
+            <thead><tr><th>Path</th><th>Audience</th><th>Qualifiers captured</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Commercial buildout consultation</strong></td><td>Tenants, developers, GCs</td><td>Space type, square footage, lease/permit status, target opening date</td></tr>
+              <tr><td><strong>Property manager services</strong></td><td>PMs, associations, multifamily</td><td>Portfolio size, property type, compliance network, recurring vs. one-off</td></tr>
+              <tr><td><strong>Request a lighting package</strong> <span class="chip c-replace">New</span></td><td>GCs, developers, designers, owners</td><td>Fixture types, quantities, timeline, <strong>supply-only or supply-and-install</strong></td></tr>
+              <tr><td><strong>Free energy survey</strong></td><td>Facility managers, commercial owners</td><td>Property type, approximate square footage, current fixture type</td></tr>
+              <tr><td><strong>Service &amp; repair</strong></td><td>Anyone with something broken</td><td>Phone-first. Sticky call button. Minimal form.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>The third path is the important one. It makes the highest-margin activity in the business — the untouched package flip — orderable for the first time. Right now a general contractor who would happily buy $32,000 of fixtures has no way to discover that they can.</p>
+
+        <p>Supporting mechanics: sticky call button on mobile throughout; the vendor-info page as a frictionless download for PMs; a maintenance-program waitlist rather than a purchase; and a published response-time commitment — but only one the team will actually hit, since "underpromise, overdeliver" stops being a philosophy the moment the website overpromises on their behalf.</p>
+      </section>
+
+      <!-- 13 -->
+      <section id="s13">
+        <div class="sechead"><span class="num">13</span><h2>Cinematic Concepts</h2></div>
+
+        <h3>Concept 1 · First Light</h3>
+        <p>The brief's own concept, tightened. A single property at dusk, scroll-scrubbed into full night. Fixtures ignite in sequence as the visitor scrolls — path lights, then uplighting on the facade, then interior, then the sign. Copy layers reveal in step with each zone.</p>
+        <p><strong>Strength:</strong> emotionally the most beautiful, and it shows the product doing its job. <strong>Weakness:</strong> it only tells the lighting story. A visitor could still leave thinking "these guys sell lights" — the exact reaction the brief says to avoid. <strong>Best used:</strong> as the E-Lighting division hero rather than the homepage.</p>
+
+        <h3>Concept 2 · The Spine <span class="chip c-keep">Recommended</span></h3>
+        <p>One continuous camera move, scroll-scrubbed, through six states without a cut: a pallet breaking open in the warehouse → a design table with a lighting plan → the truck loading → an install in progress → a framed buildout with conduit exposed → the same space finished and lit at night.</p>
+        <p><strong>Why this one:</strong> it <em>is</em> Source → Design → Supply → Install → Build → Maintain, delivered as an experience rather than a claim. The strongest strategic idea in the business becomes the literal mechanic of the page. A visitor who scrolls ten seconds cannot come away thinking this is a lighting store. <strong>Cost:</strong> requires a planned shoot across multiple locations, matched for continuity.</p>
+
+        <h3>Concept 3 · Split State <span class="chip c-improve">Recommended as section mechanic</span></h3>
+        <p>A vertical seam down the viewport. Left: dark, empty, unbuilt. Right: lit, finished, working. The seam tracks scroll position or drag. Applied across the site — day/night on landscape projects, empty/finished on buildouts, before/after on electrical.</p>
+        <p><strong>Why it matters:</strong> it needs only still photographs, which means it works with the library that already exists. Extremely fast, excellent on mobile, and it demonstrates transformation more directly than video because the visitor controls the reveal.</p>
+
+        <h3>Concept 4 · The Facade</h3>
+        <p>A dark building elevation of window tiles. Each window illuminates on hover or in sequence, revealing a different project behind it. Clicking enters that case study.</p>
+        <p><strong>Why it is here:</strong> a portfolio-first interaction that is also a lighting metaphor, built entirely from stills. Strong candidate for the <span class="mono">/projects</span> index page.</p>
+
+        <div class="note find">
+          <span class="tag">Production reality — please read</span>
+          <p>Concepts 1 and 2 require footage that does not exist yet. The failure mode of a cinematic brief is a beautiful shell full of placeholders that never gets filled, and then a site that cannot launch.<br><br>My recommendation: <strong>build the hero as a swappable slot.</strong> Launch on Concepts 3 and 4, which look genuinely excellent using material you already have. Shoot Concept 2 properly, without schedule pressure, and drop it into the same slot when it is ready — no rebuild, no redesign, no second invoice for structure. You get a site that ships and a site that ends up cinematic, rather than choosing between them.</p>
+        </div>
+      </section>
+
+      <!-- 14 -->
+      <section id="s14">
+        <div class="sechead"><span class="num">14</span><h2>Content Gaps — What I Need From You</h2></div>
+
+        <h4>Blocking — the build cannot be honest without these</h4>
+        <ul>
+          <li>Electrical contractor licence number and holder. General contractor licence number and holder. In Florida these must appear in advertising, so this is a compliance requirement, not a trust ornament.</li>
+          <li>Insurance certificate and liability limits</li>
+          <li>Founding year, to justify or retire the 30-years claim</li>
+          <li>Which phone number is primary</li>
+          <li>The true service area (see section 11)</li>
+          <li>E-Built's legal status and qualifying licence holder</li>
+          <li>Whether the lifetime warranty is yours or the manufacturer's</li>
+        </ul>
+
+        <h4>Media</h4>
+        <ul>
+          <li>Instagram access or an export of the best 30–50 posts</li>
+          <li>The professional videos the manufacturer offered — the interview mentions these are available</li>
+          <li>Any existing logo files, brand assets, or vehicle/uniform livery</li>
+          <li>Photos of the showroom, the team, the bucket truck, and the trucks</li>
+          <li>Client permission for any project you want featured</li>
+        </ul>
+
+        <h4>Content</h4>
+        <ul>
+          <li>Your 10–15 strongest projects, with enough detail to write them up</li>
+          <li>Testimonials, and permission to use them — the interview names willing customers</li>
+          <li>The compliance networks you are approved in, by name</li>
+          <li>What the maintenance program will actually include, and when it launches</li>
+          <li>Whether stage and studio lighting stays</li>
+          <li>Approval — or rejection — of "Worldwide Supply" as the third division name</li>
+          <li>Approval on the headline direction (section 03)</li>
+        </ul>
+
+        <h4>Access</h4>
+        <ul>
+          <li>Domain registrar and DNS for both domains</li>
+          <li>Google Search Console, Analytics, Google Business Profile</li>
+          <li>Current site hosting and CMS credentials, so nothing is lost in the migration</li>
+        </ul>
+      </section>
+
+      <!-- 15 -->
+      <section id="s15">
+        <div class="sechead"><span class="num">15</span><h2>Technical Approach</h2></div>
+
+        <p>The working repository is already scaffolded on a stack that suits this project well: <strong>React 19, Vite 7, Hono on Cloudflare Workers, D1 with Drizzle, Tailwind v4</strong>. Cloudflare's edge network is a genuine advantage for a media-heavy site that must feel instant, and Workers plus D1 handles lead capture without a separate backend. I would keep the stack and strip the unrelated application code currently in it.</p>
+
+        <div class="note tech">
+          <span class="tag">The one real technical risk</span>
+          <p>The scaffold uses client-side routing. For a site whose entire commercial case rests on Florida search visibility, shipping an empty HTML shell that requires JavaScript to render is the single most damaging decision available. <strong>Recommendation: add build-time prerendering</strong> so every route ships as real crawlable HTML while keeping the client-side interactivity the cinematic direction needs. It is the lowest-risk path to both. If the content volume later justifies it, moving to full server rendering on Workers is a contained change, not a rebuild.</p>
+        </div>
+
+        <div class="tw">
+          <table>
+            <thead><tr><th>Concern</th><th>Approach</th></tr></thead>
+            <tbody>
+              <tr><td>Media delivery</td><td>Cloudflare Images for responsive stills, Cloudflare Stream for video — adaptive bitrate, no third-party player, stays inside the platform</td></tr>
+              <tr><td>Scroll motion</td><td>GSAP ScrollTrigger with Lenis for scrub. Frame-sequence heroes decoded to canvas rather than played as video, so scrubbing stays smooth on mobile</td></tr>
+              <tr><td>Performance budget</td><td>LCP under 2.0s on mobile, CLS under 0.05. Hero poster ≤200KB AVIF. <strong>No autoplay video above the fold on mobile</strong> — the still is served instead and the sequence loads after</td></tr>
+              <tr><td>Content system</td><td>D1-backed projects, testimonials and posts, with a deliberately minimal phone-friendly admin. Mandatory <span class="mono">mediaType</span> on every image (section 09)</td></tr>
+              <tr><td>Forms</td><td>Workers endpoints → D1 + transactional email, with per-path routing and Turnstile for spam. CRM webhook when there is a CRM</td></tr>
+              <tr><td>Accessibility</td><td>WCAG 2.2 AA. Contrast verified on the dark palette, full keyboard paths, reduced-motion alternatives for every scroll effect</td></tr>
+              <tr><td>Migration</td><td>Page-level 301 map from both existing domains before cutover. Nothing gets dropped</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Suggested build sequence</h4>
+        <div class="spine">
+          <div><b>Phase 1</b><span>Foundation, IA, commercial pathways, conversion paths, SEO, Split-State mechanics. Ships.</span></div>
+          <div><b>Phase 2</b><span>Portfolio depth and case studies as media is triaged and cleared.</span></div>
+          <div><b>Phase 3</b><span>Cinematic hero dropped into the swappable slot. Learn hub. Maintenance program at launch.</span></div>
+        </div>
+      </section>
+
+      <!-- 16 -->
+      <section id="s16">
+        <div class="sechead"><span class="num">16</span><h2>Verification Register</h2></div>
+
+        <p>Consolidated list of every claim I will not publish without confirmation. Nothing here has been silently resolved, corrected, or upgraded.</p>
+
+        <div class="tw">
+          <table>
+            <thead><tr><th>#</th><th>Item</th><th>Source of doubt</th><th>Risk if wrong</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">01</td><td>Electrical contractor licence</td><td>Could not verify in public records</td><td>Regulatory — advertising compliance</td></tr>
+              <tr><td class="mono">02</td><td>General contractor licence for E-Built</td><td>No public trace of E-Built at all</td><td>Regulatory</td></tr>
+              <tr><td class="mono">03</td><td>"Over 30 years of experience"</td><td>Published currently; no founding year confirmed</td><td>Credibility</td></tr>
+              <tr><td class="mono">04</td><td>"225,000 products"</td><td>Interview only; owner himself hedged it</td><td>Credibility. I recommend not using it regardless</td></tr>
+              <tr><td class="mono">05</td><td>Lifetime warranty on fixtures/transformers</td><td>Published as if company-backed</td><td>Liability</td></tr>
+              <tr><td class="mono">06</td><td>Sea-turtle-safe, "approved by government agencies"</td><td>Agency and certification unnamed</td><td>Regulatory + credibility</td></tr>
+              <tr><td class="mono">07</td><td>Statewide Florida service</td><td>All evidence is Miami-Dade</td><td>Credibility + SEO dilution</td></tr>
+              <tr><td class="mono">08</td><td>Primary phone number</td><td>Two numbers live in market</td><td>Lost leads + local SEO</td></tr>
+              <tr><td class="mono">09</td><td>Compliance network approvals</td><td>Named conversationally; some names garbled in transcript</td><td>Credibility with PMs</td></tr>
+              <tr><td class="mono">10</td><td>Maintenance program status</td><td>Interview describes it as unbuilt</td><td>Overpromising a service that cannot be delivered</td></tr>
+              <tr><td class="mono">11</td><td>Bucket truck scope</td><td>Flagged in the brief; scope unconfirmed</td><td>Service claim accuracy</td></tr>
+              <tr><td class="mono">12</td><td>Stage &amp; studio lighting</td><td>On current site, absent from brief</td><td>Deleting a live business line</td></tr>
+              <tr><td class="mono">13</td><td>Testimonial permissions</td><td>Not obtained</td><td>Legal</td></tr>
+              <tr><td class="mono">14</td><td>Project photo permissions</td><td>Instagram posting ≠ portfolio rights</td><td>Legal, especially medical and private residences</td></tr>
+              <tr><td class="mono">15</td><td>Trade guarantees</td><td>Brief warns against implying all trades are independently guaranteed</td><td>Liability</td></tr>
+              <tr><td class="mono">16</td><td>Domain ownership, both properties</td><td>Assumed, not confirmed</td><td>Migration blocker</td></tr>
+              <tr><td class="mono">17</td><td>Public use of "Underpromise. Overdeliver."</td><td>Brief asks for confirmation</td><td>Brand — sets a measurable promise</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 17 -->
+      <section id="s17">
+        <div class="sechead"><span class="num">17</span><h2>Decisions Needed Before I Build</h2></div>
+
+        <div class="closer">
+          <h3>Six answers unblock the build</h3>
+          <ol>
+            <li><strong>Brand architecture</strong> — approve the endorsed-house model (option C, section 02), and confirm which domain becomes primary.</li>
+            <li><strong>The third division</strong> — approve, rename, or reject "Worldwide Supply." If the package-flip business stays unnamed, it stays invisible.</li>
+            <li><strong>Service area</strong> — statewide, or Miami-headquartered serving Florida? This changes the sitemap, the SEO architecture, and the homepage copy.</li>
+            <li><strong>Headline</strong> — A, B, C, or D from section 03. My recommendation is B.</li>
+            <li><strong>Hero approach</strong> — ship on stills now with a swappable slot for the cinematic hero later (my recommendation), or hold the launch until the footage is shot.</li>
+            <li><strong>The blocking verifications</strong> — items 01 through 08 in the register. Everything else can arrive during the build; these cannot.</li>
+          </ol>
+          <p style="margin-top:18px">Give me those and I will move to the build. Nothing has been coded yet, and nothing will be until you have approved this direction.</p>
+        </div>
+      </section>
+
+      <footer>
+        <p>Worldwide Distributors · Website strategy and architecture · Phases 1–5 · Prepared 20 August 2026<br>
+        Sources: owner interview transcript, Business Intelligence extraction, and public web research.<br>
+        Direct access to worldwidedistributorsinc.com, elighting.org and Instagram was blocked by this environment's network policy; those findings are reconstructed from search-index data and are marked accordingly.<br>
+        No claim in this document has been treated as verified unless confirmed by a source named here.</p>
+      </footer>
+
+    </main>
+  </div>
+</div>
