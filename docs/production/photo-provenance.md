@@ -20,11 +20,40 @@ phone shot. They carry the site.
 | `pool.jpg` | `04_IMG_7266.jpeg` | portfolio, homepage tile |
 | `interior.jpg` | `08_DSC01213-HDR-Edit.jpg` | portfolio |
 
+## Second batch (18-image manifest)
+
+Four more images, all served from the same site host.
+
+| site file | source | used for |
+|---|---|---|
+| `lot.jpg` / `scene-lot.jpg` | `15_PARKING_LOT_DOWNLOADED.jpeg` | portfolio; the property-managers relight scene |
+| `deck.jpg` | `16_garage_DOWNLOAD.jpeg` | portfolio |
+| `deck-wide.jpg` | `17_garage_light_yw.jpeg` | available, not yet placed |
+| `planting.jpg` | `18_untitled_81_of_301_.jpg` | portfolio |
+
+`18_untitled (81 of 301).jpg` is frame 81 of a 301-frame shoot, so it belongs
+to the same professional session as the DSC set. Treat it as their own.
+
 ## In use — provenance to confirm
+
+**Three filenames say they were downloaded from somewhere.**
+`15_PARKING_LOT_DOWNLOADED`, `16_garage_DOWNLOAD` and `17_garage_light_yw`
+were published on the company's own site, but the first two carry "DOWNLOAD"
+in the filename, which usually means an image pulled from a manufacturer,
+supplier or stock library rather than shot on a job.
+
+This matters more than the earlier flags, because the portfolio presents these
+as completed Worldwide Distributors projects. **Confirm with the owners before
+launch.** If they are not their own installs, either drop them or relabel them
+the way the concept renderings are labelled.
+
+Same question, lower stakes, for `07_HIGHBAY.jpeg`.
+
+
 
 | site file | source | note |
 |---|---|---|
-| `highbay.jpg` | `07_HIGHBAY.jpeg` | Commercial high-bay interior. Filename is not from the DSC set, so this may be a manufacturer or supplier photograph rather than their own install. **Confirm before launch.** |
+| `highbay.jpg` | `07_HIGHBAY.jpeg` | Commercial high-bay interior. Filename sits outside the DSC set, so this may be a manufacturer or supplier photograph. |
 
 ## Not used
 
@@ -61,8 +90,19 @@ The owners have reviewed the renderings and confirmed they represent the kind
 of work the company does. They stay until real photography replaces them,
 badged throughout.
 
+## Not supplied
+
+The manifest lists a video that was not in the zip:
+
+    videos/Elighting_Drone_Video_3_1080p.mp4
+    1920x1080 · 74.4s · 45MB · https://vimeo.com/915644789/c823512cee
+
+Seventy-four seconds of real drone footage would be the single strongest asset
+on the site. It could replace the generated buildout clip in the scroll-scrub
+outright — that section is built to play any continuous shot frame by frame,
+and a real aerial pass over a lit property beats a rendering of a corridor.
+
 ## Gaps
 
-No photography exists for commercial buildouts, medical fit-outs, retail, or
-parking structures. Those are the four categories still carrying renderings.
-See `shot-list.html` for what to shoot.
+Parking is now covered by photography. Still carrying renderings: commercial
+buildouts, medical fit-outs and retail. See `shot-list.html` for what to shoot.
