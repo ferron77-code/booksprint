@@ -1,0 +1,290 @@
+<title>Showroom Shot List</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+  /* ── tokens: light is the default, because this gets printed ─────── */
+  :root{
+    --paper:#F2F4F6;
+    --card:#FFFFFF;
+    --ink:#12161B;
+    --mute:#5E6976;
+    --rule:#D3DAE1;
+    --amber:#B9741A;
+    --amber-ink:#FFF6E8;
+    --warn:#A32A1E;
+    --warn-bg:#FBEEEC;
+    --warn-rule:#E8C4BE;
+
+    --f-d:"Archivo","Helvetica Neue",Arial,sans-serif;
+    --f-b:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --f-m:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+    --pad:clamp(20px,5vw,56px);
+  }
+  /* system dark, unless an explicit light choice was stamped */
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#0E1216;
+      --card:#151A20;
+      --ink:#EDEAE4;
+      --mute:#98A0AA;
+      --rule:#262D35;
+      --amber:#F2C879;
+      --amber-ink:#14100A;
+      --warn:#F0897A;
+      --warn-bg:#241412;
+      --warn-rule:#4A2822;
+    }
+  }
+  /* explicit dark choice wins the other way */
+  :root[data-theme="dark"]{
+    --paper:#0E1216;
+    --card:#151A20;
+    --ink:#EDEAE4;
+    --mute:#98A0AA;
+    --rule:#262D35;
+    --amber:#F2C879;
+    --amber-ink:#14100A;
+    --warn:#F0897A;
+    --warn-bg:#241412;
+    --warn-rule:#4A2822;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--f-b);font-size:16px;line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:820px;margin:0 auto;padding:clamp(34px,7vw,72px) var(--pad) 96px}
+  :focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+
+  h1,h2,h3{font-family:var(--f-d);text-transform:uppercase;margin:0;text-wrap:balance}
+  h1{font-variation-settings:"wdth" 112,"wght" 800;font-size:clamp(30px,6vw,54px);line-height:.98;letter-spacing:-.016em}
+  h2{font-variation-settings:"wdth" 106,"wght" 780;font-size:clamp(21px,3.4vw,30px);line-height:1.04}
+  h3{font-variation-settings:"wdth" 104,"wght" 740;font-size:15px;line-height:1.2;letter-spacing:.005em}
+
+  .eyebrow{font-family:var(--f-m);font-size:10.5px;font-weight:500;letter-spacing:.19em;
+    text-transform:uppercase;color:var(--amber);margin:0}
+  .lede{font-size:17px;color:var(--mute);margin:16px 0 0}
+  p{margin:14px 0 0}
+  a{color:var(--amber)}
+
+  /* ── masthead ────────────────────────────────────────────────────── */
+  header{border-bottom:2px solid var(--ink);padding-bottom:22px}
+  .meta{display:flex;flex-wrap:wrap;gap:6px 26px;margin-top:20px;
+    font-family:var(--f-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+  .meta b{color:var(--ink);font-weight:600}
+
+  /* ── shoot block ─────────────────────────────────────────────────── */
+  .shoot{margin-top:clamp(44px,7vw,76px)}
+  .shoot-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;
+    border-bottom:1px solid var(--rule);padding-bottom:14px}
+  .tag{font-family:var(--f-m);font-size:10.5px;font-weight:600;letter-spacing:.14em;
+    text-transform:uppercase;background:var(--amber);color:var(--amber-ink);padding:5px 9px;line-height:1}
+  .where{font-family:var(--f-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--mute);margin-left:auto}
+
+  /* ── spec table ──────────────────────────────────────────────────── */
+  .specs{margin:26px 0 0;border-top:1px solid var(--rule)}
+  .spec{display:grid;grid-template-columns:minmax(112px,150px) 1fr;gap:6px 24px;
+    border-bottom:1px solid var(--rule);padding:11px 0}
+  @media(max-width:560px){.spec{grid-template-columns:1fr;gap:2px}}
+  .spec dt{font-family:var(--f-m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+  .spec dd{margin:0;font-size:15px;color:var(--mute)}
+  .spec dd b{color:var(--ink);font-weight:600}
+  code,.mono{font-family:var(--f-m);font-size:.9em;font-variant-numeric:tabular-nums}
+  code{background:var(--card);border:1px solid var(--rule);padding:1px 5px}
+
+  /* ── steps: order genuinely matters on a shoot ───────────────────── */
+  .steps{list-style:none;counter-reset:s;margin:28px 0 0;padding:0}
+  .steps li{counter-increment:s;position:relative;padding:0 0 18px 46px}
+  .steps li::before{content:counter(s,decimal-leading-zero);position:absolute;left:0;top:1px;
+    font-family:var(--f-m);font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--amber)}
+  .steps li:last-child{padding-bottom:0}
+  .steps p{margin:5px 0 0;font-size:14.5px;color:var(--mute)}
+
+  /* ── the one thing that ruins each shoot ─────────────────────────── */
+  .stop{margin:30px 0 0;background:var(--warn-bg);border:1px solid var(--warn-rule);
+    border-left:4px solid var(--warn);padding:18px 20px}
+  .stop .t{display:block;font-family:var(--f-m);font-size:10.5px;font-weight:600;
+    letter-spacing:.15em;text-transform:uppercase;color:var(--warn);margin-bottom:8px}
+  .stop p{margin:0;font-size:14.5px;color:var(--ink)}
+  .stop p + p{margin-top:9px}
+  .stop b{font-weight:600}
+
+  /* ── file naming ─────────────────────────────────────────────────── */
+  .files{margin:24px 0 0;background:var(--card);border:1px solid var(--rule);padding:16px 18px}
+  .files .t{display:block;font-family:var(--f-m);font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--mute);margin-bottom:9px}
+  .files ul{margin:0;padding:0;list-style:none;font-family:var(--f-m);font-size:12.5px;
+    line-height:1.85;color:var(--ink);overflow-x:auto}
+  .files li span{color:var(--mute)}
+
+  .close{margin-top:clamp(46px,7vw,80px);border-top:2px solid var(--ink);padding-top:24px}
+
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+  @media print{
+    :root{--paper:#fff;--card:#fff}
+    body{font-size:11pt}
+    .wrap{max-width:none;padding:0}
+    .shoot{break-inside:avoid;page-break-inside:avoid}
+    .stop{break-inside:avoid}
+  }
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Worldwide Distributors &middot; Website photography</p>
+  <h1>Showroom<br>Shot List</h1>
+  <p class="lede">Two shoots, one evening, one tripod. Both replace something currently drawn
+  in code on the website with the real thing. Neither needs a photographer &mdash; they need
+  a locked camera and someone who does not touch it between frames.</p>
+  <p class="meta">
+    <span><b>Shoot A</b> &nbsp;5 frames &nbsp;&middot;&nbsp; ~30 min</span>
+    <span><b>Shoot B</b> &nbsp;72 frames &nbsp;&middot;&nbsp; ~45 min</span>
+    <span><b>Kit</b> &nbsp;phone or DSLR + tripod</span>
+  </p>
+</header>
+
+<!-- ══ SHOOT A ══════════════════════════════════════════════════════ -->
+<section class="shoot">
+  <div class="shoot-head">
+    <span class="tag">Shoot A</span>
+    <h2>Colour temperature</h2>
+    <span class="where">Showroom</span>
+  </div>
+
+  <p>The website has a slider that moves a room from warm to cool so a customer can feel
+  the difference between a restaurant and a loading dock. Right now that room is an
+  illustration. It should be your showroom &mdash; because this is the detail most
+  contractors get wrong, and showing it in your own space is the proof.</p>
+
+  <dl class="specs">
+    <div class="spec"><dt>Frames</dt><dd><b>5</b> &mdash; one per colour temperature, identical framing</dd></div>
+    <div class="spec"><dt>Temperatures</dt><dd class="mono">2700K &nbsp; 3000K &nbsp; 3500K &nbsp; 4000K &nbsp; 5000K</dd></div>
+    <div class="spec"><dt>Subject</dt><dd>A corner with something warm in it &mdash; wood, stone, a fabric chair. Colour temperature is invisible on a white wall.</dd></div>
+    <div class="spec"><dt>Framing</dt><dd>Wide, eye height, straight on. Landscape, roughly <b>4:3</b>.</dd></div>
+    <div class="spec"><dt>People</dt><dd>None in frame.</dd></div>
+  </dl>
+
+  <ol class="steps">
+    <li><h3>Kill the daylight</h3>
+      <p>Shoot after dark, or blind the windows. Any daylight mixing in fights the fixture and the five frames stop being comparable.</p></li>
+    <li><h3>Lock the tripod</h3>
+      <p>Frame it, then do not touch the camera again until all five are shot. Not the zoom, not the angle, not the height.</p></li>
+    <li><h3>Lock white balance and exposure</h3>
+      <p>See the warning below. This is the whole shoot.</p></li>
+    <li><h3>Shoot cool to warm</h3>
+      <p>Change only the lamp or the tuneable setting between frames. Note which temperature each frame is as you go &mdash; you will not be able to tell later.</p></li>
+    <li><h3>Check before you break down</h3>
+      <p>Flick between the first and last frame on the screen. If the room does not visibly change colour, something is on auto. Fix it and reshoot before you move the tripod.</p></li>
+  </ol>
+
+  <div class="stop">
+    <span class="t">The one thing that ruins this shoot</span>
+    <p><b>Turn off auto white balance.</b> On auto, the camera decides the room "should" look
+    neutral and corrects the warmth straight back out &mdash; so 2700K and 5000K come back
+    looking identical and the entire point is erased. Set white balance to a fixed value
+    (daylight / 5600K is fine) and leave it there.</p>
+    <p>Lock exposure too, for the same reason: on auto, a dimmer warm frame gets brightened
+    to match and the comparison dies a second time. On a phone: tap the subject, then press
+    and hold until it says AE/AWB LOCK.</p>
+  </div>
+
+  <div class="files">
+    <span class="t">Send them named like this</span>
+    <ul>
+      <li>kelvin-2700.jpg</li>
+      <li>kelvin-3000.jpg</li>
+      <li>kelvin-3500.jpg</li>
+      <li>kelvin-4000.jpg</li>
+      <li>kelvin-5000.jpg</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══ SHOOT B ══════════════════════════════════════════════════════ -->
+<section class="shoot">
+  <div class="shoot-head">
+    <span class="tag">Shoot B</span>
+    <h2>Fixture turntable</h2>
+    <span class="where">Any dark room</span>
+  </div>
+
+  <p>On the homepage a single fixture turns slowly while the six stages of a project
+  change around it &mdash; bought, drawn, supplied, installed, built in, maintained. It is
+  currently drawn in code. A real fixture you actually stock would be better, and it is a
+  lazy susan and a phone.</p>
+
+  <dl class="specs">
+    <div class="spec"><dt>Frames</dt><dd><b>72</b> &mdash; 36 positions, shot twice</dd></div>
+    <div class="spec"><dt>Pass 1</dt><dd>Fixture <b>off</b>, all 36 positions</dd></div>
+    <div class="spec"><dt>Pass 2</dt><dd>Fixture <b>lit</b>, same 36 positions, camera untouched</dd></div>
+    <div class="spec"><dt>Rotation</dt><dd><span class="mono">10&deg;</span> per frame. Mark the turntable edge every 10&deg; with tape beforehand.</dd></div>
+    <div class="spec"><dt>Subject</dt><dd>One good-looking fixture you stock. A cylinder or spot reads best &mdash; it has a visible aperture.</dd></div>
+    <div class="spec"><dt>Backdrop</dt><dd>Black or very dark. Light only reads against dark.</dd></div>
+    <div class="spec"><dt>Framing</dt><dd>Square-ish, fixture centred with room around it for the beam to fall into.</dd></div>
+  </dl>
+
+  <ol class="steps">
+    <li><h3>Mark the turntable</h3>
+      <p>Tape every 10&deg; around the edge before anything else. Thirty-six marks. This is what makes the two passes line up.</p></li>
+    <li><h3>Set up dark</h3>
+      <p>Black backdrop, one soft light off to the side so the body of the fixture still has shape when it is switched off.</p></li>
+    <li><h3>Lock everything</h3>
+      <p>Tripod, focus, exposure, white balance &mdash; all manual, all locked. Same reason as Shoot A.</p></li>
+    <li><h3>Pass one, unlit</h3>
+      <p>Fixture off. Rotate one mark, shoot, repeat, all the way round. Thirty-six frames.</p></li>
+    <li><h3>Pass two, lit</h3>
+      <p>Switch the fixture on. Do not move the camera, the tripod, or the side light. Go round again from the same starting mark.</p></li>
+  </ol>
+
+  <div class="stop">
+    <span class="t">The one thing that ruins this shoot</span>
+    <p><b>Both passes must be the same 36 positions.</b> The website crossfades the off frame
+    into the lit frame so the fixture appears to switch on mid-rotation. If the second pass
+    drifts even slightly, the fixture jumps as it lights.</p>
+    <p>So: start both passes from the same tape mark, count out loud, and do not adjust the
+    side light between passes.</p>
+  </div>
+
+  <div class="files">
+    <span class="t">Send them named like this</span>
+    <ul>
+      <li>fixture-off-001.jpg &nbsp;<span>&hellip; through &hellip;</span>&nbsp; fixture-off-036.jpg</li>
+      <li>fixture-on-001.jpg &nbsp;&nbsp;<span>&hellip; through &hellip;</span>&nbsp; fixture-on-036.jpg</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══ AFTER ════════════════════════════════════════════════════════ -->
+<section class="shoot">
+  <div class="shoot-head">
+    <span class="tag">After</span>
+    <h2>Getting them to me</h2>
+  </div>
+
+  <dl class="specs">
+    <div class="spec"><dt>Format</dt><dd>Straight off the camera is fine. JPEG, largest size. I resize them.</dd></div>
+    <div class="spec"><dt>How</dt><dd>Put them in a <b>.zip</b> and send that. A zip lands on disk here; loose photos arrive as pictures I can look at but cannot save.</dd></div>
+    <div class="spec"><dt>Editing</dt><dd>None. Do not colour-correct the kelvin frames &mdash; the differences between them are the content.</dd></div>
+    <div class="spec"><dt>Then</dt><dd>Both swaps are file changes, not code changes. The turntable plays through the same engine that already runs the buildout film.</dd></div>
+  </dl>
+
+  <p>If either shoot does not happen, nothing breaks. The drawn versions on the site now are
+  finished work, not placeholders &mdash; they stay until there is something real to put in
+  their place.</p>
+</section>
+
+<div class="close">
+  <p class="eyebrow">One line to remember</p>
+  <p style="font-family:var(--f-d);font-variation-settings:'wdth' 104,'wght' 700;
+     text-transform:uppercase;font-size:clamp(17px,2.6vw,25px);line-height:1.14;margin-top:12px">
+    Lock the white balance, lock the exposure,<br>do not touch the tripod.
+  </p>
+</div>
+
+</div>
