@@ -21,6 +21,8 @@ assets/site.css         all styling
 assets/site.js          the clock: one time value drives every colour
 assets/scroll.js        scroll scenes; optional, the site works without it
 assets/img/             photography and video
+assets/img/estate-fly/  87 frames of the drone flight, scrubbed on the homepage
+assets/img/buildout/    121 frames of the buildout clip, scrubbed on Commercial
 ```
 
 ## The clock

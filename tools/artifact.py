@@ -24,23 +24,31 @@ for fn in sorted(os.listdir(os.path.join(SITE, "assets/img"))):
     raw = io.open(path, "rb").read()
     total += len(raw)
     assets[fn] = "data:%s;base64,%s" % (mime, base64.b64encode(raw).decode("ascii"))
-# The scrub frames live in a folder, so they cannot be tokenised like the
-# other assets. Bundle every second frame as a data URI and hand the list
-# straight to the engine — 61 frames still scrub smoothly and halves the
-# weight of this file.
-FRAME_SRC = ""
-fdir = os.path.join(SITE, "assets/img/buildout")
-if os.path.isdir(fdir):
-    names = sorted(f for f in os.listdir(fdir) if f.endswith(".jpg"))[::2]
-    uris = []
-    for fn in names:
-        raw = io.open(os.path.join(fdir, fn), "rb").read()
-        total += len(raw)
-        uris.append("data:image/jpeg;base64," + base64.b64encode(raw).decode("ascii"))
-    FRAME_SRC = json.dumps(uris).replace("<", "\\u003c")
-    print("scrub frames bundled: %d" % len(uris))
+# Scrub frames live in folders, so they cannot be tokenised like the other
+# assets. Bundle each folder on demand as a list of data URIs and hand it
+# straight to the engine. Every second frame still scrubs smoothly and halves
+# the weight of this file.
+_frame_cache = {}
+def frame_src(base):
+    """base is the page's data-base, e.g. 'assets/img/estate-fly/'."""
+    global total
+    if base in _frame_cache:
+        return _frame_cache[base]
+    d = os.path.join(SITE, base.strip("/"))
+    out = ""
+    if os.path.isdir(d):
+        names = sorted(f for f in os.listdir(d) if f.endswith(".jpg"))[::3]
+        uris = []
+        for fn in names:
+            raw = io.open(os.path.join(d, fn), "rb").read()
+            total += len(raw)
+            uris.append("data:image/jpeg;base64," + base64.b64encode(raw).decode("ascii"))
+        out = json.dumps(uris).replace("<", "\\u003c")
+        print("  %-26s %3d frames bundled" % (base, len(uris)))
+    _frame_cache[base] = out
+    return out
 
-ico = io.open(os.path.join(SITE, "assets/favicon.svg"), "rb").read()
+ico = ico = io.open(os.path.join(SITE, "assets/favicon.svg"), "rb").read()
 assets["favicon.svg"] = "data:image/svg+xml;base64," + base64.b64encode(ico).decode("ascii")
 
 BRIDGE = u"""
@@ -75,8 +83,11 @@ for slug in PAGES:
     s = re.sub(r'assets/(?:img/)?([A-Za-z0-9._-]+\.(?:jpg|png|mp4|svg))', r'@@\1@@', s)
     # the PHP endpoint does not exist in a preview
     s = s.replace('action="contact.php"', 'action="#"')
-    if FRAME_SRC and 'id="scrub"' in s:
-        s = s.replace('id="scrub"', 'id="scrub" data-frame-src=\'' + FRAME_SRC + "'", 1)
+    m = re.search(r'id="scrub"[^>]*data-base="([^"]+)"', s)
+    if m:
+        fs = frame_src(m.group(1))
+        if fs:
+            s = s.replace('id="scrub"', 'id="scrub" data-frame-src=\'' + fs + "'", 1)
     missing = set(re.findall(r"@@([A-Za-z0-9._-]+)@@", s)) - set(assets)
     assert not missing, (slug, missing)
     docs[slug] = s

@@ -215,22 +215,34 @@
   </div>
 </section>
 
-<!-- ══ FILM ════════════════════════════════════════════════ -->
-<section class="sec sec-tight">
-  <div class="wrap">
-    <div class="head rv">
-      <p class="eyebrow">E-Built &middot; one continuous take</p>
-      <h2 class="disp">Empty shell to<br>open doors</h2>
-      <p class="lede">A commercial buildout is months of work that nobody sees. This is what it looks like compressed into one move.</p>
-    </div>
-    <div class="film-wrap rv">
-      <video id="film" muted loop playsinline preload="metadata" poster="assets/img/buildout-poster.jpg">
-        <source src="assets/img/buildout.mp4" type="video/mp4">
+<!-- ══ DRONE FLIGHT ═══════════════════════════════════════
+     Real drone footage of a finished residential project, played
+     frame by frame under the wheel. Desktop only — below 900px and
+     under reduced motion the plain clip below plays instead. -->
+<section class="scrub" id="scrub" data-frames="87" data-base="assets/img/estate-fly/" data-mode="video">
+  <div class="scrub-stick">
+    <div class="scrub-stage">
+      <video muted loop playsinline preload="none" poster="assets/img/estate-fly-poster.jpg">
+        <source src="assets/img/estate-fly.mp4" type="video/mp4">
       </video>
+      <canvas aria-hidden="true"></canvas>
+      <div class="scrub-vig"></div>
     </div>
-    <p class="film-meta">
-      <span>Demolition</span><span>Framing</span><span>Electrical rough-in</span><span>Lighting</span><span>Finishes</span><span>Open</span>
-    </p>
+    <div class="scrub-copy">
+      <div class="wrap">
+        <p class="eyebrow">One property &middot; scroll to fly it</p>
+        <h2 class="disp">Everything on,<br>seen from above</h2>
+        <p>Drone footage of a finished residential project. Keep scrolling and
+           the camera lifts out of the courtyard and over the roof, until the
+           pool, the terraces, the cabana and the roofline read as one system
+           instead of a list of fixtures.</p>
+        <div class="scrub-bar"><i></i></div>
+        <ol class="scrub-steps">
+          <li>Courtyard</li><li>Glass wall</li><li>Pool</li>
+          <li>Terrace</li><li>Cabana</li><li>Rooftop</li><li>Aerial</li>
+        </ol>
+      </div>
+    </div>
   </div>
 </section>
 

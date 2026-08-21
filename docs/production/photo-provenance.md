@@ -90,17 +90,28 @@ The owners have reviewed the renderings and confirmed they represent the kind
 of work the company does. They stay until real photography replaces them,
 badged throughout.
 
-## Not supplied
+## The drone footage
 
-The manifest lists a video that was not in the zip:
+`Elighting_Drone_Video_3_720p.mp4` — 74.4s, 1280x720, from
+https://vimeo.com/915644789/c823512cee
 
-    videos/Elighting_Drone_Video_3_1080p.mp4
-    1920x1080 · 74.4s · 45MB · https://vimeo.com/915644789/c823512cee
+A flight over a finished residential project at dusk. It now drives the
+homepage scroll-scrub, which replaced the generated corridor clip there.
 
-Seventy-four seconds of real drone footage would be the single strongest asset
-on the site. It could replace the generated buildout clip in the scroll-scrub
-outright — that section is built to play any continuous shot frame by frame,
-and a real aerial pass over a lit property beats a rendering of a corridor.
+Only part of it is usable, for two reasons a scrub is fussy about:
+
+- **Cuts.** There are three, at 8.7s, 11.6s and 18.5s. A cut looks broken when
+  the viewer scrolls backward through it, so the segment has to be continuous.
+- **Exposure.** After roughly 48s the drone is high enough that mean luminance
+  drops below 30 and the frames read as black.
+
+**The segment in use is 19s to 48s** — continuous, well exposed, and the best
+part of the flight: out of the courtyard, along the pool, up over the roof to
+a top-down of the whole lit property. 87 frames at 860px, 2.4MB, with a 960px
+clip as the mobile and reduced-motion fallback.
+
+The remaining 45 seconds are not wasted — the opening approach to the facade
+would make a strong hero once the cuts either side of it are trimmed.
 
 ## Gaps
 
