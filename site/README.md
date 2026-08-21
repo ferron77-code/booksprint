@@ -31,8 +31,9 @@ writes them to CSS custom properties on `:root`. Nothing else in the stylesheet
 hardcodes those colours. The rail on the right lets a visitor scrub the time;
 "Live" returns to their actual clock.
 
-Day and night photography crossfade on the same value — every `.hero-shots`
-and `.tile` carries a `.day` and a `.night` image.
+Their photography is all shot at night, which is the only state a lighting
+project really has, so images do not cross-fade — the clock drives the page
+around them.
 
 With JavaScript off the site renders in its daylight palette and every section
 is visible; the reveal animations are gated behind a `js` class so they can
@@ -45,11 +46,11 @@ never leave content hidden.
   all. Florida requires the licence number in advertising, websites included.
 - **Phone and email.** `(305) 969-8769` and `info@elighting.org` are used
   throughout — confirm both, then search and replace.
-- **Photography.** Every image is currently a concept rendering, labelled as
-  such on the page (`Concept imagery — pending project photography` and the
-  `Concept` badge on each tile). Replace with real jobs shot twice: once in
-  daylight, once after dark, from the same position. Do not remove the labels
-  until the images are real.
+- **Photography.** Every photograph on the site is a real Worldwide
+  Distributors project, taken from their previous site. One exception needs
+  checking: `highbay.jpg` may be a manufacturer photograph rather than their
+  own install — see `../docs/production/photo-provenance.md`. No photography
+  exists yet for commercial buildouts, medical, retail or parking.
 - **Domain.** `sitemap.xml` and `robots.txt` reference
   `worldwidedistributorsinc.com`.
 

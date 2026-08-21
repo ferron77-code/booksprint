@@ -2,26 +2,8 @@
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from chrome import page, CLOSE
+from pages_common import phero
 
-def phero(day, night, alt, eyebrow, h1, lede, btns):
-    return u"""
-<section class="phero">
-  <div class="hero-shots" aria-hidden="true">
-    <img class="day"   src="assets/img/%s" alt="" fetchpriority="high">
-    <img class="night" src="assets/img/%s" alt="" fetchpriority="high">
-  </div>
-  <div class="hero-scrim" aria-hidden="true"></div>
-  <div class="phero-in">
-    <div class="wrap">
-      <p class="stamp"><i></i>%s &middot; <span class="js-state">Daylight</span> &middot; <b class="js-clock">&mdash;</b></p>
-      <h1 class="disp">%s</h1>
-      <p class="lede">%s</p>
-      <div class="btns">%s</div>
-    </div>
-  </div>
-  <span class="rend">Concept imagery &middot; pending project photography</span>
-</section>
-""" % (day, night, eyebrow, h1, lede, btns)
 
 CTA_P = u'<a class="btn btn-p" href="contact.html">Start a project</a>'
 CTA_S = u'<a class="btn btn-s" href="portfolio.html">See the work</a>'
@@ -29,7 +11,7 @@ CTA_S = u'<a class="btn btn-s" href="portfolio.html">See the work</a>'
 
 # ══════════════════════════════════════════════════════════ COMMERCIAL
 body = phero(
-    "medical-day.jpg", "medical-night.jpg", "",
+    "highbay.jpg", "",
     "Commercial &amp; buildouts",
     "Empty shell to<br>open doors",
     "Restaurants, medical offices, retail, barber shops, professional offices. "
@@ -141,7 +123,7 @@ page("commercial.html",
 
 # ══════════════════════════════════════════════════════════ RESIDENTIAL
 body = phero(
-    "estate-day.jpg", "estate-night.jpg", "",
+    "garden.jpg", "",
     "Residential lighting",
     "Nobody sees<br>your house at noon",
     "Landscape and permanent exterior lighting, panel upgrades, troubleshooting and remodelling. "
@@ -179,8 +161,8 @@ body += u"""
 <section class="relight" data-points="[[30,70,26],[50,50,30],[70,70,26],[13,80,22],[87,80,22],[50,88,26],[20,56,20],[80,56,20]]">
   <div class="relight-stick">
     <div class="relight-stage">
-      <img class="rl-dark" src="assets/img/estate-night.jpg" alt="A residential estate at night, its landscape lighting coming on">
-      <div class="rl-night"><img src="assets/img/estate-night.jpg" alt=""></div>
+      <img class="rl-dark" src="assets/img/scene-walls.jpg" alt="Sculptural garden walls at night, their uplighting coming on">
+      <div class="rl-night"><img src="assets/img/scene-walls.jpg" alt=""></div>
       <p class="rl-count"><b>0</b> fixtures on</p>
       <div class="rl-copy">
         <div class="wrap">
@@ -190,25 +172,6 @@ body += u"""
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<section class="sec sec-tight">
-  <div class="wrap">
-    <div class="head rv">
-      <p class="eyebrow">Day &rarr; night</p>
-      <h2 class="disp">The version<br>that matters</h2>
-      <p class="lede">Drag the seam. The left half is what a daytime photo shows a prospective buyer or a dinner guest arriving at seven. The right half is what they actually see.</p>
-    </div>
-    <div class="split rv" id="split">
-      <img src="assets/img/estate-day.jpg" alt="Residential estate exterior in daylight">
-      <div class="after"><img src="assets/img/estate-night.jpg" alt="The same estate exterior after dark with landscape lighting"></div>
-      <div class="seam" role="slider" tabindex="0" aria-label="Reveal the night state"
-           aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"></div>
-      <span class="split-lbl l">As found</span>
-      <span class="split-lbl r">Lit</span>
-    </div>
-    <p class="rend" style="position:static;display:inline-block;margin-top:12px">Concept imagery &middot; pending project photography</p>
   </div>
 </section>
 

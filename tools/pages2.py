@@ -6,7 +6,7 @@ from pages_common import phero, CTA_P, CTA_S
 
 # ══════════════════════════════════════════════════════════ PROPERTY MANAGERS
 body = phero(
-    "garage-day.jpg", "garage-night.jpg", "",
+    "hedge.jpg", "",
     "Property &amp; association managers",
     "One vendor,<br>the whole property",
     "Common-area and parking lighting, electrical service, panel work, unit turns and recurring "
@@ -60,8 +60,8 @@ body += u"""
 <section class="relight" data-points="[[14,52,24],[33,50,24],[52,49,24],[71,50,24],[89,52,24],[42,74,26],[62,74,26]]">
   <div class="relight-stick">
     <div class="relight-stage">
-      <img class="rl-dark" src="assets/img/garage-night.jpg" alt="A parking structure at night, its lighting coming on">
-      <div class="rl-night"><img src="assets/img/garage-night.jpg" alt=""></div>
+      <img class="rl-dark" src="assets/img/scene-garden.jpg" alt="Landscaped common grounds at night, their lighting coming on">
+      <div class="rl-night"><img src="assets/img/scene-garden.jpg" alt=""></div>
       <p class="rl-count"><b>0</b> fixtures on</p>
       <div class="rl-copy">
         <div class="wrap">
@@ -74,24 +74,6 @@ body += u"""
   </div>
 </section>
 
-<section class="sec sec-tight">
-  <div class="wrap">
-    <div class="head rv">
-      <p class="eyebrow">Before &rarr; after</p>
-      <h2 class="disp">A parking deck,<br>relit</h2>
-      <p class="lede">The clearest argument for a retrofit is not the energy model. It is walking a resident through the deck at nine at night.</p>
-    </div>
-    <div class="split rv" id="split">
-      <img src="assets/img/garage-day.jpg" alt="Parking structure in daylight">
-      <div class="after"><img src="assets/img/garage-night.jpg" alt="The same parking structure lit after dark"></div>
-      <div class="seam" role="slider" tabindex="0" aria-label="Reveal the night state"
-           aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"></div>
-      <span class="split-lbl l">As found</span>
-      <span class="split-lbl r">Lit</span>
-    </div>
-    <p class="rend" style="position:static;display:inline-block;margin-top:12px">Concept imagery &middot; pending project photography</p>
-  </div>
-</section>
 """
 body += CLOSE.format(
     h=u"Send us the<br>property list",

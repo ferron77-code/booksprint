@@ -1,81 +1,78 @@
 # -*- coding: utf-8 -*-
+"""Writes portfolio.html from the photographs that actually exist on disk.
+
+Every image here is Worldwide Distributors' own work, shot at night — which
+is the only version of a lighting project that matters. There is no day/night
+pair because there is no daylight photograph; the page palette still follows
+the visitor's clock.
+
+To add a project: put <slug>.jpg in site/assets/img/, add a row below, and
+run tools/build.py. Rows whose image is missing are skipped, not broken.
+"""
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from chrome import page, CLOSE
 from pages_common import phero
 
-# slug, day/night basename, category keys, kind label, title, blurb
+# slug, filter keys, kind label, title, blurb
 PROJECTS = [
-    ("medical",  "buildout medical commercial", "Buildout &middot; Medical",
-     "Medical Office Fit-Out",
-     "Exam rooms, corridors and a waiting area taken from bare shell to open practice. Colour rendering and glare control are clinical requirements here, not preferences."),
-    ("estate",   "lighting residential landscape", "Landscape &middot; Residential",
-     "Estate Uplighting",
-     "Facade grazing, tree uplighting and path lighting on a low-voltage system sized so the last fixture is as bright as the first."),
-    ("garage",   "lighting commercial property", "Retrofit &middot; Parking",
-     "Parking Structure Retrofit",
-     "A deck relit end to end. The argument for the retrofit is not the energy model, it is walking a resident through at nine at night."),
-    ("court",    "lighting residential exterior", "Exterior &middot; Sport",
-     "Court &amp; Grounds Lighting",
-     "Even playing-surface light with the spill controlled so the neighbours keep their night sky and the grounds still read as landscape."),
-    ("hero",     "lighting commercial", "Architectural &middot; Commercial",
-     "Commercial Facade Lighting",
-     "Entry, canopy and facade lighting that makes a building findable after dark and still looks deliberate from the road."),
-]
-
-# Ready to switch on the moment the second photography set lands.
-PENDING = [
-    ("restaurant", "buildout commercial", "Buildout &middot; Restaurant", "Restaurant Buildout",
-     "Dining room, bar and kitchen, built to a hard opening date and lit warm enough to read as hospitality."),
-    ("retail",     "buildout commercial", "Buildout &middot; Retail", "Retail Floor",
-     "A sales floor where the lighting is doing merchandising work, plus back-of-house and exterior signage circuits."),
-    ("lot",        "lighting commercial property", "Retrofit &middot; Parking", "Parking Lot Pole Lighting",
-     "Pole-mounted LED area lighting laid out so the pools overlap and there are no dark gaps between them."),
-    ("roofline",   "lighting residential", "Permanent &middot; Residential", "Permanent Roofline System",
-     "Fixed track under the eaves. Warm white year-round, colour for holidays, controlled from a phone."),
-    ("lobby",      "lighting property residential", "Common Areas &middot; Multifamily", "Condominium Lobby",
-     "Downlights and a cove detail grazing the stone wall, tuned warm so a lobby reads residential rather than corporate."),
-    ("warehouse",  "lighting commercial", "Retrofit &middot; Industrial", "Warehouse High-Bay Retrofit",
-     "Rows of linear high-bay lighting the aisles and racking evenly to the far wall, with no dark patches."),
+    ("walls",    "lighting residential landscape", "Landscape &middot; Architectural",
+     "Sculpture Wall Grazing",
+     "Each panel gets its own fixture at its own aim. Grazing light this close to a surface is unforgiving &mdash; a fixture a few degrees out shows up as a hot spot from across the garden."),
+    ("palm",     "lighting residential landscape", "Landscape &middot; Specimen",
+     "Specimen Palm Uplighting",
+     "Uplights set back far enough to carry the whole trunk and catch the crown, without throwing glare at anyone walking the path."),
+    ("garden",   "lighting residential landscape", "Landscape &middot; Garden",
+     "Garden Wall &amp; Canopy",
+     "Wall grazing and tree uplighting working together, with the fixtures themselves invisible from the house."),
+    ("hedge",    "lighting residential property landscape", "Grounds &middot; Perimeter",
+     "Perimeter &amp; Lawn Lighting",
+     "A run of in-grade fixtures along a hedge line. Even spacing matters more than output here &mdash; the eye reads the gaps, not the brightness."),
+    ("pool",     "lighting residential", "Exterior &middot; Pool",
+     "Pool &amp; Terrace",
+     "Pool, hedge and covered terrace lit as three separate layers so the space still reads as outdoor living after dark, not as a lit car park."),
+    ("interior", "lighting residential", "Interior &middot; Residential",
+     "Interior Pendants &amp; Coves",
+     "Decorative pendants doing the visual work while cove and recessed lighting carry the actual light level. Warm throughout."),
+    ("highbay",  "lighting commercial property", "Commercial &middot; High Bay",
+     "Commercial High-Bay Lighting",
+     "Rows of high-bay pendants over an open commercial floor, spaced so the light lands evenly and nobody works in someone else's shadow."),
 ]
 
 SITE = "/home/user/booksprint/site"
 def have(slug):
-    return all(os.path.exists(os.path.join(SITE, "assets/img", slug + s + ".jpg"))
-               for s in ("-day", "-night"))
+    return os.path.exists(os.path.join(SITE, "assets/img", slug + ".jpg"))
 
-live = [p for p in PROJECTS + PENDING if have(p[0])]
-missing = [p[0] for p in PROJECTS + PENDING if not have(p[0])]
+live = [p for p in PROJECTS if have(p[0])]
+missing = [p[0] for p in PROJECTS if not have(p[0])]
 
 def tile(slug, cats, kind, title, blurb):
     return u"""      <article class="pf-item" data-cat="%s">
         <span class="tile">
-          <img class="day"   src="assets/img/%s-day.jpg"   alt="%s in daylight" loading="lazy">
-          <img class="night" src="assets/img/%s-night.jpg" alt="%s lit after dark" loading="lazy">
-          <span class="badge">Concept</span>
+          <img src="assets/img/%s.jpg" alt="%s, photographed at night" loading="lazy">
         </span>
         <div class="pf-body">
           <span class="k">%s</span>
           <h3>%s</h3>
           <p>%s</p>
         </div>
-      </article>""" % (cats, slug, title, slug, title, kind, title, blurb)
+      </article>""" % (cats, slug, title.replace("&amp;", "and"), kind, title, blurb)
 
 grid = "\n".join(tile(*p) for p in live)
 
-FILTERS = [("all", "Everything"), ("lighting", "Lighting"), ("buildout", "Buildouts"),
-           ("commercial", "Commercial"), ("residential", "Residential"), ("property", "Property Managers")]
+FILTERS = [("all", "Everything"), ("landscape", "Landscape"), ("lighting", "Lighting"),
+           ("residential", "Residential"), ("commercial", "Commercial"), ("property", "Property Managers")]
 fbtns = "\n".join(
     '      <button type="button" data-f="%s" aria-pressed="%s">%s</button>' % (k, "true" if k == "all" else "false", t)
     for k, t in FILTERS)
 
 body = phero(
-    "hero-day.jpg", "hero-night.jpg", "",
+    "hero-wide.jpg", "",
     "Portfolio",
     "Every project<br>has a night version",
-    "Lighting, electrical and construction across Florida. Each project below is shown twice &mdash; "
-    "as it reads in daylight, and as it reads once it is switched on. The page follows your clock, "
-    "so whichever one you are seeing is the one that is true right now.",
+    "This one is the only one that matters. Lighting, electrical and construction "
+    "across Florida &mdash; photographed the way a client actually sees the work, "
+    "which is after dark.",
     u'<a class="btn btn-p" href="contact.html">Start a project</a>'
     u'<a class="btn btn-s" href="#grid">Browse the work</a>')
 
@@ -84,8 +81,8 @@ body += u"""
   <div class="wrap">
     <div class="head rv">
       <p class="eyebrow">Selected work</p>
-      <h2 class="disp">The whole range,<br>under one contract</h2>
-      <p class="lede">Filter by what you need. Most of these projects touched more than one division &mdash; which is the point.</p>
+      <h2 class="disp">Completed<br>projects</h2>
+      <p class="lede">Filter by what you need. Most of these touched more than one division &mdash; which is the point.</p>
     </div>
 
     <div class="filt rv" data-target=".pf-grid" hidden>
@@ -96,14 +93,6 @@ body += u"""
     <div class="pf-grid rv">
 %s
     </div>
-
-    <div class="note rv">
-      <span class="t">About these images</span>
-      <p><b>Every image on this page is a concept rendering, not a finished Worldwide Distributors project.</b>
-      They are here so the layout and the day/night idea can be judged before real photography is commissioned.
-      Each one gets replaced with an actual job &mdash; shot in daylight and again after dark from the same
-      position &mdash; before this site goes live. Nothing here is presented as completed work.</p>
-    </div>
   </div>
 </section>
 
@@ -112,60 +101,57 @@ body += u"""
     <div class="head rv">
       <p class="eyebrow">In detail</p>
       <h2 class="disp">What a project<br>actually involves</h2>
-      <p class="lede">Three worked examples of how the divisions stack on a single job.</p>
+      <p class="lede">Three of the above, and how the divisions stack on a single job.</p>
     </div>
   </div>
 
   <div class="cs par-host rv">
     <div class="cs-media">
-      <img class="day"   src="assets/img/medical-day.jpg"   alt="Medical office fit-out in daylight"   data-par="9" loading="lazy">
-      <img class="night" src="assets/img/medical-night.jpg" alt="Medical office fit-out lit after dark" data-par="9" loading="lazy">
+      <img src="assets/img/scene-walls.jpg" alt="Sculptural garden walls lit at night" data-par="9" loading="lazy">
     </div>
     <div class="cs-body">
-      <span class="eyebrow">Buildout &middot; Medical</span>
-      <h3>Medical Office Fit-Out</h3>
-      <p>A leased shell becomes a working practice. The lighting decision here is not decorative &mdash; a treatment room needs colour rendering good enough to assess a patient by, and a corridor needs to not glare into the eyes of someone lying on a gurney.</p>
-      <ul class="cs-scope">
-        <li><b>Build</b><span>Demolition, framing, drywall, doors, flooring, finishes</span></li>
-        <li><b>Electrical</b><span>Service, panel, circuit rough-in, device trim, emergency and egress</span></li>
-        <li><b>Lighting</b><span>Layout, high-CRI fixture spec, glare control, controls</span></li>
-        <li><b>After</b><span>Punch list, close-out, ongoing service relationship</span></li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="cs par-host rv">
-    <div class="cs-media">
-      <img class="day"   src="assets/img/garage-day.jpg"   alt="Parking structure in daylight"   data-par="9" loading="lazy">
-      <img class="night" src="assets/img/garage-night.jpg" alt="Parking structure lit after dark" data-par="9" loading="lazy">
-    </div>
-    <div class="cs-body">
-      <span class="eyebrow">Retrofit &middot; Parking</span>
-      <h3>Parking Structure Retrofit</h3>
-      <p>Old fixtures come out, LED goes in, and the deck stops having dark corners between the pools of light. Managers buy this on the energy number; residents notice it because they stop feeling uneasy walking to their car.</p>
-      <ul class="cs-scope">
-        <li><b>Survey</b><span>Measured look at existing draw and light levels, honest payback answer</span></li>
-        <li><b>Supply</b><span>Fixtures sourced at distributor pricing, spec or substitute</span></li>
-        <li><b>Install</b><span>Bucket truck work, circuit changes, photocell and control resets</span></li>
-        <li><b>Maintain</b><span>Scheduled checks so failures get caught one fixture at a time</span></li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="cs par-host rv">
-    <div class="cs-media">
-      <img class="day"   src="assets/img/estate-day.jpg"   alt="Residential estate in daylight"   data-par="9" loading="lazy">
-      <img class="night" src="assets/img/estate-night.jpg" alt="Residential estate with landscape lighting" data-par="9" loading="lazy">
-    </div>
-    <div class="cs-body">
-      <span class="eyebrow">Landscape &middot; Residential</span>
-      <h3>Estate Uplighting</h3>
-      <p>A house lit properly has a few things deliberately bright and everything else deliberately not. The common failure is the opposite: fixtures placed where the wire was easy to run, all at one brightness, aimed at nothing.</p>
+      <span class="eyebrow">Landscape &middot; Architectural</span>
+      <h3>Sculpture Wall Grazing</h3>
+      <p>A house lit properly has a few things deliberately bright and everything else deliberately not. Here the walls are the subject and the lawn is left to fall away, which is what stops the garden reading as a floodlit yard.</p>
       <ul class="cs-scope">
         <li><b>Design</b><span>What gets lit, what stays dark, beam angles and colour temperature</span></li>
         <li><b>Electrical</b><span>Transformer sizing, run lengths, buried splices done to last</span></li>
-        <li><b>Install</b><span>Facade grazing, tree uplighting, path and step lighting</span></li>
-        <li><b>Maintain</b><span>Re-aiming as trees grow, lens cleaning, connection repair</span></li>
+        <li><b>Install</b><span>Wall grazing, tree uplighting, path and step lighting</span></li>
+        <li><b>Maintain</b><span>Re-aiming as planting grows, lens cleaning, connection repair</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cs par-host rv">
+    <div class="cs-media">
+      <img src="assets/img/pool.jpg" alt="Pool, terrace and hedge lit at night" data-par="9" loading="lazy">
+    </div>
+    <div class="cs-body">
+      <span class="eyebrow">Exterior &middot; Pool</span>
+      <h3>Pool &amp; Terrace</h3>
+      <p>Three separate layers &mdash; water, planting, covered terrace &mdash; each on its own circuit and its own level. Put them all at one brightness and an outdoor room turns into a parking lot with a pool in it.</p>
+      <ul class="cs-scope">
+        <li><b>Design</b><span>Layering by zone, glare control from seated eye height</span></li>
+        <li><b>Electrical</b><span>Wet-location circuits, bonding, switching and controls</span></li>
+        <li><b>Install</b><span>Pool, hedge, terrace and step lighting</span></li>
+        <li><b>Maintain</b><span>Salt-air corrosion checks, seals, control resets</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cs par-host rv">
+    <div class="cs-media">
+      <img src="assets/img/highbay.jpg" alt="Commercial high-bay lighting over an open floor" data-par="9" loading="lazy">
+    </div>
+    <div class="cs-body">
+      <span class="eyebrow">Commercial &middot; High Bay</span>
+      <h3>Commercial High-Bay Lighting</h3>
+      <p>The commercial version of the same discipline. Spacing is the whole job: get it wrong and half the floor works in the other half's shadow, whatever the fixtures are rated at.</p>
+      <ul class="cs-scope">
+        <li><b>Survey</b><span>Existing draw and light levels measured, honest payback answer</span></li>
+        <li><b>Supply</b><span>Fixtures sourced at distributor pricing, spec or substitute</span></li>
+        <li><b>Install</b><span>Bucket truck work, circuit changes, controls</span></li>
+        <li><b>Maintain</b><span>Scheduled checks so failures get caught one fixture at a time</span></li>
       </ul>
     </div>
   </div>
@@ -178,9 +164,9 @@ body += CLOSE.format(
 
 n = page("portfolio.html",
          "Portfolio — Worldwide Distributors",
-         "Lighting, electrical and construction projects across Florida, each shown in daylight and after dark.",
+         "Completed lighting, electrical and construction projects across Florida, photographed at night.",
          body)
 
-print("portfolio.html: %d live projects, %d bytes" % (len(live), n))
+print("portfolio.html: %d projects, %d bytes" % (len(live), n))
 if missing:
-    print("waiting on photography for:", ", ".join(missing))
+    print("no photograph yet for:", ", ".join(missing))
