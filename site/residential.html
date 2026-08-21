@@ -27,7 +27,7 @@
       <a href="commercial.html">Commercial</a>
       <a href="residential.html" aria-current="page">Residential</a>
       <a href="property-managers.html">Property Managers</a>
-      <a href="projects.html">Projects</a>
+      <a href="portfolio.html">Portfolio</a>
       <a href="contact.html">Contact</a>
     </nav>
     <a class="btn btn-p btn-sm" href="contact.html">Start a project</a>
@@ -60,7 +60,7 @@
       <p class="stamp"><i></i>Residential lighting &middot; <span class="js-state">Daylight</span> &middot; <b class="js-clock">&mdash;</b></p>
       <h1 class="disp">Nobody sees<br>your house at noon</h1>
       <p class="lede">Landscape and permanent exterior lighting, panel upgrades, troubleshooting and remodelling. Designed for the twelve hours a day when lighting is the only thing anyone is looking at.</p>
-      <div class="btns"><a class="btn btn-p" href="contact.html">Start a project</a><a class="btn btn-s" href="projects.html">See the work</a></div>
+      <div class="btns"><a class="btn btn-p" href="contact.html">Start a project</a><a class="btn btn-s" href="portfolio.html">See the work</a></div>
     </div>
   </div>
   <span class="rend">Concept imagery &middot; pending project photography</span>
@@ -85,6 +85,26 @@
       <div class="panel">
         <span class="n">03</span><h3>Electrical</h3>
         <p>Panel upgrades, added circuits, exterior outlets, generator and EV feeds, and the troubleshooting nobody else wants to take on.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Progressive relight: each fixture opens its own circle as you scroll,
+     so the property switches on one fixture at a time. Under reduced motion
+     scroll.js crossfades the whole night frame instead. -->
+<section class="relight" data-points="[[30,70,26],[50,50,30],[70,70,26],[13,80,22],[87,80,22],[50,88,26],[20,56,20],[80,56,20]]">
+  <div class="relight-stick">
+    <div class="relight-stage">
+      <img class="rl-dark" src="assets/img/estate-night.jpg" alt="A residential estate at night, its landscape lighting coming on">
+      <div class="rl-night"><img src="assets/img/estate-night.jpg" alt=""></div>
+      <p class="rl-count"><b>0</b> fixtures on</p>
+      <div class="rl-copy">
+        <div class="wrap">
+          <p class="eyebrow">Landscape lighting &middot; scroll to switch it on</p>
+          <h2 class="disp">One fixture<br>at a time</h2>
+          <p>This is roughly how an install actually goes: a transformer, a run of cable, and then each fixture aimed at the one thing it is there for. Keep scrolling.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -228,7 +248,7 @@
       <a href="commercial.html">Commercial</a>
       <a href="residential.html">Residential</a>
       <a href="property-managers.html">Property Managers</a>
-      <a href="projects.html">Projects</a>
+      <a href="portfolio.html">Portfolio</a>
       <a href="contact.html">Contact</a>
     </nav>
     <div>
@@ -242,5 +262,6 @@
 <a class="callbar" href="tel:+13059698769">Call (305) 969-8769</a>
 
 <script src="assets/site.js"></script>
+<script src="assets/scroll.js" defer></script>
 </body>
 </html>

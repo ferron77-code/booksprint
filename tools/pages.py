@@ -24,7 +24,7 @@ def phero(day, night, alt, eyebrow, h1, lede, btns):
 """ % (day, night, eyebrow, h1, lede, btns)
 
 CTA_P = u'<a class="btn btn-p" href="contact.html">Start a project</a>'
-CTA_S = u'<a class="btn btn-s" href="projects.html">See the work</a>'
+CTA_S = u'<a class="btn btn-s" href="portfolio.html">See the work</a>'
 
 
 # ══════════════════════════════════════════════════════════ COMMERCIAL
@@ -85,6 +85,35 @@ body += u"""
   </div>
 </section>
 
+<!-- Scroll scrub: the clip advances a frame at a time under the wheel.
+     Desktop only - scroll.js leaves the plain <video> in place below 900px
+     and under prefers-reduced-motion. -->
+<section class="scrub" id="scrub" data-frames="121" data-base="assets/img/buildout/" data-mode="video">
+  <div class="scrub-stick">
+    <div class="scrub-stage">
+      <video muted loop playsinline preload="none" poster="assets/img/buildout-poster.jpg">
+        <source src="assets/img/buildout.mp4" type="video/mp4">
+      </video>
+      <canvas aria-hidden="true"></canvas>
+      <div class="scrub-vig"></div>
+    </div>
+    <div class="scrub-copy">
+      <div class="wrap">
+        <p class="eyebrow">E-Built &middot; scroll to walk it</p>
+        <h2 class="disp">Empty shell to<br>open doors</h2>
+        <p>Months of work in one continuous move. Keep scrolling and the shell
+           becomes a finished, lit space &mdash; the same sequence a tenant
+           lives through, minus the four months.</p>
+        <div class="scrub-bar"><i></i></div>
+        <ol class="scrub-steps">
+          <li>Shell</li><li>Demolition</li><li>Framing</li>
+          <li>Electrical rough-in</li><li>Lighting</li><li>Finishes</li><li>Open</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="sec sec-tight">
   <div class="wrap">
     <div class="head rv">
@@ -139,6 +168,26 @@ body += u"""
       <div class="panel">
         <span class="n">03</span><h3>Electrical</h3>
         <p>Panel upgrades, added circuits, exterior outlets, generator and EV feeds, and the troubleshooting nobody else wants to take on.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Progressive relight: each fixture opens its own circle as you scroll,
+     so the property switches on one fixture at a time. Under reduced motion
+     scroll.js crossfades the whole night frame instead. -->
+<section class="relight" data-points="[[30,70,26],[50,50,30],[70,70,26],[13,80,22],[87,80,22],[50,88,26],[20,56,20],[80,56,20]]">
+  <div class="relight-stick">
+    <div class="relight-stage">
+      <img class="rl-dark" src="assets/img/estate-night.jpg" alt="A residential estate at night, its landscape lighting coming on">
+      <div class="rl-night"><img src="assets/img/estate-night.jpg" alt=""></div>
+      <p class="rl-count"><b>0</b> fixtures on</p>
+      <div class="rl-copy">
+        <div class="wrap">
+          <p class="eyebrow">Landscape lighting &middot; scroll to switch it on</p>
+          <h2 class="disp">One fixture<br>at a time</h2>
+          <p>This is roughly how an install actually goes: a transformer, a run of cable, and then each fixture aimed at the one thing it is there for. Keep scrolling.</p>
+        </div>
       </div>
     </div>
   </div>

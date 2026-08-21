@@ -10,7 +10,7 @@ NAV = [
     ("commercial.html", "Commercial"),
     ("residential.html", "Residential"),
     ("property-managers.html", "Property Managers"),
-    ("projects.html", "Projects"),
+    ("portfolio.html", "Portfolio"),
     ("contact.html", "Contact"),
 ]
 
@@ -76,7 +76,7 @@ FOOT = u"""
       <a href="commercial.html">Commercial</a>
       <a href="residential.html">Residential</a>
       <a href="property-managers.html">Property Managers</a>
-      <a href="projects.html">Projects</a>
+      <a href="portfolio.html">Portfolio</a>
       <a href="contact.html">Contact</a>
     </nav>
     <div>
@@ -90,6 +90,7 @@ FOOT = u"""
 <a class="callbar" href="tel:+13059698769">Call (305) 969-8769</a>
 
 <script src="assets/site.js"></script>
+<script src="assets/scroll.js" defer></script>
 </body>
 </html>
 """

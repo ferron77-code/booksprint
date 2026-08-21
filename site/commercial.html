@@ -27,7 +27,7 @@
       <a href="commercial.html" aria-current="page">Commercial</a>
       <a href="residential.html">Residential</a>
       <a href="property-managers.html">Property Managers</a>
-      <a href="projects.html">Projects</a>
+      <a href="portfolio.html">Portfolio</a>
       <a href="contact.html">Contact</a>
     </nav>
     <a class="btn btn-p btn-sm" href="contact.html">Start a project</a>
@@ -113,6 +113,35 @@
   </div>
 </section>
 
+<!-- Scroll scrub: the clip advances a frame at a time under the wheel.
+     Desktop only - scroll.js leaves the plain <video> in place below 900px
+     and under prefers-reduced-motion. -->
+<section class="scrub" id="scrub" data-frames="121" data-base="assets/img/buildout/" data-mode="video">
+  <div class="scrub-stick">
+    <div class="scrub-stage">
+      <video muted loop playsinline preload="none" poster="assets/img/buildout-poster.jpg">
+        <source src="assets/img/buildout.mp4" type="video/mp4">
+      </video>
+      <canvas aria-hidden="true"></canvas>
+      <div class="scrub-vig"></div>
+    </div>
+    <div class="scrub-copy">
+      <div class="wrap">
+        <p class="eyebrow">E-Built &middot; scroll to walk it</p>
+        <h2 class="disp">Empty shell to<br>open doors</h2>
+        <p>Months of work in one continuous move. Keep scrolling and the shell
+           becomes a finished, lit space &mdash; the same sequence a tenant
+           lives through, minus the four months.</p>
+        <div class="scrub-bar"><i></i></div>
+        <ol class="scrub-steps">
+          <li>Shell</li><li>Demolition</li><li>Framing</li>
+          <li>Electrical rough-in</li><li>Lighting</li><li>Finishes</li><li>Open</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="sec sec-tight">
   <div class="wrap">
     <div class="head rv">
@@ -154,7 +183,7 @@
       <a href="commercial.html">Commercial</a>
       <a href="residential.html">Residential</a>
       <a href="property-managers.html">Property Managers</a>
-      <a href="projects.html">Projects</a>
+      <a href="portfolio.html">Portfolio</a>
       <a href="contact.html">Contact</a>
     </nav>
     <div>
@@ -168,5 +197,6 @@
 <a class="callbar" href="tel:+13059698769">Call (305) 969-8769</a>
 
 <script src="assets/site.js"></script>
+<script src="assets/scroll.js" defer></script>
 </body>
 </html>

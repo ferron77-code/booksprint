@@ -6,15 +6,20 @@ import io, os, re, json, base64, mimetypes
 
 SITE = "/home/user/booksprint/site"
 OUT  = "/home/user/booksprint/docs/prototype/website-preview.html"
-PAGES = ["index", "commercial", "residential", "property-managers", "projects", "contact"]
+PAGES = ["index", "commercial", "residential", "property-managers", "portfolio", "contact"]
 
 css = io.open(os.path.join(SITE, "assets/site.css"), encoding="utf-8").read()
 js  = io.open(os.path.join(SITE, "assets/site.js"),  encoding="utf-8").read()
+scr = io.open(os.path.join(SITE, "assets/scroll.js"), encoding="utf-8").read()
 
 # ── assets, base64'd once ────────────────────────────────────────────
 assets, total = {}, 0
 for fn in sorted(os.listdir(os.path.join(SITE, "assets/img"))):
     path = os.path.join(SITE, "assets/img", fn)
+    # the scrub frame folder is desktop-only progressive enhancement; the
+    # preview keeps the plain video instead of inlining 121 stills
+    if os.path.isdir(path):
+        continue
     mime = mimetypes.guess_type(fn)[0] or "application/octet-stream"
     raw = io.open(path, "rb").read()
     total += len(raw)
@@ -47,11 +52,14 @@ for slug in PAGES:
     s = s.replace('<link rel="stylesheet" href="assets/site.css">',
                   "<style>\n" + css + "\n</style>")
     s = s.replace('<script src="assets/site.js"></script>',
-                  "<script>\n" + js + "\n</script>" + BRIDGE)
+                  "<script>\n" + js + "\n</script>")
+    s = s.replace('<script src="assets/scroll.js" defer></script>',
+                  "<script>\n" + scr + "\n</script>" + BRIDGE)
     # asset refs become tokens the shell substitutes at navigation time
     s = re.sub(r'assets/(?:img/)?([A-Za-z0-9._-]+\.(?:jpg|png|mp4|svg))', r'@@\1@@', s)
     # the PHP endpoint does not exist in a preview
     s = s.replace('action="contact.php"', 'action="#"')
+    s = s.replace('class="scrub" id="scrub"', 'class="scrub"')
     missing = set(re.findall(r"@@([A-Za-z0-9._-]+)@@", s)) - set(assets)
     assert not missing, (slug, missing)
     docs[slug] = s

@@ -20,4 +20,4 @@ def phero(day, night, alt, eyebrow, h1, lede, btns):
 """ % (day, night, eyebrow, h1, lede, btns)
 
 CTA_P = u'<a class="btn btn-p" href="contact.html">Start a project</a>'
-CTA_S = u'<a class="btn btn-s" href="projects.html">See the work</a>'
+CTA_S = u'<a class="btn btn-s" href="portfolio.html">See the work</a>'

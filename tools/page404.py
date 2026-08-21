@@ -22,7 +22,7 @@ body = u"""
       <a class="panel" href="commercial.html"><h3>Commercial</h3><p>Buildouts, tenant improvements, electrical and lighting.</p><span class="go">Go <i>&rarr;</i></span></a>
       <a class="panel" href="residential.html"><h3>Residential</h3><p>Landscape and permanent lighting, electrical service.</p><span class="go">Go <i>&rarr;</i></span></a>
       <a class="panel" href="property-managers.html"><h3>Property<br>Managers</h3><p>Common areas, parking, unit turns, maintenance.</p><span class="go">Go <i>&rarr;</i></span></a>
-      <a class="panel" href="projects.html"><h3>Projects</h3><p>Selected work, in daylight and after dark.</p><span class="go">Go <i>&rarr;</i></span></a>
+      <a class="panel" href="portfolio.html"><h3>Portfolio</h3><p>Past work, in daylight and after dark.</p><span class="go">Go <i>&rarr;</i></span></a>
     </div>
   </div>
 </section>

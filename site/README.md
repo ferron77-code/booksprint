@@ -11,7 +11,7 @@ index.html              home
 commercial.html         commercial buildouts and tenant improvements
 residential.html        landscape and permanent lighting, residential electrical
 property-managers.html  property and association managers
-projects.html           selected work
+portfolio.html          past work, filterable, day and night
 contact.html            contact details and the project enquiry form
 404.html                not-found page
 contact.php             enquiry form handler (see below)

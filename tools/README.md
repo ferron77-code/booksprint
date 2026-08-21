@@ -9,7 +9,8 @@ time rail, footer) stays identical across pages when copy changes.
 | `chrome.py` | shared `<head>`, header, time rail, footer, and the closing CTA block |
 | `pages_common.py` | the interior-page hero helper |
 | `pages.py` | writes `commercial.html`, `residential.html` |
-| `pages2.py` | writes `property-managers.html`, `projects.html` |
+| `pages2.py` | writes `property-managers.html` |
+| `portfolio.py` | writes `portfolio.html`; picks up any new day/night image pair automatically |
 | `pages3.py` | writes `contact.html` |
 | `page404.py` | writes `404.html` |
 | `kroom.py` | swaps the colour-temperature room illustration into every page that has one |

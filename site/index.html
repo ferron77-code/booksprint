@@ -28,7 +28,7 @@
       <a href="commercial.html">Commercial</a>
       <a href="residential.html">Residential</a>
       <a href="property-managers.html">Property Managers</a>
-      <a href="projects.html">Projects</a>
+      <a href="portfolio.html">Portfolio</a>
       <a href="contact.html">Contact</a>
     </nav>
     <a class="btn btn-p btn-sm" href="contact.html">Start a project</a>
@@ -70,7 +70,7 @@
       <p class="lede">We source the product, design the lighting, run the electrical, build the space, and maintain it afterward &mdash; so you are not managing four companies who each blame the other three.</p>
       <div class="btns">
         <a class="btn btn-p" href="contact.html">Start a project</a>
-        <a class="btn btn-s" href="projects.html">See the work</a>
+        <a class="btn btn-s" href="portfolio.html">See the work</a>
       </div>
     </div>
   </div>
@@ -111,19 +111,38 @@
 <!-- ══ SPINE ═══════════════════════════════════════════════ -->
 <section class="sec sec-tight" id="spine-sec">
   <div class="wrap">
-    <div class="head rv">
-      <p class="eyebrow">The one-stop-shop, made literal</p>
-      <h2 class="disp">Source &rarr; Maintain</h2>
-      <p class="lede">Most contractors own one or two of these stages and subcontract the rest. Owning all six is why there is only one number to call when something goes wrong.</p>
-    </div>
-    <div class="spine-scroll rv">
-      <div class="spine" id="spine">
-        <div class="stage"><span class="bar"><i></i></span><span class="ix">01</span><h4>Source</h4><p>Direct purchasing with a resale certificate &mdash; fixtures, doors, windows, materials, at distributor pricing.</p><span class="own">Supply</span></div>
-        <div class="stage"><span class="bar"><i></i></span><span class="ix">02</span><h4>Design</h4><p>Lighting layouts, photometrics, LED conversion planning and energy surveys.</p><span class="own">E-Lighting</span></div>
-        <div class="stage"><span class="bar"><i></i></span><span class="ix">03</span><h4>Supply</h4><p>Buy the package outright and hand it to your own crew. No installation required.</p><span class="own">Supply</span></div>
-        <div class="stage"><span class="bar"><i></i></span><span class="ix">04</span><h4>Install</h4><p>Licensed electrical, lighting installation, panels, service, troubleshooting, bucket truck work.</p><span class="own">E-Lighting</span></div>
-        <div class="stage"><span class="bar"><i></i></span><span class="ix">05</span><h4>Build</h4><p>Demolition through finishes. Commercial buildouts, tenant improvements, remodelling.</p><span class="own">E-Built</span></div>
-        <div class="stage"><span class="bar"><i></i></span><span class="ix">06</span><h4>Maintain</h4><p>Scheduled lighting care and ongoing property maintenance so the work keeps performing.</p><span class="own">E-Lighting</span></div>
+    <!-- Pinned sequence: the six stages advance one at a time while the
+         section holds the viewport, with the heading and the index of all
+         six kept on screen so the visitor never loses their place. Without
+         scroll.js, and on phones, this is an ordinary stacked list. -->
+    <div class="seq rv">
+      <div class="seq-stick">
+        <div class="wrap seq-grid">
+          <div class="seq-side">
+            <p class="eyebrow">The one-stop-shop, made literal</p>
+            <h2 class="disp">Source&nbsp;&rarr;<br>Maintain</h2>
+            <p class="lede">Most contractors own one or two of these stages and subcontract
+               the rest. Owning all six is why there is only one number to call when
+               something goes wrong.</p>
+            <ol class="seq-index">
+            <li class="seq-ix on"><span>01</span>Source</li>
+            <li class="seq-ix"><span>02</span>Design</li>
+            <li class="seq-ix"><span>03</span>Supply</li>
+            <li class="seq-ix"><span>04</span>Install</li>
+            <li class="seq-ix"><span>05</span>Build</li>
+            <li class="seq-ix"><span>06</span>Maintain</li>
+            </ol>
+            <div class="seq-bar"><i></i></div>
+          </div>
+          <div class="seq-stage">
+            <div class="seq-item on"><span class="seq-num">01</span><h3>Source</h3><p>Direct purchasing with a resale certificate &mdash; fixtures, doors, windows, materials, at distributor pricing.</p><span class="own">Supply</span></div>
+            <div class="seq-item"><span class="seq-num">02</span><h3>Design</h3><p>Lighting layouts, photometrics, LED conversion planning and energy surveys.</p><span class="own">E-Lighting</span></div>
+            <div class="seq-item"><span class="seq-num">03</span><h3>Supply</h3><p>Buy the package outright and hand it to your own crew. No installation required.</p><span class="own">Supply</span></div>
+            <div class="seq-item"><span class="seq-num">04</span><h3>Install</h3><p>Licensed electrical, lighting installation, panels, service, troubleshooting, bucket truck work.</p><span class="own">E-Lighting</span></div>
+            <div class="seq-item"><span class="seq-num">05</span><h3>Build</h3><p>Demolition through finishes. Commercial buildouts, tenant improvements, remodelling.</p><span class="own">E-Built</span></div>
+            <div class="seq-item"><span class="seq-num">06</span><h3>Maintain</h3><p>Scheduled lighting care and ongoing property maintenance so the work keeps performing.</p><span class="own">E-Lighting</span></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -242,7 +261,7 @@
       </a>
     </div>
     <div class="btns rv" style="margin-top:26px">
-      <a class="btn btn-s" href="projects.html">All projects &rarr;</a>
+      <a class="btn btn-s" href="portfolio.html">See the portfolio &rarr;</a>
     </div>
   </div>
 </section>
@@ -353,7 +372,7 @@
       <a href="commercial.html">Commercial</a>
       <a href="residential.html">Residential</a>
       <a href="property-managers.html">Property Managers</a>
-      <a href="projects.html">Projects</a>
+      <a href="portfolio.html">Portfolio</a>
       <a href="contact.html">Contact</a>
     </nav>
     <div>
@@ -367,5 +386,6 @@
 <a class="callbar" href="tel:+13059698769">Call (305) 969-8769</a>
 
 <script src="assets/site.js"></script>
+<script src="assets/scroll.js" defer></script>
 </body>
 </html>

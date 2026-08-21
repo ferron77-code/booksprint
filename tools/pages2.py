@@ -54,6 +54,26 @@ body += u"""
   </div>
 </section>
 
+<!-- Progressive relight: each fixture opens its own circle as you scroll,
+     so the property switches on one fixture at a time. Under reduced motion
+     scroll.js crossfades the whole night frame instead. -->
+<section class="relight" data-points="[[14,52,24],[33,50,24],[52,49,24],[71,50,24],[89,52,24],[42,74,26],[62,74,26]]">
+  <div class="relight-stick">
+    <div class="relight-stage">
+      <img class="rl-dark" src="assets/img/garage-night.jpg" alt="A parking structure at night, its lighting coming on">
+      <div class="rl-night"><img src="assets/img/garage-night.jpg" alt=""></div>
+      <p class="rl-count"><b>0</b> fixtures on</p>
+      <div class="rl-copy">
+        <div class="wrap">
+          <p class="eyebrow">Parking retrofit &middot; scroll to switch it on</p>
+          <h2 class="disp">No dark gaps<br>between the pools</h2>
+          <p>A deck is not lit because the fixtures work. It is lit when the pools overlap and there is nowhere left that feels unsafe to walk. Keep scrolling and watch the gaps close.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="sec sec-tight">
   <div class="wrap">
     <div class="head rv">
@@ -80,69 +100,4 @@ body += CLOSE.format(
 page("property-managers.html",
      "For Property &amp; Association Managers — Worldwide Distributors",
      "Common-area and parking lighting, electrical service, panel work, unit turns and recurring maintenance for Florida property and association managers, from one vendor.",
-     body)
-
-
-# ══════════════════════════════════════════════════════════ PROJECTS
-body = phero(
-    "hero-day.jpg", "hero-night.jpg", "",
-    "Selected work",
-    "Every project<br>has a night version",
-    "Hover or drag the time rail and the whole page moves with the sun. "
-    "So does the work &mdash; each project below is shown as it reads in daylight and as it reads once it is switched on.",
-    u'<a class="btn btn-p" href="contact.html">Start a project</a>')
-
-TILES = [
-    ("medical",  "Buildout &middot; Medical",     "Medical Office Fit-Out",     "commercial.html",  "Medical office fit-out"),
-    ("estate",   "Landscape",                     "Estate Uplighting",          "residential.html", "Residential estate"),
-    ("garage",   "Commercial Lighting",           "Parking Structure Retrofit", "property-managers.html", "Parking structure"),
-    ("court",    "Exterior &middot; Sport",       "Court &amp; Grounds Lighting",   "residential.html", "Outdoor court and grounds"),
-]
-tiles = "\n".join(u"""      <a class="tile" href="%s">
-        <img class="day"   src="assets/img/%s-day.jpg"   alt="%s in daylight">
-        <img class="night" src="assets/img/%s-night.jpg" alt="%s lit after dark">
-        <span class="badge">Concept</span>
-        <div class="cap"><span class="cat">%s</span><h4>%s</h4></div>
-      </a>""" % (href, slug, alt, slug, alt, cat, name)
-    for slug, cat, name, href, alt in TILES)
-
-body += u"""
-<section class="sec">
-  <div class="wrap">
-    <div class="grid g2 rv">
-%s
-    </div>
-    <div class="note rv">
-      <span class="t">About this page</span>
-      <p><b>The images above are concept renderings, not finished projects.</b> They exist so the design direction can be reviewed before the real photography is commissioned. Every one of them gets replaced with an actual Worldwide Distributors job &mdash; shot in daylight and again after dark &mdash; before this site goes live.</p>
-    </div>
-  </div>
-</section>
-
-<section class="sec sec-tight">
-  <div class="wrap">
-    <div class="head rv">
-      <p class="eyebrow">E-Built &middot; one continuous take</p>
-      <h2 class="disp">Empty shell to<br>open doors</h2>
-      <p class="lede">A commercial buildout is months of work that nobody sees. This is what it looks like compressed into one move.</p>
-    </div>
-    <div class="film-wrap rv">
-      <video id="film" muted loop playsinline preload="metadata" poster="assets/img/buildout-poster.jpg">
-        <source src="assets/img/buildout.mp4" type="video/mp4">
-      </video>
-    </div>
-    <p class="film-meta">
-      <span>Demolition</span><span>Framing</span><span>Electrical rough-in</span><span>Lighting</span><span>Finishes</span><span>Open</span>
-    </p>
-  </div>
-</section>
-""" % tiles
-
-body += CLOSE.format(
-    h=u"Yours could be<br>the next one",
-    p=u"Send photos of the space as it stands. We will tell you what it takes and what it looks like when it is done.")
-
-page("projects.html",
-     "Projects — Worldwide Distributors",
-     "Selected lighting, electrical and construction work in Florida, shown in daylight and after dark.",
      body)
