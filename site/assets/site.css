@@ -336,6 +336,15 @@ html.js .rv.on{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.2,.
 .phero{position:relative;min-height:60svh;display:flex;align-items:flex-end;overflow:hidden}
 .phero-in{position:relative;z-index:3;width:100%;padding:140px 0 clamp(32px,6vh,66px)}
 .phero h1{font-size:clamp(30px,5.8vw,76px)}
+/* The page hero is shorter than the home hero, so the shared scrim's
+   mid-gradient lands right on the body copy. Weight it lower. */
+.phero .hero-scrim{
+  background:linear-gradient(180deg,
+    color-mix(in srgb,var(--surface) 46%,transparent) 0%,
+    color-mix(in srgb,var(--surface) 16%,transparent) 24%,
+    color-mix(in srgb,var(--surface) 74%,transparent) 62%,
+    var(--surface) 100%);
+}
 .phero .lede{margin-top:16px}
 .phero .btns{margin-top:26px}
 
