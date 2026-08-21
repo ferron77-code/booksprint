@@ -36,16 +36,27 @@ phone shot. They carry the site.
 | `11_blob-8a99f3b.png` | Marketing graphic with a "SMART HOME" phone UI burned into it. |
 | `09_blob-f2ae67c.png`, `10_blob-731a700.png` | Staged interiors that read as manufacturer lifestyle shots, not their installs. |
 
-## Consequence for the design
+## How the two sets sit together
 
-Every usable photograph is a night shot, so the day/night cross-fade that ran
-on the concept renderings is gone. Nothing was lost: a lighting company's work
-only exists after dark, and the page palette still follows the visitor's clock.
-Removed with it: the drag-the-seam before/after slider, which needs a genuine
-daylight frame of the same view.
+The site carries both, doing different jobs.
 
-All AI concept renderings have been deleted from the repository. Every
-photograph on the site is now a real Worldwide Distributors project.
+**Photographs** carry the proof: the homepage project tiles, seven of the
+eleven portfolio entries, and both progressive-relight scroll scenes. Those
+scenes are the best use of this set — the sculptural walls are lit by real
+discrete uplights, so switching them on one at a time as you scroll is what
+the install actually is, not an effect laid over it. Every usable frame is a
+night shot, so these do not cross-fade; they are simply the work.
+
+**Concept renderings** carry the mechanic: the day/night cross-fade that runs
+off the visitor's clock, the drag-the-seam before/after slider, and the four
+portfolio entries covering categories with no photography yet — medical
+fit-out, estate, parking retrofit, court. Each carries a visible **Concept**
+badge, and the portfolio states plainly which entries are photographs and
+which are not.
+
+The owners have reviewed the renderings and confirmed they represent the kind
+of work the company does. They stay until real photography replaces them,
+badged throughout.
 
 ## Gaps
 

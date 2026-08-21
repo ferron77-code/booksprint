@@ -54,7 +54,8 @@
 <!-- ══ HERO ════════════════════════════════════════════════ -->
 <section class="hero">
   <div class="hero-shots" aria-hidden="true">
-    <img src="assets/img/hero-wide.jpg" alt="" fetchpriority="high">
+    <img class="day"   src="assets/img/hero-day.jpg"   alt="" fetchpriority="high">
+    <img class="night" src="assets/img/hero-night.jpg" alt="" fetchpriority="high">
   </div>
   <div class="hero-scrim" aria-hidden="true"></div>
   <div class="hero-in">
@@ -73,6 +74,7 @@
       </div>
     </div>
   </div>
+  <span class="rend">Concept imagery &middot; pending project photography</span>
 </section>
 
 <!-- ══ FORK ════════════════════════════════════════════════ -->
@@ -190,6 +192,26 @@
         <span class="go">Request a package <i>&rarr;</i></span>
       </a>
     </div>
+  </div>
+</section>
+
+<!-- ══ SPLIT STATE ═════════════════════════════════════════ -->
+<section class="sec sec-tight">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="eyebrow">Featured project &middot; drag the seam</p>
+      <h2 class="disp">Daylight &rarr; After dark</h2>
+      <p class="lede">Nobody hires a lighting company for how a property looks at noon. Drag the seam and see the only version that matters.</p>
+    </div>
+    <div class="split rv" id="split">
+      <img src="assets/img/estate-day.jpg" alt="Residential estate exterior in daylight">
+      <div class="after"><img src="assets/img/estate-night.jpg" alt="The same estate exterior after dark with landscape lighting"></div>
+      <div class="seam" role="slider" tabindex="0" aria-label="Reveal the night state"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"></div>
+      <span class="split-lbl l">As found</span>
+      <span class="split-lbl r">Lit</span>
+    </div>
+    <p class="rend" style="position:static;display:inline-block;margin-top:12px">Concept imagery &middot; pending project photography</p>
   </div>
 </section>
 

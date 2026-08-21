@@ -6,7 +6,7 @@ from pages_common import phero, CTA_P, CTA_S
 
 # ══════════════════════════════════════════════════════════ PROPERTY MANAGERS
 body = phero(
-    "hedge.jpg", "",
+    "garage-day.jpg", "garage-night.jpg", "",
     "Property &amp; association managers",
     "One vendor,<br>the whole property",
     "Common-area and parking lighting, electrical service, panel work, unit turns and recurring "
@@ -74,6 +74,24 @@ body += u"""
   </div>
 </section>
 
+<section class="sec sec-tight">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="eyebrow">Before &rarr; after</p>
+      <h2 class="disp">A parking deck,<br>relit</h2>
+      <p class="lede">The clearest argument for a retrofit is not the energy model. It is walking a resident through the deck at nine at night.</p>
+    </div>
+    <div class="split rv" id="split">
+      <img src="assets/img/garage-day.jpg" alt="Parking structure in daylight">
+      <div class="after"><img src="assets/img/garage-night.jpg" alt="The same parking structure lit after dark"></div>
+      <div class="seam" role="slider" tabindex="0" aria-label="Reveal the night state"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"></div>
+      <span class="split-lbl l">As found</span>
+      <span class="split-lbl r">Lit</span>
+    </div>
+    <p class="rend" style="position:static;display:inline-block;margin-top:12px">Concept imagery &middot; pending project photography</p>
+  </div>
+</section>
 """
 body += CLOSE.format(
     h=u"Send us the<br>property list",

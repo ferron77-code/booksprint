@@ -1,21 +1,29 @@
 # -*- coding: utf-8 -*-
-"""Writes portfolio.html from the photographs that actually exist on disk.
+"""Writes portfolio.html.
 
-Every image here is Worldwide Distributors' own work, shot at night — which
-is the only version of a lighting project that matters. There is no day/night
-pair because there is no daylight photograph; the page palette still follows
-the visitor's clock.
+Two kinds of entry:
 
-To add a project: put <slug>.jpg in site/assets/img/, add a row below, and
-run tools/build.py. Rows whose image is missing are skipped, not broken.
+  REAL     one photograph of a finished Worldwide Distributors project,
+           shot at night. No daylight frame exists, so these do not
+           cross-fade — they are simply the work.
+
+  CONCEPT  a day/night rendering pair that cross-fades on the visitor's
+           clock. These illustrate categories the company works in but has
+           no photography of yet, and every one carries a "Concept" badge.
+
+Real work leads. To add a project: put the file(s) in site/assets/img/, add
+a row below, run tools/build.py. Rows whose images are missing are skipped.
 """
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from chrome import page, CLOSE
 from pages_common import phero
 
+SITE = "/home/user/booksprint/site"
+IMG = os.path.join(SITE, "assets/img")
+
 # slug, filter keys, kind label, title, blurb
-PROJECTS = [
+REAL = [
     ("walls",    "lighting residential landscape", "Landscape &middot; Architectural",
      "Sculpture Wall Grazing",
      "Each panel gets its own fixture at its own aim. Grazing light this close to a surface is unforgiving &mdash; a fixture a few degrees out shows up as a hot spot from across the garden."),
@@ -39,40 +47,56 @@ PROJECTS = [
      "Rows of high-bay pendants over an open commercial floor, spaced so the light lands evenly and nobody works in someone else's shadow."),
 ]
 
-SITE = "/home/user/booksprint/site"
-def have(slug):
-    return os.path.exists(os.path.join(SITE, "assets/img", slug + ".jpg"))
+CONCEPT = [
+    ("medical", "buildout commercial", "Buildout &middot; Medical", "Medical Office Fit-Out",
+     "Exam rooms, corridors and a waiting area from bare shell to open practice. Colour rendering and glare control are clinical requirements here, not preferences."),
+    ("estate",  "lighting residential landscape", "Landscape &middot; Estate", "Estate Uplighting",
+     "Facade grazing, tree uplighting and path lighting on a low-voltage system sized so the last fixture is as bright as the first."),
+    ("garage",  "lighting commercial property", "Retrofit &middot; Parking", "Parking Structure Retrofit",
+     "A deck relit end to end. The argument for the retrofit is not the energy model, it is walking a resident through at nine at night."),
+    ("court",   "lighting residential exterior", "Exterior &middot; Sport", "Court &amp; Grounds Lighting",
+     "Even playing-surface light with the spill controlled so the neighbours keep their night sky and the grounds still read as landscape."),
+]
 
-live = [p for p in PROJECTS if have(p[0])]
-missing = [p[0] for p in PROJECTS if not have(p[0])]
+def has(*names):
+    return all(os.path.exists(os.path.join(IMG, n)) for n in names)
 
-def tile(slug, cats, kind, title, blurb):
+real    = [p for p in REAL    if has(p[0] + ".jpg")]
+concept = [p for p in CONCEPT if has(p[0] + "-day.jpg", p[0] + "-night.jpg")]
+
+def tile_real(slug, cats, kind, title, blurb):
     return u"""      <article class="pf-item" data-cat="%s">
         <span class="tile">
           <img src="assets/img/%s.jpg" alt="%s, photographed at night" loading="lazy">
         </span>
-        <div class="pf-body">
-          <span class="k">%s</span>
-          <h3>%s</h3>
-          <p>%s</p>
-        </div>
+        <div class="pf-body"><span class="k">%s</span><h3>%s</h3><p>%s</p></div>
       </article>""" % (cats, slug, title.replace("&amp;", "and"), kind, title, blurb)
 
-grid = "\n".join(tile(*p) for p in live)
+def tile_concept(slug, cats, kind, title, blurb):
+    return u"""      <article class="pf-item" data-cat="%s">
+        <span class="tile">
+          <img class="day"   src="assets/img/%s-day.jpg"   alt="%s in daylight" loading="lazy">
+          <img class="night" src="assets/img/%s-night.jpg" alt="%s lit after dark" loading="lazy">
+          <span class="badge">Concept</span>
+        </span>
+        <div class="pf-body"><span class="k">%s</span><h3>%s</h3><p>%s</p></div>
+      </article>""" % (cats, slug, title.replace("&amp;", "and"), slug,
+                       title.replace("&amp;", "and"), kind, title, blurb)
 
-FILTERS = [("all", "Everything"), ("landscape", "Landscape"), ("lighting", "Lighting"),
+grid = "\n".join([tile_real(*p) for p in real] + [tile_concept(*p) for p in concept])
+
+FILTERS = [("all", "Everything"), ("landscape", "Landscape"), ("buildout", "Buildouts"),
            ("residential", "Residential"), ("commercial", "Commercial"), ("property", "Property Managers")]
 fbtns = "\n".join(
     '      <button type="button" data-f="%s" aria-pressed="%s">%s</button>' % (k, "true" if k == "all" else "false", t)
     for k, t in FILTERS)
 
 body = phero(
-    "hero-wide.jpg", "",
+    "hero-day.jpg", "hero-night.jpg", "",
     "Portfolio",
     "Every project<br>has a night version",
-    "This one is the only one that matters. Lighting, electrical and construction "
-    "across Florida &mdash; photographed the way a client actually sees the work, "
-    "which is after dark.",
+    "Lighting, electrical and construction across Florida. The page follows your clock, "
+    "so whichever version you are seeing is the one that is true right now.",
     u'<a class="btn btn-p" href="contact.html">Start a project</a>'
     u'<a class="btn btn-s" href="#grid">Browse the work</a>')
 
@@ -81,7 +105,7 @@ body += u"""
   <div class="wrap">
     <div class="head rv">
       <p class="eyebrow">Selected work</p>
-      <h2 class="disp">Completed<br>projects</h2>
+      <h2 class="disp">The whole range,<br>under one contract</h2>
       <p class="lede">Filter by what you need. Most of these touched more than one division &mdash; which is the point.</p>
     </div>
 
@@ -93,6 +117,34 @@ body += u"""
     <div class="pf-grid rv">
 %s
     </div>
+
+    <div class="note rv">
+      <span class="t">About the images</span>
+      <p><b>The first %d projects are photographs of completed work.</b> The remainder carry a
+      <b>Concept</b> badge: they are renderings of categories Worldwide Distributors works in
+      but has not photographed yet, and they cross-fade between day and night as your clock
+      moves. Each one gets replaced by a real job as the photography is shot. Nothing badged
+      Concept is presented as a completed project.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec-tight">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="eyebrow">Featured project &middot; drag the seam</p>
+      <h2 class="disp">Daylight &rarr; After dark</h2>
+      <p class="lede">Nobody hires a lighting company for how a property looks at noon. Drag the seam and see the only version that matters.</p>
+    </div>
+    <div class="split rv" id="split">
+      <img src="assets/img/estate-day.jpg" alt="Residential estate exterior in daylight">
+      <div class="after"><img src="assets/img/estate-night.jpg" alt="The same estate exterior after dark with landscape lighting"></div>
+      <div class="seam" role="slider" tabindex="0" aria-label="Reveal the night state"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"></div>
+      <span class="split-lbl l">As found</span>
+      <span class="split-lbl r">Lit</span>
+    </div>
+    <p class="rend" style="position:static;display:inline-block;margin-top:12px">Concept imagery &middot; pending project photography</p>
   </div>
 </section>
 
@@ -101,7 +153,7 @@ body += u"""
     <div class="head rv">
       <p class="eyebrow">In detail</p>
       <h2 class="disp">What a project<br>actually involves</h2>
-      <p class="lede">Three of the above, and how the divisions stack on a single job.</p>
+      <p class="lede">Three completed jobs, and how the divisions stack on a single project.</p>
     </div>
   </div>
 
@@ -156,7 +208,7 @@ body += u"""
     </div>
   </div>
 </section>
-""" % (fbtns, len(live), grid)
+""" % (fbtns, len(real) + len(concept), grid, len(real))
 
 body += CLOSE.format(
     h=u"Yours could be<br>the next one",
@@ -164,9 +216,8 @@ body += CLOSE.format(
 
 n = page("portfolio.html",
          "Portfolio — Worldwide Distributors",
-         "Completed lighting, electrical and construction projects across Florida, photographed at night.",
+         "Lighting, electrical and construction projects across Florida, in daylight and after dark.",
          body)
 
-print("portfolio.html: %d projects, %d bytes" % (len(live), n))
-if missing:
-    print("no photograph yet for:", ", ".join(missing))
+print("portfolio.html: %d photographed + %d concept = %d, %d bytes"
+      % (len(real), len(concept), len(real) + len(concept), n))

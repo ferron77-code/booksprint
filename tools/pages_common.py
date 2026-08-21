@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-
-def phero(img, alt, eyebrow, h1, lede, btns):
-    """Interior-page hero. One photograph — the work is shot at night, so
-    there is no day/night pair to cross-fade."""
+def phero(day, night, alt, eyebrow, h1, lede, btns):
     return u"""
 <section class="phero">
   <div class="hero-shots" aria-hidden="true">
-    <img src="assets/img/%s" alt="" fetchpriority="high">
+    <img class="day"   src="assets/img/%s" alt="" fetchpriority="high">
+    <img class="night" src="assets/img/%s" alt="" fetchpriority="high">
   </div>
   <div class="hero-scrim" aria-hidden="true"></div>
   <div class="phero-in">
@@ -17,8 +15,9 @@ def phero(img, alt, eyebrow, h1, lede, btns):
       <div class="btns">%s</div>
     </div>
   </div>
+  <span class="rend">Concept imagery &middot; pending project photography</span>
 </section>
-""" % (img, eyebrow, h1, lede, btns)
+""" % (day, night, eyebrow, h1, lede, btns)
 
 CTA_P = u'<a class="btn btn-p" href="contact.html">Start a project</a>'
 CTA_S = u'<a class="btn btn-s" href="portfolio.html">See the work</a>'

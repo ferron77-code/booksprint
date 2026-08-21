@@ -5,7 +5,7 @@ from chrome import page
 from pages_common import phero
 
 body = phero(
-    "palm.jpg", "",
+    "court-day.jpg", "court-night.jpg", "",
     "Contact",
     "One number.<br>One company<br>accountable.",
     "Lighting, electrical or construction &mdash; or all three. Tell us what you are working on "

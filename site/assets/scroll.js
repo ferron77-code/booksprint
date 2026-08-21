@@ -84,49 +84,83 @@
     if (reduce || innerWidth < 900) { wrap.dataset.mode = "video"; return; }
 
     var cv = wrap.querySelector("canvas"), ctx = cv.getContext("2d", { alpha: false });
-    var n = +wrap.dataset.frames, base = wrap.dataset.base;
-    var imgs = new Array(n), loaded = 0, ready = false, cur = -1;
     var bar = wrap.querySelector(".scrub-bar i");
     var steps = [].slice.call(wrap.querySelectorAll(".scrub-steps li"));
 
-    function src(i) { return base + "f" + String(i + 1).padStart(3, "0") + ".jpg"; }
+    /* The bundled single-file preview has no folder to fetch from, so it
+       passes the frames in directly as data URIs. */
+    var srcs;
+    try { srcs = JSON.parse(wrap.dataset.frameSrc || "null"); } catch (e) { srcs = null; }
+    var n = srcs ? srcs.length : +wrap.dataset.frames;
+    var base = wrap.dataset.base;
+    function src(i) { return srcs ? srcs[i] : base + "f" + String(i + 1).padStart(3, "0") + ".jpg"; }
 
-    function draw(i) {
-      var im = imgs[i];
-      if (!im || !im.complete || !im.naturalWidth) return;
-      var cw = cv.width, ch = cv.height;
-      var sc = Math.max(cw / im.naturalWidth, ch / im.naturalHeight);
-      var w = im.naturalWidth * sc, hh = im.naturalHeight * sc;
-      ctx.drawImage(im, (cw - w) / 2, (ch - hh) / 2, w, hh);
-      cur = i;
+    var imgs = new Array(n), cur = -1;
+    function ready(i) { var m = imgs[i]; return m && m.complete && m.naturalWidth; }
+
+    /* Scrolling must never look frozen. If the exact frame has not arrived
+       yet, draw the closest one that has — the picture is briefly coarse
+       instead of stuck, and sharpens as the rest land. */
+    function nearest(i) {
+      if (ready(i)) return i;
+      for (var d = 1; d < n; d++) {
+        if (i - d >= 0 && ready(i - d)) return i - d;
+        if (i + d < n && ready(i + d)) return i + d;
+      }
+      return -1;
     }
+
+    function paint(i) {
+      var k = nearest(i);
+      if (k < 0 || k === cur) return;
+      var im = imgs[k], cw = cv.width, ch = cv.height;
+      var sc = Math.max(cw / im.naturalWidth, ch / im.naturalHeight);
+      var w = im.naturalWidth * sc, h = im.naturalHeight * sc;
+      ctx.drawImage(im, (cw - w) / 2, (ch - h) / 2, w, h);
+      cur = k;
+    }
+
+    var want = 0;
     function size() {
       var dpr = Math.min(devicePixelRatio || 1, 2), r = cv.getBoundingClientRect();
+      if (!r.width) return;
       cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
-      var i = cur; cur = -1; draw(i < 0 ? 0 : i);
+      cur = -1; paint(want);
     }
 
-    /* Load frame 0 first so something is on screen immediately, then the
-       rest in order. */
-    function load(i, cb) {
-      var im = new Image();
-      im.decoding = "async";
-      im.onload = im.onerror = function () { loaded++; if (cb) cb(); };
-      im.src = src(i);
-      imgs[i] = im;
+    /* Load coarsely first — every 16th frame, then every 8th, and so on —
+       so the whole range is roughly covered within the first moments and
+       any scroll position has something near it to show. */
+    var order = [], seen = new Array(n);
+    for (var step = 16; step >= 1; step = step >> 1) {
+      for (var i = 0; i < n; i += step) { if (!seen[i]) { seen[i] = 1; order.push(i); } }
     }
-    load(0, function () { size(); draw(0); wrap.dataset.mode = "canvas"; });
-    var i = 1;
-    (function next() {
-      if (i >= n) { ready = true; return; }
-      load(i++, next);
-    })();
 
+    var next = 0, INFLIGHT = 6;
+    function pump() {
+      while (next < order.length && INFLIGHT > 0) {
+        INFLIGHT--;
+        (function (i) {
+          var im = new Image();
+          im.decoding = "async";
+          im.onload = im.onerror = function () {
+            INFLIGHT++;
+            if (cur < 0) { size(); }
+            else if (Math.abs(i - want) < Math.abs(cur - want)) paint(want);
+            pump();
+          };
+          im.src = src(i);
+          imgs[i] = im;
+        })(order[next++]);
+      }
+    }
+    pump();
+    wrap.dataset.mode = "canvas";
     addEventListener("resize", size);
 
     scene(wrap, function (p) {
-      var i = Math.round(smooth(p) * (n - 1));
-      if (i !== cur) draw(i);
+      want = Math.round(smooth(p) * (n - 1));
+      paint(want);
       if (bar) bar.style.transform = "scaleX(" + p.toFixed(4) + ")";
       var k = Math.min(steps.length - 1, Math.floor(p * steps.length));
       for (var j = 0; j < steps.length; j++) steps[j].classList.toggle("on", j <= k);

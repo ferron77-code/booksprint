@@ -24,6 +24,22 @@ for fn in sorted(os.listdir(os.path.join(SITE, "assets/img"))):
     raw = io.open(path, "rb").read()
     total += len(raw)
     assets[fn] = "data:%s;base64,%s" % (mime, base64.b64encode(raw).decode("ascii"))
+# The scrub frames live in a folder, so they cannot be tokenised like the
+# other assets. Bundle every second frame as a data URI and hand the list
+# straight to the engine — 61 frames still scrub smoothly and halves the
+# weight of this file.
+FRAME_SRC = ""
+fdir = os.path.join(SITE, "assets/img/buildout")
+if os.path.isdir(fdir):
+    names = sorted(f for f in os.listdir(fdir) if f.endswith(".jpg"))[::2]
+    uris = []
+    for fn in names:
+        raw = io.open(os.path.join(fdir, fn), "rb").read()
+        total += len(raw)
+        uris.append("data:image/jpeg;base64," + base64.b64encode(raw).decode("ascii"))
+    FRAME_SRC = json.dumps(uris).replace("<", "\\u003c")
+    print("scrub frames bundled: %d" % len(uris))
+
 ico = io.open(os.path.join(SITE, "assets/favicon.svg"), "rb").read()
 assets["favicon.svg"] = "data:image/svg+xml;base64," + base64.b64encode(ico).decode("ascii")
 
@@ -59,7 +75,8 @@ for slug in PAGES:
     s = re.sub(r'assets/(?:img/)?([A-Za-z0-9._-]+\.(?:jpg|png|mp4|svg))', r'@@\1@@', s)
     # the PHP endpoint does not exist in a preview
     s = s.replace('action="contact.php"', 'action="#"')
-    s = s.replace('class="scrub" id="scrub"', 'class="scrub"')
+    if FRAME_SRC and 'id="scrub"' in s:
+        s = s.replace('id="scrub"', 'id="scrub" data-frame-src=\'' + FRAME_SRC + "'", 1)
     missing = set(re.findall(r"@@([A-Za-z0-9._-]+)@@", s)) - set(assets)
     assert not missing, (slug, missing)
     docs[slug] = s
