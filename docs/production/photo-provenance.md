@@ -38,21 +38,24 @@ phone shot. They carry the site.
 
 ## How the two sets sit together
 
-The site carries both, doing different jobs.
+The renderings are additive, not replaced. Every page that existed before the
+photographs arrived is unchanged: the hero cross-fade, the drag-the-seam
+slider on four pages, the three concept tiles on the homepage, and both
+relight scenes all run on the same images they always did.
 
-**Photographs** carry the proof: the homepage project tiles, seven of the
-eleven portfolio entries, and both progressive-relight scroll scenes. Those
-scenes are the best use of this set — the sculptural walls are lit by real
-discrete uplights, so switching them on one at a time as you scroll is what
-the install actually is, not an effect laid over it. Every usable frame is a
-night shot, so these do not cross-fade; they are simply the work.
+The photographs appear where they add rather than displace:
 
-**Concept renderings** carry the mechanic: the day/night cross-fade that runs
-off the visitor's clock, the drag-the-seam before/after slider, and the four
-portfolio entries covering categories with no photography yet — medical
-fit-out, estate, parking retrofit, court. Each carries a visible **Concept**
-badge, and the portfolio states plainly which entries are photographs and
-which are not.
+| where | what |
+|---|---|
+| homepage, "Finished work, after dark" | a new section, three photographed projects |
+| portfolio grid | seven photographed entries, ahead of the four badged Concept |
+| portfolio case studies | all three run on photographs |
+
+One rule learned the hard way: the relight scenes carry copy about the
+specific property they show — a parking deck's overlapping pools, an estate's
+fixtures coming on one at a time. Swapping the photograph without rewriting
+the copy leaves the page describing a deck while showing a garden. If a scene
+image changes, its copy changes with it.
 
 The owners have reviewed the renderings and confirmed they represent the kind
 of work the company does. They stay until real photography replaces them,
@@ -61,5 +64,5 @@ badged throughout.
 ## Gaps
 
 No photography exists for commercial buildouts, medical fit-outs, retail, or
-parking structures. Those pages currently run on copy and the buildout film.
+parking structures. Those are the four categories still carrying renderings.
 See `shot-list.html` for what to shoot.

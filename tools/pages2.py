@@ -60,8 +60,8 @@ body += u"""
 <section class="relight" data-points="[[14,52,24],[33,50,24],[52,49,24],[71,50,24],[89,52,24],[42,74,26],[62,74,26]]">
   <div class="relight-stick">
     <div class="relight-stage">
-      <img class="rl-dark" src="assets/img/scene-garden.jpg" alt="Landscaped common grounds at night, their lighting coming on">
-      <div class="rl-night"><img src="assets/img/scene-garden.jpg" alt=""></div>
+      <img class="rl-dark" src="assets/img/garage-night.jpg" alt="A parking structure at night, its lighting coming on">
+      <div class="rl-night"><img src="assets/img/garage-night.jpg" alt=""></div>
       <p class="rl-count"><b>0</b> fixtures on</p>
       <div class="rl-copy">
         <div class="wrap">
