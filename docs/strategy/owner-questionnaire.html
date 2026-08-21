@@ -9,7 +9,6 @@
   --ink:#14161A; --ink-2:#3E3A35; --mute:#6B6560;
   --rule:#E2DDD5; --rule-2:#C9C2B7;
   --ochre:#B9741A; --ochre-bg:#F6EADA;
-  --clay:#A6362A; --clay-bg:#F7E7E4;
   --green:#3F6B43; --green-bg:#E7EFE7;
   --shadow:0 1px 2px rgba(20,22,26,.05), 0 10px 26px -18px rgba(20,22,26,.20);
   --f-d:"Archivo","Helvetica Neue",Arial,sans-serif;
@@ -22,7 +21,6 @@
     --ink:#EDEAE4; --ink-2:#CFC8BE; --mute:#948C82;
     --rule:#2A2E34; --rule-2:#3C424A;
     --ochre:#E3A34A; --ochre-bg:#2A2113;
-    --clay:#E08874; --clay-bg:#2E1B17;
     --green:#86B98B; --green-bg:#16231A;
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px -18px rgba(0,0,0,.8);
   }
@@ -32,7 +30,6 @@
   --ink:#EDEAE4; --ink-2:#CFC8BE; --mute:#948C82;
   --rule:#2A2E34; --rule-2:#3C424A;
   --ochre:#E3A34A; --ochre-bg:#2A2113;
-  --clay:#E08874; --clay-bg:#2E1B17;
   --green:#86B98B; --green-bg:#16231A;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px -18px rgba(0,0,0,.8);
 }
@@ -44,10 +41,9 @@ body{
   -webkit-font-smoothing:antialiased;padding-bottom:96px;
 }
 .kbar{height:3px;background:linear-gradient(90deg,#F0A93E,#F5C77A,#F7E3C0,#F2F1EC,#D8E2EE,#A9C3E2)}
-.wrap{max-width:680px;margin:0 auto;padding:0 22px}
+.wrap{max-width:660px;margin:0 auto;padding:0 22px}
 
-/* masthead */
-header{padding:44px 0 26px;border-bottom:1px solid var(--rule-2)}
+header{padding:44px 0 24px;border-bottom:1px solid var(--rule-2)}
 .eyebrow{
   font-family:var(--f-m);font-size:11px;font-weight:500;letter-spacing:.16em;
   text-transform:uppercase;color:var(--ochre);margin:0 0 16px;
@@ -60,34 +56,27 @@ h1{
 .stand{font-size:16.5px;line-height:1.55;color:var(--ink-2);margin:0 0 8px}
 .stand b{color:var(--ink)}
 
-/* part heads */
-.part{padding:38px 0 0}
-.part-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding-bottom:12px;border-bottom:2px solid var(--ink);margin-bottom:8px}
-.part-h h2{
-  font-family:var(--f-d);font-variation-settings:"wdth" 106,"wght" 720;
-  font-size:clamp(19px,4vw,25px);text-transform:uppercase;margin:0;letter-spacing:-.008em;
-}
-.part-h .est{font-family:var(--f-m);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-left:auto}
-.part-note{font-size:14.5px;color:var(--mute);margin:12px 0 0;max-width:60ch}
+.list{padding:14px 0 0}
 
-/* question card */
 .q{
   border:1px solid var(--rule);border-left:3px solid var(--rule-2);
   background:var(--surface);padding:18px 18px 16px;margin:16px 0 0;
   box-shadow:var(--shadow);
 }
-.q.block{border-left-color:var(--clay)}
 .q.done{border-left-color:var(--green)}
+.q.noted{border-left-color:var(--ochre)}
+.q.done.noted{border-left-color:var(--green)}
 .q-top{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:9px}
-.ref{font-family:var(--f-m);font-size:10.5px;font-weight:600;letter-spacing:.09em;color:var(--mute)}
+.num{font-family:var(--f-m);font-size:10.5px;font-weight:600;letter-spacing:.09em;color:var(--mute)}
 .chip{
   font-family:var(--f-m);font-size:9px;font-weight:600;letter-spacing:.11em;
-  text-transform:uppercase;padding:2px 7px;border:1px solid currentColor;line-height:1.6;
+  text-transform:uppercase;padding:2px 7px;border:1px solid currentColor;line-height:1.6;display:none;
 }
-.c-block{color:var(--clay);background:var(--clay-bg)}
-.c-ok{color:var(--green);background:var(--green-bg);display:none}
+.c-ok{color:var(--green);background:var(--green-bg)}
+.c-note{color:var(--ochre);background:var(--ochre-bg)}
 .q.done .c-ok{display:inline-block}
-.q label.ask{display:block;font-size:16px;font-weight:600;line-height:1.4;margin-bottom:5px;color:var(--ink)}
+.q.noted:not(.done) .c-note{display:inline-block}
+.q label.ask{display:block;font-size:16.5px;font-weight:600;line-height:1.4;margin-bottom:5px;color:var(--ink)}
 .why{font-size:13.5px;line-height:1.5;color:var(--mute);margin:0 0 12px}
 .why b{color:var(--ink-2);font-weight:600}
 
@@ -96,13 +85,11 @@ input[type=text],textarea{
   background:var(--sunk);border:1px solid var(--rule);padding:11px 12px;
   border-radius:0;line-height:1.5;
 }
-textarea{min-height:76px;resize:vertical}
+textarea{min-height:74px;resize:vertical}
 input[type=text]:focus,textarea:focus{outline:2px solid var(--ochre);outline-offset:1px;border-color:var(--ochre)}
 input::placeholder,textarea::placeholder{color:var(--mute);opacity:.7}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:520px){.two{grid-template-columns:1fr}}
+.stack{display:flex;flex-direction:column;gap:10px}
 
-/* radio pills */
 .opts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
 .opt{position:relative}
 .opt input{position:absolute;opacity:0;width:100%;height:100%;left:0;top:0;margin:0;cursor:pointer}
@@ -114,13 +101,20 @@ input::placeholder,textarea::placeholder{color:var(--mute);opacity:.7}
 .opt input:checked + span{background:var(--ochre);color:var(--paper);border-color:var(--ochre);font-weight:600}
 .opt input:focus-visible + span{outline:2px solid var(--ochre);outline-offset:2px}
 
-/* footer bar */
+.notewrap{margin-top:11px;padding-top:10px;border-top:1px dashed var(--rule)}
+.note-in{
+  width:100%;font-family:var(--f-b);font-size:14px;color:var(--ink-2);
+  background:transparent;border:1px dashed var(--rule-2);padding:9px 11px;line-height:1.5;
+}
+.note-in:focus{outline:2px solid var(--ochre);outline-offset:1px;border-style:solid;border-color:var(--ochre)}
+.note-in::placeholder{color:var(--mute);opacity:.75}
+
 .bar{
   position:fixed;left:0;right:0;bottom:0;z-index:40;
   background:var(--surface);border-top:1px solid var(--rule-2);
   box-shadow:0 -6px 24px -18px rgba(0,0,0,.5);
 }
-.bar-in{max-width:680px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:14px}
+.bar-in{max-width:660px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:14px}
 .prog{flex:1;min-width:0}
 .prog .n{font-family:var(--f-m);font-size:12px;color:var(--ink);font-variant-numeric:tabular-nums}
 .prog .track{height:4px;background:var(--sunk);border:1px solid var(--rule);margin-top:6px;overflow:hidden}
@@ -133,27 +127,8 @@ input::placeholder,textarea::placeholder{color:var(--mute);opacity:.7}
 .btn:hover{background:var(--ochre);border-color:var(--ochre);color:var(--paper)}
 .btn:focus-visible{outline:2px solid var(--ochre);outline-offset:3px}
 
-.note{
-  border:1px solid var(--rule);border-left:3px solid var(--ochre);
-  background:var(--ochre-bg);padding:15px 17px;margin:26px 0 0;
-}
-.note p{margin:0;font-size:14px;line-height:1.6;color:var(--ink-2)}
-.note b{color:var(--ink)}
-.note .t{display:block;font-family:var(--f-m);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ochre);margin-bottom:7px;font-weight:600}
-
-.notewrap{margin-top:11px;padding-top:10px;border-top:1px dashed var(--rule)}
-.note-in{
-  width:100%;font-family:var(--f-b);font-size:14px;color:var(--ink-2);
-  background:transparent;border:1px dashed var(--rule-2);padding:9px 11px;line-height:1.5;
-}
-.note-in:focus{outline:2px solid var(--ochre);outline-offset:1px;border-style:solid;border-color:var(--ochre)}
-.note-in::placeholder{color:var(--mute);opacity:.75}
-.c-note{color:var(--ochre);background:var(--ochre-bg);display:none}
-.q.noted .c-note{display:inline-block}
-.q.noted{border-left-color:var(--ochre)}
-.q.done.noted{border-left-color:var(--green)}
-#out{width:100%;min-height:220px;margin-top:12px;font-family:var(--f-m);font-size:12px;display:none}
-footer{margin-top:40px;padding:20px 0 0;border-top:1px solid var(--rule);font-family:var(--f-m);font-size:11px;line-height:1.8;color:var(--mute)}
+#out{width:100%;min-height:200px;margin-top:14px;font-family:var(--f-m);font-size:12px;display:none}
+footer{margin-top:36px;padding:20px 0 0;border-top:1px solid var(--rule);font-family:var(--f-m);font-size:11px;line-height:1.8;color:var(--mute)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -163,242 +138,110 @@ footer{margin-top:40px;padding:20px 0 0;border-top:1px solid var(--rule);font-fa
 <header>
   <p class="eyebrow">Worldwide Distributors · New website</p>
   <h1>What we still<br>need from you</h1>
-  <p class="stand">The site is built. These are the facts we can't invent — licence numbers, the real service area, which phone number is the right one. <b>Nothing here is a design question.</b> It's the things that have to be true before anything goes live.</p>
-  <p class="stand"><b>Part 1 takes about ten minutes</b> and unblocks the launch. Part 2 is about pictures — and there you have choices, including having us generate what you don't have. Your answers save automatically as you type; close it and come back.</p>
+  <p class="stand">Eight quick things so we can finish the site. Most are details we simply can't guess — the right phone number, how far you travel, what you want people to see first.</p>
+  <p class="stand"><b>Answers save as you type</b>, so you can stop and come back. When you're done, hit <b>Copy answers</b> and send them over.</p>
 </header>
 
-<!-- ══════ PART 1 ══════ -->
-<section class="part">
-  <div class="part-h">
-    <h2>Before we launch</h2>
-    <span class="est">≈ 10 min</span>
-  </div>
-  <p class="part-note">Every item here is either a legal requirement or a claim that's currently sitting on the site unverified. We can't publish around these.</p>
+<div class="list">
 
-  <div class="q block" data-q>
-    <div class="q-top"><span class="ref">V01</span><span class="chip c-block">Blocks launch</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
-    <label class="ask" for="q1">Electrical contractor licence — number, and whose name it's under</label>
-    <p class="why">Florida requires the licence number on contracting advertising, so this has to appear in the footer. <b>We couldn't verify it in public records</b>, which is exactly why we're asking rather than guessing.</p>
-    <input type="text" id="q1" data-k="q1" placeholder="e.g. EC13001234 — held by …">
-    <div class="notewrap"><input type="text" class="note-in" data-k="q1_note" data-note placeholder="Not ready, or want to say more? Note it here"></div>
-  </div>
-
-  <div class="q block" data-q>
-    <div class="q-top"><span class="ref">V02</span><span class="chip c-block">Blocks launch</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
-    <label class="ask" for="q2">E-Built — is it a registered company, and what licence does the construction work run under?</label>
-    <p class="why">We found <b>no public trace of E-Built at all</b> — no website, no licence record, no listing. If it operates under another entity or a qualifier's licence, we need to say so correctly.</p>
-    <textarea id="q2" data-k="q2" placeholder="Entity name, GC/CBC licence number, and who qualifies it"></textarea>
-    <div class="notewrap"><input type="text" class="note-in" data-k="q2_note" data-note placeholder="Not ready, or want to say more? Note it here"></div>
+  <div class="q" data-q>
+    <div class="q-top"><span class="num">01</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
+    <label class="ask">How do people reach you?</label>
+    <p class="why">Two different phone numbers are out there right now — one on the website, another on Instagram. We'll use whichever you say and make it consistent everywhere.</p>
+    <div class="stack">
+      <input type="text" data-k="phone" placeholder="Main phone number">
+      <input type="text" data-k="email" placeholder="Email for enquiries">
+      <input type="text" data-k="addr" placeholder="Address — 12130 SW 114th Pl, Miami FL 33176?">
+      <input type="text" data-k="hours" placeholder="Hours — Mon–Fri 8:00–4:00?">
+    </div>
+    <div class="notewrap"><input type="text" class="note-in" data-k="q1_note" data-note placeholder="Anything else here?"></div>
   </div>
 
-  <div class="q block" data-q>
-    <div class="q-top"><span class="ref">—</span><span class="chip c-block">Blocks launch</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
-    <label class="ask" for="q3">Insurance — carrier, general liability limit, and do you carry workers' comp?</label>
-    <p class="why">Property managers ask for a certificate before you're allowed on site. The vendor page is built to hand it over instantly — it just needs the real numbers.</p>
-    <textarea id="q3" data-k="q3" placeholder="Carrier, GL limit, workers' comp yes/no"></textarea>
-    <div class="notewrap"><input type="text" class="note-in" data-k="q3_note" data-note placeholder="Not ready, or want to say more? Note it here"></div>
-  </div>
-
-  <div class="q block" data-q>
-    <div class="q-top"><span class="ref">V08</span><span class="chip c-block">Blocks launch</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
-    <label class="ask">Which phone number is the right one?</label>
-    <p class="why">Two different numbers are live right now — one on the website, a different one in the Instagram bio. Mismatched contact details <b>hurt your ranking in local search</b> and cost calls.</p>
+  <div class="q" data-q>
+    <div class="q-top"><span class="num">02</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
+    <label class="ask">How far do you travel for work?</label>
+    <p class="why">This decides which areas the site targets. Being specific about where you actually work brings in better leads than saying "all of Florida" — Google favours it too.</p>
     <div class="opts">
-      <label class="opt"><input type="radio" name="q4" value="(305) 969-8769 — the website number" data-k="q4"><span>(305) 969-8769</span></label>
-      <label class="opt"><input type="radio" name="q4" value="(305) 969-8754 — the Instagram number" data-k="q4"><span>(305) 969-8754</span></label>
-      <label class="opt"><input type="radio" name="q4" value="Neither — see notes" data-k="q4"><span>Neither / new number</span></label>
+      <label class="opt"><input type="radio" name="area" value="Miami-Dade only" data-k="area"><span>Miami-Dade</span></label>
+      <label class="opt"><input type="radio" name="area" value="Miami-Dade, Broward, Palm Beach" data-k="area"><span>+ Broward &amp; Palm Beach</span></label>
+      <label class="opt"><input type="radio" name="area" value="South Florida plus the Keys" data-k="area"><span>+ the Keys</span></label>
+      <label class="opt"><input type="radio" name="area" value="Anywhere in Florida" data-k="area"><span>All of Florida</span></label>
     </div>
-    <input type="text" id="q4b" data-k="q4b" placeholder="If neither, or if the second number rings somewhere useful — tell us here">
-    <div class="notewrap"><input type="text" class="note-in" data-k="q4_note" data-note placeholder="Not ready, or want to say more? Note it here"></div>
+    <input type="text" data-k="area_b" placeholder="Anywhere you'd go further for?">
+    <div class="notewrap"><input type="text" class="note-in" data-k="q2_note" data-note placeholder="Anything else here?"></div>
   </div>
 
-  <div class="q block" data-q>
-    <div class="q-top"><span class="ref">V07</span><span class="chip c-block">Blocks launch</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
-    <label class="ask">How far do you actually travel?</label>
-    <p class="why">The brief said "all of Florida," but everything we could verify is Miami-Dade. Claiming statewide from one location <b>makes a Tampa buyer doubt you and weakens your Miami search results.</b> We'd rather be precise and dominant locally.</p>
+  <div class="q" data-q>
+    <div class="q-top"><span class="num">03</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
+    <label class="ask">Licence numbers for the footer</label>
+    <p class="why">Florida law requires a contractor's licence number on any advertising, and that includes websites — statutes <b>489.119</b> and <b>489.521</b>. It's one line at the bottom of the page. Whatever's on your trucks and invoices is what we need.</p>
+    <div class="stack">
+      <input type="text" data-k="lic_ec" placeholder="Electrical licence number">
+      <input type="text" data-k="lic_gc" placeholder="Construction licence number (if the buildout side is separate)">
+    </div>
+    <div class="notewrap"><input type="text" class="note-in" data-k="q3_note" data-note placeholder="Anything else here?"></div>
+  </div>
+
+  <div class="q" data-q>
+    <div class="q-top"><span class="num">04</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
+    <label class="ask">What should people see first?</label>
+    <p class="why">The homepage can only lead with one thing. Pick what you want more of — the rest still gets its own page, just further down.</p>
     <div class="opts">
-      <label class="opt"><input type="radio" name="q5" value="Miami-Dade only" data-k="q5"><span>Miami-Dade only</span></label>
-      <label class="opt"><input type="radio" name="q5" value="Miami-Dade, Broward, Palm Beach" data-k="q5"><span>+ Broward &amp; Palm Beach</span></label>
-      <label class="opt"><input type="radio" name="q5" value="South Florida + the Keys" data-k="q5"><span>+ the Keys</span></label>
-      <label class="opt"><input type="radio" name="q5" value="Genuinely statewide" data-k="q5"><span>Genuinely statewide</span></label>
+      <label class="opt"><input type="radio" name="lead" value="Commercial buildouts and construction" data-k="lead"><span>Commercial buildouts</span></label>
+      <label class="opt"><input type="radio" name="lead" value="Commercial lighting and electrical" data-k="lead"><span>Commercial lighting</span></label>
+      <label class="opt"><input type="radio" name="lead" value="Landscape and outdoor lighting" data-k="lead"><span>Landscape lighting</span></label>
+      <label class="opt"><input type="radio" name="lead" value="Property management and multifamily services" data-k="lead"><span>Property management</span></label>
     </div>
-    <input type="text" id="q5b" data-k="q5b" placeholder="Any job you'd drive further for? Commercial only? Note it here">
-    <div class="notewrap"><input type="text" class="note-in" data-k="q5_note" data-note placeholder="Not ready, or want to say more? Note it here"></div>
-  </div>
-
-  <div class="q block" data-q>
-    <div class="q-top"><span class="ref">V03</span><span class="chip c-block">Blocks launch</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
-    <label class="ask" for="q6">What year did the business start — and what does "30 years" actually count?</label>
-    <p class="why">"Over 30 years of experience" is on the current site. We'll happily use it, but we need to know whether that's the company's age or an owner's time in the trade — they're different claims.</p>
-    <input type="text" id="q6" data-k="q6" placeholder="e.g. Company founded 19XX / Ariel has been in lighting since 19XX">
-    <div class="notewrap"><input type="text" class="note-in" data-k="q6_note" data-note placeholder="Not ready, or want to say more? Note it here"></div>
-  </div>
-
-  <div class="q block" data-q>
-    <div class="q-top"><span class="ref">V05</span><span class="chip c-block">Blocks launch</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
-    <label class="ask">The lifetime warranty on brass and copper fixtures — is that yours or the manufacturer's?</label>
-    <p class="why">Right now the site reads as though <b>you</b> guarantee it for life. If it's actually the manufacturer's warranty, the wording has to say so — this one is a liability question, not a marketing one.</p>
-    <div class="opts">
-      <label class="opt"><input type="radio" name="q7" value="Manufacturer's warranty, we pass it through" data-k="q7"><span>Manufacturer's</span></label>
-      <label class="opt"><input type="radio" name="q7" value="Ours — we stand behind it directly" data-k="q7"><span>Ours</span></label>
-      <label class="opt"><input type="radio" name="q7" value="Both, depending on the product" data-k="q7"><span>Depends on product</span></label>
-      <label class="opt"><input type="radio" name="q7" value="Not sure — needs checking" data-k="q7"><span>Not sure</span></label>
-    </div>
-    <input type="text" id="q7b" data-k="q7b" placeholder="Which manufacturer, and what's actually covered?">
-    <div class="notewrap"><input type="text" class="note-in" data-k="q7_note" data-note placeholder="Not ready, or want to say more? Note it here"></div>
-  </div>
-
-  <div class="q block" data-q>
-    <div class="q-top"><span class="ref">—</span><span class="chip c-block">Blocks launch</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
-    <label class="ask">The third division — buying a lighting package without installation. What do we call it?</label>
-    <p class="why">Selling a lighting package without installing it currently has no name and no page, so a contractor who would happily buy one has no way to discover they can. Naming it is what makes it orderable.</p>
-    <div class="opts">
-      <label class="opt"><input type="radio" name="q9" value="Worldwide Supply — approved" data-k="q9"><span>Worldwide Supply</span></label>
-      <label class="opt"><input type="radio" name="q9" value="Something else — see notes" data-k="q9"><span>Something else</span></label>
-      <label class="opt"><input type="radio" name="q9" value="Leave it unnamed for now" data-k="q9"><span>Leave unnamed</span></label>
-    </div>
-    <input type="text" id="q9b" data-k="q9b" placeholder="Your preferred name">
-    <div class="notewrap"><input type="text" class="note-in" data-k="q8_note" data-note placeholder="Not ready, or want to say more? Note it here"></div>
-  </div>
-
-  <div class="q block" data-q>
-    <div class="q-top"><span class="ref">—</span><span class="chip c-block">Blocks launch</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
-    <label class="ask">Confirm the basics</label>
-    <p class="why">Showroom address, hours and email as they should appear. Correct anything that's wrong.</p>
-    <div class="two">
-      <input type="text" id="q10a" data-k="q10a" placeholder="12130 SW 114th Pl, Miami FL 33176">
-      <input type="text" id="q10b" data-k="q10b" placeholder="Mon–Fri 8:00–4:00">
-    </div>
-    <div style="height:10px"></div>
-    <input type="text" id="q10c" data-k="q10c" placeholder="info@elighting.org — or the address you'd rather use">
-    <div class="notewrap"><input type="text" class="note-in" data-k="q10a_note" data-note placeholder="Not ready, or want to say more? Note it here"></div>
-  </div>
-</section>
-
-<!-- ══════ PART 2 ══════ -->
-<section class="part">
-  <div class="part-h">
-    <h2>Pictures &amp; proof</h2>
-    <span class="est">≈ 15 min</span>
-  </div>
-  <p class="part-note">None of this stops the site going live. Where you don't have something, there's an option to have us make it instead — just know what each choice costs you, because we've said so plainly under every one.</p>
-
-  <div class="q" data-q>
-    <div class="q-top"><span class="ref">V13 · V14</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
-    <label class="ask">Your ten best jobs — and can we show them?</label>
-    <p class="why">Posting to Instagram isn't the same as permission to feature a property in a portfolio — medical offices and private homes especially. If permission is the problem, there's a way around it.</p>
-    <div class="opts">
-      <label class="opt"><input type="radio" name="q12r" value="We have photos and permission" data-k="q12r"><span>Photos + permission</span></label>
-      <label class="opt"><input type="radio" name="q12r" value="We have photos but need to ask the clients first" data-k="q12r"><span>Need to ask first</span></label>
-      <label class="opt"><input type="radio" name="q12r" value="Show the work but keep clients unnamed" data-k="q12r"><span>Show work, no names</span></label>
-      <label class="opt"><input type="radio" name="q12r" value="Photos are poor, generate representative examples instead" data-k="q12r"><span>Generate examples instead</span></label>
-    </div>
-    <p class="why" style="margin:-2px 0 10px">Pick the last one and those become labelled renderings of <b>typical</b> work rather than case studies. Visitors can tell, and commercial buyers ask.</p>
-    <textarea id="q12" data-k="q12" placeholder="Project, type of work, roughly when, and whether we can name the client"></textarea>
-    <div class="notewrap"><input type="text" class="note-in" data-k="q12r_note" data-note placeholder="Not ready, or want to say more? Note it here"></div>
+    <input type="text" data-k="lead_b" placeholder="Any service we've missed entirely?">
+    <div class="notewrap"><input type="text" class="note-in" data-k="q4_note" data-note placeholder="Anything else here?"></div>
   </div>
 
   <div class="q" data-q>
-    <div class="q-top"><span class="ref">—</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
-    <label class="ask">Your crew, your trucks, your showroom</label>
-    <p class="why">Photographs of actual people doing the work are the strongest trust signal a contractor site has — and the thing generated images are worst at. A phone photo of your guys on a real job beats anything we could make.</p>
-    <div class="opts">
-      <label class="opt"><input type="radio" name="q20" value="We have photos to send" data-k="q20"><span>We have photos</span></label>
-      <label class="opt"><input type="radio" name="q20" value="We will take some this week" data-k="q20"><span>We'll grab some</span></label>
-      <label class="opt"><input type="radio" name="q20" value="Use generic stand-ins for now" data-k="q20"><span>Stand-ins for now</span></label>
-      <label class="opt"><input type="radio" name="q20" value="We would rather not show faces" data-k="q20"><span>No faces, please</span></label>
-    </div>
-    <input type="text" id="q20b" data-k="q20b" placeholder="Showroom, bucket truck, vans, crew on site — what exists?">
-    <div class="notewrap"><input type="text" class="note-in" data-k="q20_note" data-note placeholder="Not ready, or want to say more? Note it here"></div>
+    <div class="q-top"><span class="num">05</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
+    <label class="ask">Logo and brand files</label>
+    <p class="why">Whatever exists — the logo, colours, anything a sign shop or printer has done for you. If there's no clean version anywhere, say so and we'll rebuild it.</p>
+    <textarea data-k="brand" placeholder="What you have, and who has the files"></textarea>
+    <div class="notewrap"><input type="text" class="note-in" data-k="q5_note" data-note placeholder="Anything else here?"></div>
   </div>
 
   <div class="q" data-q>
-    <div class="q-top"><span class="ref">V10</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
-    <label class="ask" for="q15">The landscape lighting maintenance program — where does it really stand?</label>
-    <p class="why">You described it as something you've been meaning to build. <b>We won't publish terms or pricing for a service that isn't staffed yet</b> — so tell us whether to show it as "coming soon" with a waitlist, or launch it properly.</p>
-    <textarea id="q15" data-k="q15" placeholder="What's included, how often, roughly what it costs, and when it can actually start"></textarea>
-    <div class="notewrap"><input type="text" class="note-in" data-k="q15_note" data-note placeholder="Not ready, or want to say more? Note it here"></div>
+    <div class="q-top"><span class="num">06</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
+    <label class="ask">Photos and video you already have</label>
+    <p class="why">Finished jobs, the showroom, the trucks, the crew — anything on your phone or Instagram. We'll sort through it. Where there are gaps we can generate images to fill them for now.</p>
+    <textarea data-k="media" placeholder="What you've got and where it lives"></textarea>
+    <div class="notewrap"><input type="text" class="note-in" data-k="q6_note" data-note placeholder="Anything else here?"></div>
   </div>
 
   <div class="q" data-q>
-    <div class="q-top"><span class="ref">V12</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
-    <label class="ask">Stage and studio lighting — still a thing?</label>
-    <p class="why">It's on your current site but never came up in our conversation. We won't quietly delete a line of business that's still earning.</p>
-    <div class="opts">
-      <label class="opt"><input type="radio" name="q16" value="Keep it" data-k="q16"><span>Keep it</span></label>
-      <label class="opt"><input type="radio" name="q16" value="Drop it" data-k="q16"><span>Drop it</span></label>
-      <label class="opt"><input type="radio" name="q16" value="Keep, but low priority" data-k="q16"><span>Keep, low priority</span></label>
-    </div>
-    <div class="notewrap"><input type="text" class="note-in" data-k="q16_note" data-note placeholder="Not ready, or want to say more? Note it here"></div>
+    <div class="q-top"><span class="num">07</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
+    <label class="ask">Websites you like</label>
+    <p class="why">Any industry, doesn't have to be lighting. Two or three you'd be happy to look like tells us more about the direction than any amount of description.</p>
+    <textarea data-k="likes" placeholder="Links, or just names — and what you like about them"></textarea>
+    <div class="notewrap"><input type="text" class="note-in" data-k="q7_note" data-note placeholder="Anything else here?"></div>
   </div>
 
   <div class="q" data-q>
-    <div class="q-top"><span class="ref">—</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
-    <label class="ask" for="q19">What did we get wrong?</label>
-    <p class="why">We built this from one recorded conversation and public research. Something in there is bound to be off, and you're the only one who'd catch it.</p>
-    <textarea id="q19" data-k="q19" placeholder="Corrections, anything missing, anything you'd never want on the site"></textarea>
-    <div class="notewrap"><input type="text" class="note-in" data-k="q19_note" data-note placeholder="Not ready, or want to say more? Note it here"></div>
+    <div class="q-top"><span class="num">08</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
+    <label class="ask">Anything we've got wrong, or anything missing?</label>
+    <p class="why">You know the business and we've had one conversation about it. If something's off, or there's work you want featured that we haven't mentioned, this is the place.</p>
+    <textarea data-k="open" placeholder="Anything at all"></textarea>
+    <div class="notewrap"><input type="text" class="note-in" data-k="q8_note" data-note placeholder="Anything else here?"></div>
   </div>
 
-  <div class="note">
-    <span class="t">One thing to know</span>
-    <p>Every image on the prototypes right now is an <b>AI-generated conceptual rendering</b> — the buildings, the interiors, the parking deck, the pool. None of them are your jobs. They exist to show how the site behaves before anyone picks up a camera, and they're labelled as renderings throughout.<br><br>How many get replaced with real work is the choice you made above. <b>Our recommendation: real photographs for anything you call a project, generated imagery only for concepts and atmosphere.</b> Someone deciding whether to hand you a buildout can tell the difference — and the whole argument of this site is that you actually did the work.</p>
-  </div>
-</section>
-
-<section class="part">
-  <div class="part-h">
-    <h2>Your turn</h2>
-    <span class="est">open</span>
-  </div>
-  <p class="part-note">Everything above is us asking you. This part is you telling us. None of it is required, and all of it is useful.</p>
-
-  <div class="q" data-q>
-    <div class="q-top"><span class="ref">—</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
-    <label class="ask" for="s1">What's missing? What would you add?</label>
-    <p class="why">Services we left out, work you want more of, a page you expected to see. You know the business; we've had one conversation about it.</p>
-    <textarea id="s1" data-k="s1" placeholder="Anything at all"></textarea>
-    <div class="notewrap"><input type="text" class="note-in" data-k="s1_note" data-note placeholder="Not ready, or want to say more? Note it here"></div>
-  </div>
-
-  <div class="q" data-q>
-    <div class="q-top"><span class="ref">—</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
-    <label class="ask" for="s2">Whose website do you like? And who do you lose work to?</label>
-    <p class="why">Two different questions, both useful. A site you like tells us what "good" looks like to you. A competitor who beats you tells us what we're up against — and we couldn't find anyone doing lighting, electrical and construction together, so you may know something we don't.</p>
-    <textarea id="s2" data-k="s2" placeholder="Sites you like (any industry), and the competitors that worry you"></textarea>
-    <div class="notewrap"><input type="text" class="note-in" data-k="s2_note" data-note placeholder="Not ready, or want to say more? Note it here"></div>
-  </div>
-
-  <div class="q" data-q>
-    <div class="q-top"><span class="ref">—</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
-    <label class="ask" for="s3">What kind of work do you want more of?</label>
-    <p class="why">We've pointed the site at commercial buildouts and property managers. If the money is actually somewhere else — landscape lighting, supply-only packages, condo work — say so now and we'll re-aim it.</p>
-    <textarea id="s3" data-k="s3" placeholder="The jobs you'd take every day if you could"></textarea>
-    <div class="notewrap"><input type="text" class="note-in" data-k="s3_note" data-note placeholder="Not ready, or want to say more? Note it here"></div>
-  </div>
-
-  <div class="q" data-q>
-    <div class="q-top"><span class="ref">—</span><span class="chip c-ok">Answered</span><span class="chip c-note">Noted</span></div>
-    <label class="ask" for="s4">Best way to reach you for follow-ups</label>
-    <p class="why">There will be a handful of quick questions once this comes back. Text, WhatsApp, email, a call — and when you're most likely to answer.</p>
-    <input type="text" id="s4" data-k="s4" placeholder="e.g. Text or WhatsApp, mornings before 9">
-    <div class="notewrap"><input type="text" class="note-in" data-k="s4_note" data-note placeholder="Not ready, or want to say more? Note it here"></div>
-  </div>
-</section>
+</div>
 
 <textarea id="out" readonly aria-label="Your answers, ready to copy"></textarea>
 
 <footer>
-  Worldwide Distributors · Owner questionnaire<br>
-  Reference codes (V01–V16) match the verification register in the strategy document.<br>
-  Answers are saved in this browser only — nothing is sent anywhere until you copy and send them.
+  Worldwide Distributors · New website<br>
+  Answers stay in this browser until you copy and send them.
 </footer>
 </div>
 
 <div class="bar">
   <div class="bar-in">
     <div class="prog">
-      <span class="n" id="pn">0 of 18 answered</span>
+      <span class="n" id="pn">0 of 8 answered</span>
       <div class="track"><div class="fill" id="pf"></div></div>
     </div>
     <button class="btn" id="copy" type="button">Copy answers</button>
@@ -408,7 +251,7 @@ footer{margin-top:40px;padding:20px 0 0;border-top:1px solid var(--rule);font-fa
 <script>
 (function(){
 "use strict";
-var KEY="wwd-questionnaire-v1";
+var KEY="wwd-questionnaire-v2";
 var fields=[].slice.call(document.querySelectorAll("[data-k]"));
 var cards=[].slice.call(document.querySelectorAll("[data-q]"));
 
@@ -416,7 +259,7 @@ function load(){
   var data={};
   try{ data=JSON.parse(localStorage.getItem(KEY)||"{}")||{}; }catch(e){ data={}; }
   fields.forEach(function(el){
-    var k=el.getAttribute("data-k"), v=data[k];
+    var v=data[el.getAttribute("data-k")];
     if(v===undefined) return;
     if(el.type==="radio"){ if(el.value===v) el.checked=true; }
     else el.value=v;
@@ -430,39 +273,38 @@ function save(){
     else if(el.value.trim()) data[k]=el.value;
   });
   try{ localStorage.setItem(KEY,JSON.stringify(data)); }catch(e){}
-  return data;
 }
-function answered(card){
-  return [].slice.call(card.querySelectorAll("[data-k]:not([data-note])")).some(function(el){
+function answered(c){
+  return [].slice.call(c.querySelectorAll("[data-k]:not([data-note])")).some(function(el){
     return el.type==="radio" ? el.checked : el.value.trim()!=="";
   });
 }
-function noted(card){
-  return [].slice.call(card.querySelectorAll("[data-note]")).some(function(el){
+function noted(c){
+  return [].slice.call(c.querySelectorAll("[data-note]")).some(function(el){
     return el.value.trim()!=="";
   });
 }
 function refresh(){
   var n=0;
   cards.forEach(function(c){
-    var a=answered(c), nt=noted(c);
+    var a=answered(c), t=noted(c);
     c.classList.toggle("done",a);
-    c.classList.toggle("noted",nt && !a);
-    if(a||nt) n++;
+    c.classList.toggle("noted",t);
+    if(a||t) n++;
   });
   document.getElementById("pn").textContent=n+" of "+cards.length+" answered";
   document.getElementById("pf").style.width=(n/cards.length*100)+"%";
 }
-
 fields.forEach(function(el){
   el.addEventListener("input",function(){ save(); refresh(); });
   el.addEventListener("change",function(){ save(); refresh(); });
 });
 
 document.getElementById("copy").addEventListener("click",function(){
-  var data=save(), lines=["WORLDWIDE DISTRIBUTORS — QUESTIONNAIRE",""];
+  save();
+  var lines=["WORLDWIDE DISTRIBUTORS — WEBSITE DETAILS",""];
   cards.forEach(function(c){
-    var ask=c.querySelector(".ask");
+    var ask=c.querySelector(".ask").textContent.trim();
     var vals=[].slice.call(c.querySelectorAll("[data-k]:not([data-note])")).map(function(el){
       if(el.type==="radio") return el.checked?el.value:"";
       return el.value.trim();
@@ -470,14 +312,12 @@ document.getElementById("copy").addEventListener("click",function(){
     var note=[].slice.call(c.querySelectorAll("[data-note]")).map(function(el){
       return el.value.trim();
     }).filter(Boolean).join(" ");
-    var blocking=c.classList.contains("block");
-    lines.push((c.querySelector(".ref").textContent+" \u2014 "+ask.textContent).trim());
-    lines.push(vals.length?vals.join(" | "):(blocking?"** STILL NEEDED **":"(not answered)"));
+    lines.push(c.querySelector(".num").textContent+". "+ask);
+    lines.push(vals.length?vals.join(" | "):"(not answered)");
     if(note) lines.push("   NOTE: "+note);
     lines.push("");
   });
-  var txt=lines.join("\n");
-  var btn=this;
+  var txt=lines.join("\n"), btn=this;
   function fallback(){
     var o=document.getElementById("out");
     o.style.display="block"; o.value=txt; o.focus(); o.select();
