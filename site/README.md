@@ -18,7 +18,8 @@ contact.php             enquiry form handler (see below)
 .htaccess               extensionless URLs, 404 page, compression, caching
 robots.txt, sitemap.xml
 assets/site.css         all styling
-assets/site.js          all behaviour
+assets/site.js          the clock: one time value drives every colour
+assets/scroll.js        scroll scenes; optional, the site works without it
 assets/img/             photography and video
 ```
 
@@ -69,4 +70,5 @@ Pages are plain HTML — edit them directly. The repeated chrome (head, header,
 time rail, footer) is duplicated in each file rather than included, so if you
 change it in one place, change it everywhere. `../tools/` holds small scripts
 that regenerate the interior pages from a shared template if you would rather
-not do that by hand; see `../tools/README.md`.
+not do that by hand — one command, `python3 tools/build.py`. See
+`../tools/README.md`.

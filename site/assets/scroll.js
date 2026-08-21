@@ -12,6 +12,7 @@
   "use strict";
 
   var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var root = document.documentElement;
   var scenes = [];
   var running = false;
 
@@ -175,10 +176,269 @@
     });
   }
 
+  /* ── Hero fixture ────────────────────────────────────────────────────
+     One object holds the screen while the six stages change around it.
+     Drawn entirely in canvas 2D from a small orthographic projection, so
+     there is no model to load, no image sequence, and nothing to keep in
+     sync with a CDN. It costs about 4KB of code and no network at all.
+
+     The barrel is a cylinder: two circles joined by their tangents. Seen
+     orthographically, a circle whose normal is `axis` becomes an ellipse
+     with semi-major R across the axis and semi-minor R * |axis.z| along
+     it — which is the whole trick to the rotation. */
+  function heroFixture() {
+    var cv = document.getElementById("fixture");
+    if (!cv) return;
+    var host = cv.closest(".seq");
+    if (!host) return;
+
+    var ctx = cv.getContext("2d");
+    var W = 0, H = 0, DPR = 1;
+
+    function size() {
+      DPR = Math.min(devicePixelRatio || 1, 2);
+      var r = cv.getBoundingClientRect();
+      W = r.width; H = r.height;
+      cv.width = Math.round(W * DPR);
+      cv.height = Math.round(H * DPR);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+
+    /* read the live palette so the fixture is lit by the same clock as
+       everything else on the page */
+    function token(n, fallback) {
+      var v = getComputedStyle(root).getPropertyValue(n).trim();
+      return v || fallback;
+    }
+
+    function ellipse(cx, cy, rx, ry, rot) {
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, Math.max(rx, .01), Math.max(ry, .01), rot, 0, Math.PI * 2);
+    }
+
+    function draw(p) {
+      /* the canvas is display:none until sequence() marks the section pinned,
+         so the first measurement can land at zero */
+      if (!W || !H) { size(); if (!W || !H) return; }
+      var accent = token("--accent", "#B9741A");
+      var line   = token("--line", "#D8DEE5");
+      var mute   = token("--text-mute", "#5B6672");
+
+      ctx.clearRect(0, 0, W, H);
+
+      var S = Math.min(W, H);
+      var cx = W * 0.5, cy = H * 0.40;
+      var R = S * 0.116;             /* barrel radius */
+      var L = S * 0.30;              /* barrel length */
+
+      /* ── orientation ─────────────────────────────────────────────── */
+      var yaw = -0.30 + p * Math.PI * 2.15;
+      var tilt = 0.60;                             /* aimed downward */
+      var ax = Math.sin(yaw) * Math.cos(tilt);
+      var ay = Math.sin(tilt);
+      var az = Math.cos(yaw) * Math.cos(tilt);
+
+      var pl = Math.hypot(ax, ay) || 1e-4;         /* projected length */
+      var ux = ax / pl, uy = ay / pl;              /* unit along axis, screen */
+      var px = -uy, py = ux;                       /* perpendicular, screen */
+      var squash = Math.abs(az);                   /* ellipse foreshortening */
+      var rot = Math.atan2(py, px);
+
+      var half = L * 0.5 * pl;
+      var fx = cx + ux * half, fy = cy + uy * half;   /* front (aperture) */
+      var bx = cx - ux * half, by = cy - uy * half;   /* back */
+
+      /* ── power and colour ────────────────────────────────────────── */
+      var power = smooth(clamp((p - 0.50) / 0.16, 0, 1));
+      var warm  = "255,197,122";
+
+      /* Light only reads against dark. On the daylight palette lay a soft
+         pool of shade under the object; after dark --glow is already 1 and
+         the page has done it for us, so this fades out. */
+      var day = 1 - parseFloat(token("--glow", "0"));
+      var shade = day * (0.13 + 0.30 * power);
+      if (shade > 0.004) {
+        /* kept tight around the object: any wider and it greys down the
+           body copy in the columns either side */
+        var sy = cy + S * 0.14, sr = S * 0.60;
+        var sg = ctx.createRadialGradient(cx, sy, 0, cx, sy, sr);
+        sg.addColorStop(0,    "rgba(9,11,15," + shade.toFixed(3) + ")");
+        sg.addColorStop(0.42, "rgba(9,11,15," + (shade * 0.52).toFixed(3) + ")");
+        sg.addColorStop(1,    "rgba(9,11,15,0)");
+        ctx.fillStyle = sg;
+        ellipse(cx, sy, sr, sr, 0);
+        ctx.fill();
+      }
+
+      /* ── beam, behind the body ───────────────────────────────────── */
+      if (power > 0.01) {
+        var reach = S * 0.62;
+        var spread = 2.5;
+        var tx = fx + ux * reach, ty = fy + uy * reach;
+        var fr = R * squash, far = R * spread;
+
+        var g = ctx.createLinearGradient(fx, fy, tx, ty);
+        g.addColorStop(0,   "rgba(" + warm + "," + (0.50 * power).toFixed(3) + ")");
+        g.addColorStop(0.55,"rgba(" + warm + "," + (0.15 * power).toFixed(3) + ")");
+        g.addColorStop(1,   "rgba(" + warm + ",0)");
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.moveTo(fx + px * fr,  fy + py * fr);
+        ctx.lineTo(tx + px * far, ty + py * far);
+        ctx.lineTo(tx - px * far, ty - py * far);
+        ctx.lineTo(fx - px * fr,  fy - py * fr);
+        ctx.closePath();
+        ctx.fill();
+
+        /* the pool where the beam lands */
+        var pg = ctx.createRadialGradient(tx, ty, 0, tx, ty, far * 1.5);
+        pg.addColorStop(0, "rgba(" + warm + "," + (0.34 * power).toFixed(3) + ")");
+        pg.addColorStop(1, "rgba(" + warm + ",0)");
+        ctx.fillStyle = pg;
+        ellipse(tx, ty, far * 1.5, far * 0.52, rot);
+        ctx.fill();
+      }
+
+      /* ── barrel ──────────────────────────────────────────────────── */
+      var body = ctx.createLinearGradient(cx - px * R, cy - py * R, cx + px * R, cy + py * R);
+      body.addColorStop(0,    "#0E1218");
+      body.addColorStop(0.34, "#2B333F");
+      body.addColorStop(0.52, "#333B47");
+      body.addColorStop(1,    "#11161C");
+      ctx.fillStyle = body;
+      ctx.beginPath();
+      ctx.moveTo(bx + px * R, by + py * R);
+      ctx.lineTo(fx + px * R, fy + py * R);
+      ctx.lineTo(fx - px * R, fy - py * R);
+      ctx.lineTo(bx - px * R, by - py * R);
+      ctx.closePath();
+      ctx.fill();
+
+      /* back cap */
+      ctx.fillStyle = "#0B0E13";
+      ellipse(bx, by, R, R * squash, rot);
+      ctx.fill();
+
+      /* heat-sink fins, tracking the rotation */
+      ctx.strokeStyle = "rgba(0,0,0,.30)";
+      ctx.lineWidth = Math.max(1, S * 0.0028);
+      for (var i = 1; i <= 3; i++) {
+        var t = i / 4;
+        var ex = bx + (fx - bx) * t * 0.46, ey = by + (fy - by) * t * 0.46;
+        ellipse(ex, ey, R * 1.015, R * 1.015 * squash, rot);
+        ctx.stroke();
+      }
+
+      /* ── aperture ────────────────────────────────────────────────── */
+      var facing = az < 0;   /* the front is turned toward the viewer */
+      ctx.fillStyle = "#161B22";
+      ellipse(fx, fy, R * 1.1, R * 1.1 * squash, rot);
+      ctx.fill();
+
+      if (facing || squash > 0.06) {
+        var lens = ctx.createRadialGradient(fx, fy, 0, fx, fy, R);
+        var on = power * (facing ? 1 : 0.35);
+        lens.addColorStop(0,    "rgba(255,252,244," + (0.99 * on).toFixed(3) + ")");
+        lens.addColorStop(0.34, "rgba(255,236,200," + (0.92 * on).toFixed(3) + ")");
+        lens.addColorStop(0.72, "rgba(" + warm + "," + (0.55 * on).toFixed(3) + ")");
+        lens.addColorStop(1,    "rgba(96,58,14," + (0.22 * on + 0.10).toFixed(3) + ")");
+        ctx.fillStyle = lens;
+        ellipse(fx, fy, R * 0.84, R * 0.84 * squash, rot);
+        ctx.fill();
+      }
+
+      /* trim ring */
+      ctx.strokeStyle = "rgba(190,200,212,.5)";
+      ctx.lineWidth = Math.max(1, S * 0.004);
+      ellipse(fx, fy, R * 1.1, R * 1.1 * squash, rot);
+      ctx.stroke();
+
+      /* halo once it is on */
+      if (power > 0.01) {
+        var hg = ctx.createRadialGradient(fx, fy, 0, fx, fy, R * 3.4);
+        hg.addColorStop(0, "rgba(" + warm + "," + (0.30 * power).toFixed(3) + ")");
+        hg.addColorStop(1, "rgba(" + warm + ",0)");
+        ctx.fillStyle = hg;
+        ellipse(fx, fy, R * 3.4, R * 3.4, 0);
+        ctx.fill();
+      }
+
+      /* ── stage 02: the drawing ───────────────────────────────────── */
+      var spec = smooth(clamp((p - 0.17) / 0.10, 0, 1)) * (1 - smooth(clamp((p - 0.32) / 0.10, 0, 1)));
+      if (spec > 0.01) {
+        ctx.save();
+        ctx.globalAlpha = spec;
+        ctx.strokeStyle = accent;
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 4]);
+
+        /* beam angle arc off the aperture */
+        var a0 = Math.atan2(uy, ux);
+        ctx.beginPath();
+        ctx.arc(fx, fy, S * 0.20, a0 - 0.42, a0 + 0.42);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(fx, fy);
+        ctx.lineTo(fx + Math.cos(a0 - 0.42) * S * 0.24, fy + Math.sin(a0 - 0.42) * S * 0.24);
+        ctx.moveTo(fx, fy);
+        ctx.lineTo(fx + Math.cos(a0 + 0.42) * S * 0.24, fy + Math.sin(a0 + 0.42) * S * 0.24);
+        ctx.stroke();
+
+        /* overall length dimension */
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.moveTo(bx - px * R * 1.9, by - py * R * 1.9);
+        ctx.lineTo(fx - px * R * 1.9, fy - py * R * 1.9);
+        ctx.stroke();
+
+        ctx.setLineDash([]);
+        ctx.fillStyle = accent;
+        ctx.font = "500 10px ui-monospace,Menlo,monospace";
+        ctx.textAlign = "center";
+        ctx.fillText("48°", fx + Math.cos(a0) * S * 0.235, fy + Math.sin(a0) * S * 0.235);
+        ctx.fillText("2700K", bx - px * R * 3.0, by - py * R * 3.0);
+        ctx.restore();
+      }
+
+      /* ── stage 06: the service tick ──────────────────────────────── */
+      var care = smooth(clamp((p - 0.88) / 0.08, 0, 1));
+      if (care > 0.01) {
+        ctx.save();
+        ctx.globalAlpha = care * 0.9;
+        ctx.strokeStyle = accent;
+        ctx.lineWidth = Math.max(1, S * 0.003);
+        ctx.setLineDash([5, 5]);
+        ellipse(fx, fy, R * 1.32, R * 1.32 * Math.max(squash, 0.14), rot);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = accent;
+        ctx.font = "500 9.5px ui-monospace,Menlo,monospace";
+        ctx.textAlign = "center";
+        ctx.fillText("RE-AIM \u00B7 CLEAN", fx, fy + R * 1.32 * Math.max(squash, 0.14) + S * 0.038);
+        ctx.restore();
+      }
+    }
+
+    size();
+    addEventListener("resize", function () { size(); draw(host.dataset.p || 0); });
+    host.dataset.p = 0;
+    draw(0);
+
+    /* redraw on palette change as well as on scroll, so the fixture keeps
+       up with the clock while the page is sitting still */
+    var lastPaint = "";
+    setInterval(function () {
+      var k = token("--surface", "") + token("--accent", "");
+      if (k !== lastPaint) { lastPaint = k; draw(parseFloat(host.dataset.p) || 0); }
+    }, 400);
+
+    return draw;
+  }
+
   /* ── 3. Pinned sequence ──────────────────────────────────────────────
      Six stages advance one at a time while the section holds the viewport.
      Without JS the same markup reads as a normal stacked list. */
-  function sequence() {
+  function sequence(paint) {
     [].slice.call(document.querySelectorAll(".seq")).forEach(function (el) {
       var items = [].slice.call(el.querySelectorAll(".seq-item"));
       var index = [].slice.call(el.querySelectorAll(".seq-ix"));
@@ -193,6 +453,8 @@
           it.classList.toggle("done", i < k);
         });
         if (bar) bar.style.transform = "scaleX(" + p.toFixed(4) + ")";
+        el.dataset.p = p;
+        if (paint) paint(p);
       });
     });
   }
@@ -263,7 +525,7 @@
   filmScrub();
   relight();
   filters();
-  sequence();
+  sequence(heroFixture());
   parallax();
   counters();
 })();
