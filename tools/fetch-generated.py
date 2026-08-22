@@ -11,6 +11,10 @@ Reads docs/production/generated-manifest.json — a list of
 resizes and writes a JPEG into site/assets/img/. Idempotent: a file already
 on disk is left alone unless --force.
 
+An entry with "raw": true is written through untouched, for video and
+anything else that must not be re-encoded on the way in. Such entries do not
+need w or h.
+
 WHERE THIS RUNS MATTERS. A Claude session on claude.ai/code runs in a
 container whose egress goes through a policy-enforcing proxy, and that proxy
 refuses the Higgsfield CDN with a 403 at CONNECT. Run this from a session on
@@ -71,11 +75,12 @@ def main(argv):
             return 1
         return 0
 
-    try:
-        from PIL import Image  # noqa: F401
-    except ImportError:
-        print("Pillow is needed:  pip install pillow")
-        return 1
+    if any(not i.get("raw") for i in items):
+        try:
+            from PIL import Image  # noqa: F401
+        except ImportError:
+            print("Pillow is needed for the image entries:  pip install pillow")
+            return 1
 
     done = skipped = failed = 0
     for it in items:
@@ -90,6 +95,14 @@ def main(argv):
             print("  FAIL   %-26s %s" % (it["as"], e))
             failed += 1
             continue
+        if it.get("raw"):
+            with open(dest, "wb") as fh:
+                fh.write(raw)
+            print("  wrote  %-26s %6.1f KB  verbatim  (%s)"
+                  % (it["as"], os.path.getsize(dest) / 1024.0, it.get("note", "")))
+            done += 1
+            continue
+
         from PIL import Image
         im = Image.open(io.BytesIO(raw))
         src = im.size
