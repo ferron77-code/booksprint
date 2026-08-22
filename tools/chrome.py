@@ -6,6 +6,24 @@ import io, os
 
 OUT = "/home/user/booksprint/site"
 
+# Absolute origin, no trailing slash. Social scrapers will not resolve a
+# relative og:image, so this has to be the real domain before go-live.
+# Taken from the company's own contact address (info@elighting.org) — CONFIRM
+# IT with them; if the site lives anywhere else, every share card breaks.
+SITE_URL = "https://www.elighting.org"
+
+# Per-page alt text for the share card. Describes the photograph, since that
+# is what a screen reader announces when the card is posted.
+OG_ALT = {
+    "index.html":             "A lit office building and parking lot photographed from the air after dark.",
+    "commercial.html":        "High-bay fixtures lighting an open commercial interior.",
+    "residential.html":       "A specimen palm uplit against a night sky.",
+    "property-managers.html": "A lit hedge line running along a lawn after dark.",
+    "portfolio.html":         "Grazing light across a sculptured garden wall at night.",
+    "contact.html":           "A lit pool and planting in a residential garden after dark.",
+    "404.html":               "A lit office building and parking lot photographed from the air after dark.",
+}
+
 NAV = [
     ("commercial.html", "Commercial"),
     ("residential.html", "Residential"),
@@ -26,6 +44,8 @@ HEAD = u"""<!doctype html>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/favicon.svg">
+<link rel="canonical" href="{url}">
+{social}
 <link rel="stylesheet" href="assets/site.css">
 <script>document.documentElement.className+=" js";</script>
 </head>
@@ -116,11 +136,54 @@ CLOSE = u"""
 </section>
 """
 
+SOCIAL = u"""<meta property="og:type" content="website">
+<meta property="og:site_name" content="Worldwide Distributors">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="{url}">
+<meta property="og:title" content="{ogtitle}">
+<meta property="og:description" content="{desc}">
+<meta property="og:image" content="{img}">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{alt}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{ogtitle}">
+<meta name="twitter:description" content="{desc}">
+<meta name="twitter:image" content="{img}">
+<meta name="twitter:image:alt" content="{alt}">
+<meta name="theme-color" content="#003FD6">"""
+
+
+def social(slug, title, desc):
+    """og:title drops the site name — og:site_name already carries it, and
+    the shorter line survives the truncation feeds apply."""
+    card = "og-" + (slug[:-5] if slug.endswith(".html") else slug) + ".jpg"
+    if slug == "404.html":
+        card = "og-index.jpg"
+    parts = [x.strip() for x in title.split(" — ")]
+    # Interior pages read "Topic — Worldwide Distributors"; the homepage
+    # reads the other way round. Either way keep the half that is not the
+    # site name, since og:site_name already carries that.
+    ogtitle = parts[0]
+    if ogtitle == "Worldwide Distributors" and len(parts) > 1:
+        ogtitle = parts[1]
+    return SOCIAL.format(
+        url=SITE_URL + "/" + slug,
+        ogtitle=ogtitle,
+        desc=desc,
+        img=SITE_URL + "/assets/img/" + card,
+        alt=OG_ALT.get(slug, OG_ALT["index.html"]),
+    )
+
+
 def page(slug, title, desc, body):
     nav = "\n".join(
         '      <a href="%s"%s>%s</a>' % (h, ' aria-current="page"' if h == slug else "", t)
         for h, t in NAV
     )
-    html = HEAD.format(title=title, desc=desc, nav=nav) + body + FOOT
+    html = HEAD.format(title=title, desc=desc, nav=nav,
+                       url=SITE_URL + "/" + slug,
+                       social=social(slug, title, desc)) + body + FOOT
     io.open(os.path.join(OUT, slug), "w", encoding="utf-8").write(html)
     return len(html)

@@ -18,13 +18,15 @@ assets, total = {}, 0
 # there for the client, are megabytes each and are not referenced by any page,
 # so they stay out of the bundle
 IMG_DIRS = ["assets/img", "assets/brand"]
+# og-*.jpg are the social cards: meta only, never displayed, and the
+# preview strips the tags that point at them.
 SKIP = ("-master.png", "supplied-original.png")
 for d in IMG_DIRS:
   for fn in sorted(os.listdir(os.path.join(SITE, d))):
     path = os.path.join(SITE, d, fn)
     # the scrub frame folder is desktop-only progressive enhancement; the
     # preview keeps the plain video instead of inlining 121 stills
-    if os.path.isdir(path) or fn.endswith(SKIP):
+    if os.path.isdir(path) or fn.endswith(SKIP) or fn.startswith("og-"):
         continue
     mime = mimetypes.guess_type(fn)[0] or "application/octet-stream"
     raw = io.open(path, "rb").read()
@@ -95,6 +97,10 @@ for slug in PAGES:
     s = re.sub(r'assets/(?:img/|brand/)?([A-Za-z0-9._-]+\.(?:jpg|png|mp4|webm|svg))', r'@@\1@@', s)
     # the PHP endpoint does not exist in a preview
     s = s.replace('action="contact.php"', 'action="#"')
+    # Social tags name a live origin and are invisible here. Left in, the
+    # asset rewrite below would turn their absolute URLs into data URIs and
+    # drag every share card into the bundle.
+    s = re.sub(r'<link rel="canonical".*?<meta name="theme-color"[^>]*>\n', '', s, flags=re.S)
     m = re.search(r'id="scrub"[^>]*data-base="([^"]+)"', s)
     if m:
         fs = frame_src(m.group(1))
