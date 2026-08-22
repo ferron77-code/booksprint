@@ -273,4 +273,45 @@
   setTime(current, true);
   addEventListener("resize", buildGrad);
   requestAnimationFrame(tick);
+
+  /* ── enquiry attachments ───────────────────────────────────────────────
+     Lists what has been picked and totals it, so an over-size batch is
+     caught here rather than after a long upload on a phone. The server
+     enforces the same limits regardless — this only saves the round trip. */
+  (function () {
+    var input = document.getElementById("files");
+    if (!input) return;
+    var out = document.querySelector(".filelist");
+    var form = input.form;
+    var MAX_FILES = 8, MAX_ONE = 10 * 1024 * 1024, MAX_TOTAL = 20 * 1024 * 1024;
+
+    function kb(n) {
+      return n >= 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB";
+    }
+    function check() {
+      var fs = input.files, total = 0, bad = [], rows = [];
+      for (var i = 0; i < fs.length; i++) {
+        total += fs[i].size;
+        var over = fs[i].size > MAX_ONE;
+        if (over) bad.push(fs[i].name + " is over 10 MB");
+        rows.push('<b>' + fs[i].name.replace(/[<&]/g, "") + "</b> " + kb(fs[i].size));
+      }
+      if (fs.length > MAX_FILES) bad.push("that is " + fs.length + " files, the limit is " + MAX_FILES);
+      if (total > MAX_TOTAL) bad.push("the batch comes to " + kb(total) + ", the limit is 20 MB");
+      if (out) {
+        out.innerHTML = fs.length
+          ? rows.join("<br>") + "<br>" + fs.length + (fs.length === 1 ? " file, " : " files, ") + kb(total)
+            + (bad.length ? ' <span class="over">&mdash; ' + bad[0] + "</span>" : "")
+          : "";
+      }
+      return bad.length === 0;
+    }
+    input.addEventListener("change", check);
+    if (form) {
+      form.addEventListener("submit", function (e) {
+        if (!check()) { e.preventDefault(); if (out) out.scrollIntoView({ block: "center" }); }
+      });
+    }
+  })();
+
 })();

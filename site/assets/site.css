@@ -448,6 +448,26 @@ html.js .rv.on{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.2,.
   background-repeat:no-repeat;background-position:right 14px center;background-size:10px 6px;
 }
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--brand);outline:none}
+
+/* ── file field ─────────────────────────────────────── */
+.field input[type=file]{
+  padding:12px 13px;font-family:var(--f-b);font-size:13.5px;cursor:pointer;
+  color:var(--text-mute);
+}
+.field input[type=file]::file-selector-button{
+  font-family:var(--f-m);font-size:10.5px;font-weight:600;letter-spacing:.11em;
+  text-transform:uppercase;padding:9px 13px;margin:0 13px 0 0;cursor:pointer;
+  border:1px solid var(--line);background:var(--surface);color:var(--text);
+  transition:border-color .2s,color .2s;
+}
+.field input[type=file]:hover::file-selector-button{border-color:var(--brand);color:var(--brand)}
+.hint{display:block;margin-top:8px;font-size:12px;line-height:1.55;color:var(--text-mute)}
+/* Filled in by site.js once files are chosen; empty and invisible before
+   that, and with no script at all it simply never appears. */
+.filelist{display:block;margin-top:10px;font-family:var(--f-m);font-size:11.5px;line-height:1.9;color:var(--text-mute)}
+.filelist:empty{display:none}
+.filelist b{color:var(--text);font-weight:500}
+.filelist .over{color:var(--brand);font-weight:600}
 .form .btn{justify-self:start}
 .formnote{font-size:13px;color:var(--text-mute);margin:0;max-width:60ch}
 
