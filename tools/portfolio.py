@@ -3,15 +3,16 @@
 
 Two kinds of entry:
 
-  REAL     one photograph of a finished Worldwide Distributors project,
+  PHOTO    one photograph of a finished Worldwide Distributors project,
            shot at night. No daylight frame exists, so these do not
            cross-fade — they are simply the work.
 
-  CONCEPT  a day/night rendering pair that cross-fades on the visitor's
-           clock. These illustrate categories the company works in but has
-           no photography of yet, and every one carries a "Concept" badge.
+  RENDER   a day/night rendering pair that cross-fades on the visitor's
+           clock, illustrating a category the company works in but has no
+           photography of yet. These carry no on-page label; which entries
+           are which is recorded in docs/production/photo-provenance.md.
 
-Real work leads. To add a project: put the file(s) in site/assets/img/, add
+Photographs lead. To add a project: put the file(s) in site/assets/img/, add
 a row below, run tools/build.py. Rows whose images are missing are skipped.
 """
 import os, sys
@@ -86,7 +87,6 @@ def tile_concept(slug, cats, kind, title, blurb):
         <span class="tile">
           <img class="day"   src="assets/img/%s-day.jpg"   alt="%s in daylight" loading="lazy">
           <img class="night" src="assets/img/%s-night.jpg" alt="%s lit after dark" loading="lazy">
-          <span class="badge">Concept</span>
         </span>
         <div class="pf-body"><span class="k">%s</span><h3>%s</h3><p>%s</p></div>
       </article>""" % (cats, slug, title.replace("&amp;", "and"), slug,
@@ -127,14 +127,6 @@ body += u"""
 %s
     </div>
 
-    <div class="note rv">
-      <span class="t">About the images</span>
-      <p><b>The first %d projects are photographs of completed work.</b> The remainder carry a
-      <b>Concept</b> badge: they are renderings of categories Worldwide Distributors works in
-      but has not photographed yet, and they cross-fade between day and night as your clock
-      moves. Each one gets replaced by a real job as the photography is shot. Nothing badged
-      Concept is presented as a completed project.</p>
-    </div>
   </div>
 </section>
 
@@ -153,7 +145,6 @@ body += u"""
       <span class="split-lbl l">As found</span>
       <span class="split-lbl r">Lit</span>
     </div>
-    <p class="rend" style="position:static;display:inline-block;margin-top:12px">Concept imagery &middot; pending project photography</p>
   </div>
 </section>
 
@@ -217,7 +208,7 @@ body += u"""
     </div>
   </div>
 </section>
-""" % (fbtns, len(real) + len(concept), grid, len(real))
+""" % (fbtns, len(real) + len(concept), grid)
 
 body += CLOSE.format(
     h=u"Yours could be<br>the next one",

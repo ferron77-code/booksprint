@@ -19,7 +19,6 @@ def phero(day, night, alt, eyebrow, h1, lede, btns):
       <div class="btns">%s</div>
     </div>
   </div>
-  <span class="rend">Concept imagery &middot; pending project photography</span>
 </section>
 """ % (day, night, eyebrow, h1, lede, btns)
 
@@ -208,7 +207,6 @@ body += u"""
       <span class="split-lbl l">As found</span>
       <span class="split-lbl r">Lit</span>
     </div>
-    <p class="rend" style="position:static;display:inline-block;margin-top:12px">Concept imagery &middot; pending project photography</p>
   </div>
 </section>
 
