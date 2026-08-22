@@ -34,8 +34,17 @@ for f in pages:
     for m in re.finditer(r'(?:src|href)="([^"#][^"]*)"', src):
         u = m.group(1)
         if u.startswith(("http", "mailto:", "tel:", "data:")): continue
-        if not os.path.exists(os.path.join(SITE, u.split("?")[0])):
+        target, _, frag = u.partition("#")
+        target = target.split("?")[0]
+        path = os.path.join(SITE, target)
+        if not os.path.exists(path):
             p.err.append("missing ref: " + u)
+        elif frag and target.endswith(".html"):
+            # the fragment has to be something on that page: an element id, or
+            # a portfolio filter key, which scroll.js applies on arrival
+            dst = io.open(path, encoding="utf-8").read()
+            if ('id="%s"' % frag) not in dst and ('data-f="%s"' % frag) not in dst:
+                p.err.append("dead anchor: " + u)
     name = os.path.basename(f)
     if p.err:
         bad += 1

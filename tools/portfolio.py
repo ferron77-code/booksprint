@@ -94,8 +94,9 @@ def tile_concept(slug, cats, kind, title, blurb):
 
 grid = "\n".join([tile_real(*p) for p in real] + [tile_concept(*p) for p in concept])
 
-FILTERS = [("all", "Everything"), ("landscape", "Landscape"), ("buildout", "Buildouts"),
-           ("residential", "Residential"), ("commercial", "Commercial"), ("property", "Property Managers")]
+FILTERS = [("all", "Everything"), ("lighting", "Lighting"), ("landscape", "Landscape"),
+           ("buildout", "Buildouts"), ("residential", "Residential"),
+           ("commercial", "Commercial"), ("property", "Property Managers")]
 fbtns = "\n".join(
     '      <button type="button" data-f="%s" aria-pressed="%s">%s</button>' % (k, "true" if k == "all" else "false", t)
     for k, t in FILTERS)

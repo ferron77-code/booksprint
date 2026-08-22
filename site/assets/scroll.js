@@ -541,19 +541,44 @@
     var live = document.querySelector(".filt-live");
 
     bar.hidden = false;
-    btns.forEach(function (b) {
-      b.addEventListener("click", function () {
-        var k = b.dataset.f;
-        btns.forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
-        var n = 0;
-        items.forEach(function (it) {
-          var hit = k === "all" || (" " + it.dataset.cat + " ").indexOf(" " + k + " ") > -1;
-          it.hidden = !hit;
-          if (hit) n++;
-        });
-        if (live) live.textContent = n + (n === 1 ? " project" : " projects");
+
+    function apply(k, push) {
+      var known = false;
+      btns.forEach(function (o) {
+        var on = o.dataset.f === k;
+        o.setAttribute("aria-pressed", String(on));
+        if (on) known = true;
       });
+      if (!known) return false;
+      var n = 0;
+      items.forEach(function (it) {
+        var hit = k === "all" || (" " + it.dataset.cat + " ").indexOf(" " + k + " ") > -1;
+        it.hidden = !hit;
+        if (hit) n++;
+      });
+      if (live) live.textContent = n + (n === 1 ? " project" : " projects");
+      if (push && history.replaceState) {
+        history.replaceState(null, "", k === "all" ? "#grid" : "#" + k);
+      }
+      return true;
+    }
+
+    /* Links elsewhere point straight at a category — the headline's
+       "Lighting." is portfolio.html#lighting — so a hash that names a filter
+       applies it on arrival rather than only scrolling past it. */
+    function fromHash() {
+      var k = location.hash.slice(1);
+      if (k && apply(k, false)) {
+        var g = document.getElementById("grid");
+        if (g) g.scrollIntoView({ block: "start" });
+      }
+    }
+
+    btns.forEach(function (b) {
+      b.addEventListener("click", function () { apply(b.dataset.f, true); });
     });
+    addEventListener("hashchange", fromHash);
+    fromHash();
   }
 
   /* ── 8. Background clips ─────────────────────────────────────────────

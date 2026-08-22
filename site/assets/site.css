@@ -104,6 +104,9 @@ a{color:inherit}
 .nav a{color:var(--text-mute);text-decoration:none;font-size:13.5px;transition:color .2s}
 .nav a:hover,.nav a[aria-current="page"]{color:var(--accent)}
 @media(max-width:1000px){.nav{display:none}}
+/* the strapline wraps to two lines under the wordmark on a narrow phone,
+   which reads as a mistake rather than a subtitle */
+@media(max-width:420px){.brand span{display:none}}
 
 /* ── buttons ────────────────────────────────────────── */
 .btn{
@@ -154,23 +157,53 @@ a{color:inherit}
 @media(prefers-reduced-motion:reduce){.hero-shots video{display:none}}
 .hero-shots .day{opacity:calc(1 - var(--glow))}
 .hero-shots .night{opacity:var(--glow)}
+/* The hero sits on dusk footage that is dark whatever the clock says, so its
+   type does NOT follow the palette — it is always light on a dark scrim.
+   Letting --text apply here put near-black copy over a lit facade in the
+   morning, which is exactly where it disappeared. */
 .hero-scrim{
   position:absolute;inset:0;
-  background:linear-gradient(180deg,
-    color-mix(in srgb,var(--surface) 30%,transparent) 0%,
-    transparent 32%,
-    color-mix(in srgb,var(--surface) 55%,transparent) 72%,
-    var(--surface) 100%);
+  background:
+    linear-gradient(180deg,
+      rgba(6,8,11,.55) 0%,
+      rgba(6,8,11,.18) 26%,
+      rgba(6,8,11,.62) 62%,
+      rgba(6,8,11,.88) 88%,
+      var(--surface) 100%),
+    linear-gradient(90deg,
+      rgba(6,8,11,.60) 0%,
+      rgba(6,8,11,.20) 52%,
+      rgba(6,8,11,0) 78%);
+}
+@media(max-width:900px){
+  /* one column, type runs the full width, so the wash has to as well */
+  .hero-scrim{
+    background:linear-gradient(180deg,
+      rgba(6,8,11,.58) 0%,
+      rgba(6,8,11,.30) 22%,
+      rgba(6,8,11,.72) 55%,
+      rgba(6,8,11,.90) 85%,
+      var(--surface) 100%);
+  }
 }
 .hero-in{position:relative;z-index:3;width:100%;padding:120px 0 clamp(38px,7vh,80px)}
+.hero h1,.hero .claim{color:#F6F3EE;text-shadow:0 1px 26px rgba(4,6,9,.5)}
+.hero .lede{color:#D2D6DB;text-shadow:0 1px 18px rgba(4,6,9,.55)}
 .hero h1{font-size:clamp(36px,7.4vw,102px)}
 .hero h1 span{display:block}
-.hero h1 span:nth-child(2){color:var(--accent)}
+.hero h1 a{color:inherit;text-decoration:none;display:inline-block}
+.hero h1 a::after{
+  content:"";display:block;height:3px;margin-top:.06em;
+  background:currentColor;transform:scaleX(0);transform-origin:0 50%;
+  transition:transform .32s cubic-bezier(.2,.7,.3,1);
+}
+.hero h1 a:hover::after,.hero h1 a:focus-visible::after{transform:scaleX(1)}
+.hero h1 .accent a{color:var(--accent)}
 .stamp{
   display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;
   font-family:var(--f-m);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--text);background:color-mix(in srgb,var(--surface) 74%,transparent);
-  border:1px solid var(--line);padding:6px 10px;
+  color:#F6F3EE;background:rgba(6,8,11,.5);
+  border:1px solid rgba(246,243,238,.28);padding:6px 10px;
 }
 .stamp i{width:6px;height:6px;border-radius:50%;background:var(--accent);flex:none}
 .stamp b{color:var(--accent);font-weight:600;font-variant-numeric:tabular-nums}
