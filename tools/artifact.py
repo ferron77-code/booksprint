@@ -13,6 +13,34 @@ js  = io.open(os.path.join(SITE, "assets/site.js"),  encoding="utf-8").read()
 scr = io.open(os.path.join(SITE, "assets/scroll.js"), encoding="utf-8").read()
 
 # ── assets, base64'd once ────────────────────────────────────────────
+
+# The preview inlines every asset as base64, which is 4/3 of the file, and the
+# whole document has to stay under the 16 MB artifact ceiling. Photographs get
+# recompressed on the way in — 1000px wide at quality 72 is indistinguishable
+# at review size and takes the flat JPEGs from 7.7 MB to 4.0 MB. THE SITE
+# ITSELF IS UNTOUCHED; this only ever affects the bundled copy. PNGs are left
+# alone: the brand lockups carry alpha, and the scrub frames are left alone so
+# scrubbing stays smooth.
+PREVIEW_MAXW = 1000
+PREVIEW_Q = 72
+
+
+def shrink(fn, raw):
+    if not fn.lower().endswith((".jpg", ".jpeg")):
+        return raw
+    try:
+        from PIL import Image
+    except ImportError:
+        return raw
+    im = Image.open(io.BytesIO(raw))
+    if im.width > PREVIEW_MAXW:
+        h = int(round(im.height * PREVIEW_MAXW / float(im.width)))
+        im = im.resize((PREVIEW_MAXW, h), Image.LANCZOS)
+    out = io.BytesIO()
+    im.convert("RGB").save(out, "JPEG", quality=PREVIEW_Q, optimize=True)
+    return out.getvalue() if out.tell() < len(raw) else raw
+
+
 assets, total = {}, 0
 # assets/brand carries the logo artwork; the -master and supplied- files are
 # there for the client, are megabytes each and are not referenced by any page,
@@ -30,6 +58,7 @@ for d in IMG_DIRS:
         continue
     mime = mimetypes.guess_type(fn)[0] or "application/octet-stream"
     raw = io.open(path, "rb").read()
+    raw = shrink(fn, raw)
     total += len(raw)
     assert fn not in assets, "asset name collides across folders: " + fn
     assets[fn] = "data:%s;base64,%s" % (mime, base64.b64encode(raw).decode("ascii"))
