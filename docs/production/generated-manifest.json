@@ -91,16 +91,22 @@
     "note": "Finished and lit"
   },
   {
-    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_210533_90aa4631-ab29-449c-b7da-70b3878a99a7.mp4",
-    "as": "buildfly-src.mp4",
-    "raw": true,
-    "note": "Seedance 10s drone orbit: foundation to lit. Source for the scrub frames."
-  },
-  {
     "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_210428_3876260e-4b96-4edb-813b-1df1ce1fd7ef.png",
     "as": "stage-night-aerial.jpg",
     "w": 1100,
     "h": 821,
     "note": "Aerial night end frame, also the video's poster"
+  },
+  {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_211701_ca8eb7d0-d746-47c4-9e58-b511b8c80a90.mp4",
+    "as": "buildfly-src.mp4",
+    "raw": true,
+    "note": "20s full 360 orbit, tilt-up panels with openings pre-formed. The keeper."
+  },
+  {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_211533_2623ca48-c866-485d-896c-3e9641c675f7.mp4",
+    "as": "buildfly-quarter.mp4",
+    "raw": true,
+    "note": "15s quarter turn, same construction fix. Comparison only."
   }
 ]
