@@ -35,6 +35,10 @@
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
+/* The header is fixed, so without this every fragment link lands with its
+   target tucked underneath it — measured at 13px above the viewport top
+   before this rule existed. 84px is the 64px header plus air. */
+main[id],section[id],.panel[id]{scroll-margin-top:84px}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
 body{

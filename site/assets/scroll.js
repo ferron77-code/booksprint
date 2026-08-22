@@ -570,13 +570,14 @@
 
     /* Links elsewhere point straight at a category — the headline's
        "Lighting." is portfolio.html#lighting — so a hash that names a filter
-       applies it on arrival rather than only scrolling past it. */
+       applies it on arrival rather than only scrolling past it.
+       It applies the filter and leaves the reader at the top of the page:
+       arriving halfway down, past the page's own heading, reads as a broken
+       link rather than a shortcut. The filter row shows which filter is on
+       and how many projects it leaves. */
     function fromHash() {
       var k = location.hash.slice(1);
-      if (k && apply(k, false)) {
-        var g = document.getElementById("grid");
-        if (g) g.scrollIntoView({ block: "start" });
-      }
+      if (k) apply(k, false);
     }
 
     btns.forEach(function (b) {
