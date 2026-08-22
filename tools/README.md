@@ -35,5 +35,6 @@ row you have not photographed yet is skipped rather than showing a broken tile.
 | `pages.py` `pages2.py` `pages3.py` `page404.py` | one or two pages each |
 | `portfolio.py` | the portfolio grid and case studies |
 | `kroom.py` | swaps the colour-temperature illustration into pages that use it |
-| `check.py` | markup nesting, local `src`/`href` resolution, duplicate ids |
+| `check.py` | markup nesting, local `src`/`href` resolution, cross-page anchors, duplicate ids |
+| `linkcheck.py` | full link audit: every href, anchor, tel, mailto, and which pages are reachable |
 | `artifact.py` | bundles the whole site into one file for review; not needed to publish |
