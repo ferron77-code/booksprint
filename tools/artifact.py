@@ -55,10 +55,15 @@ BRIDGE = u"""
 <script>
 /* preview shell bridge: route in-site links up to the parent */
 document.addEventListener("click", function (e) {
-  var a = e.target.closest ? e.target.closest('a[href$=".html"]') : null;
+  var a = e.target.closest ? e.target.closest("a[href]") : null;
   if (!a) return;
+  /* page, or page plus a fragment — the headline links carry one, and an
+     "ends with .html" test misses those and lets the iframe navigate
+     about:srcdoc to a file that is not there */
+  var m = (a.getAttribute("href") || "").match(/^([A-Za-z0-9_-]+)\.html(?:#(.*))?$/);
+  if (!m) return;
   e.preventDefault();
-  parent.postMessage({ wwdGo: a.getAttribute("href").replace(".html", "") }, "*");
+  parent.postMessage({ wwdGo: m[1], wwdHash: m[2] || "" }, "*");
 });
 document.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -106,14 +111,40 @@ SHELL = u"""<title>Worldwide Distributors</title>
 <script>
 var DOCS = %s, ASSETS = %s;
 var f = document.getElementById("f");
-function show(slug) {
+
+/* Appended to a page when it is opened at a fragment. A srcdoc document has
+   no address, so the fragment cannot arrive in the URL — this does what
+   landing on it would have done. The closing tag is split so it cannot end
+   the block it is written inside. */
+var ACTIVATE =
+  "<scr" + "ipt>(function(){var h=__FRAG__;" +
+  "var b=document.querySelector('.filt button[data-f=' + JSON.stringify(h) + ']');" +
+  "if(b){b.click();return;}" +
+  "var el=document.getElementById(h);" +
+  "if(el){el.scrollIntoView();}" +
+  "})();</scr" + "ipt>";
+function show(slug, frag) {
   if (!DOCS[slug]) slug = "index";
-  f.srcdoc = DOCS[slug].replace(/@@([A-Za-z0-9._-]+)@@/g, function (m, k) { return ASSETS[k] || m; });
-  if (location.hash.slice(1) !== slug) history.replaceState(null, "", "#" + slug);
+  var html = DOCS[slug].replace(/@@([A-Za-z0-9._-]+)@@/g, function (m, k) { return ASSETS[k] || m; });
+  /* A fragment cannot ride in on the URL here — the page is srcdoc, it has
+     no address of its own. Append a step that runs after the page scripts
+     and does what arriving at that fragment would have done. */
+  if (frag) {
+    html += ACTIVATE.replace("__FRAG__", JSON.stringify(frag));
+  }
+  f.srcdoc = html;
+  var want = "#" + slug + (frag ? "/" + frag : "");
+  if (location.hash !== want) history.replaceState(null, "", want);
 }
-addEventListener("message", function (e) { if (e.data && e.data.wwdGo) show(e.data.wwdGo); });
-addEventListener("hashchange", function () { show(location.hash.slice(1)); });
-show(location.hash.slice(1) || "index");
+function route(h) {
+  var parts = h.replace(/^#/, "").split("/");
+  show(parts[0] || "index", parts[1] || "");
+}
+addEventListener("message", function (e) {
+  if (e.data && e.data.wwdGo) show(e.data.wwdGo, e.data.wwdHash || "");
+});
+addEventListener("hashchange", function () { route(location.hash); });
+route(location.hash);
 </script>
 """ % (j(docs), j(assets))
 

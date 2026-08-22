@@ -558,7 +558,12 @@
       });
       if (live) live.textContent = n + (n === 1 ? " project" : " projects");
       if (push && history.replaceState) {
-        history.replaceState(null, "", k === "all" ? "#grid" : "#" + k);
+        /* Throws in an opaque-origin document — a sandboxed iframe, or the
+           page opened straight off a file:// path. The filter itself has
+           already been applied by here, so losing the URL update is the
+           whole cost. */
+        try { history.replaceState(null, "", k === "all" ? "#grid" : "#" + k); }
+        catch (e) {}
       }
       return true;
     }
