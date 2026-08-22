@@ -182,28 +182,32 @@ body += u"""
 <!-- Scroll scrub: the clip advances a frame at a time under the wheel.
      Desktop only - scroll.js leaves the plain <video> in place below 900px
      and under prefers-reduced-motion. -->
-<section class="scrub" id="scrub" data-frames="121" data-base="assets/img/buildout/" data-mode="video">
-  <div class="scrub-stick">
-    <div class="scrub-stage">
-      <video muted loop playsinline preload="none" poster="assets/img/buildout-poster.jpg">
-        <source src="assets/img/buildout.mp4" type="video/mp4">
-      </video>
-      <canvas aria-hidden="true"></canvas>
-      <div class="scrub-vig"></div>
+<section class="sec" id="fitout">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="eyebrow"><span class="cased">eBuilt</span> &middot; tenant improvement</p>
+      <h2 class="disp">Empty shell to<br>open doors</h2>
+      <p class="lede">The other half of what <span class="cased">eBuilt</span> does, and the half
+         most tenants actually buy: a leased shell turned into a business that can open.
+         Four months apart, from the same spot.</p>
     </div>
-    <div class="scrub-copy">
-      <div class="wrap">
-        <p class="eyebrow"><span class="cased">eBuilt</span> &middot; four months, one move</p>
-        <h2 class="disp">Empty shell to<br>open doors</h2>
-        <p>Months of work in one continuous move: the shell becomes a finished,
-           lit space &mdash; the same sequence a tenant lives through, minus
-           the four months of it.</p>
-        <div class="scrub-bar"><i></i></div>
-        <ol class="scrub-steps">
-          <li>Shell</li><li>Demolition</li><li>Framing</li>
-          <li>Electrical rough-in</li><li>Lighting</li><li>Finishes</li><li>Open</li>
-        </ol>
-      </div>
+    <div class="studies rv">
+      <figure class="study">
+        <div class="split">
+          <img src="assets/img/study-buildout-day.jpg" alt="A bare leased shell: steel studs, open ceiling, unfinished floor">
+          <div class="after"><img src="assets/img/study-buildout-night.jpg" alt="The same space finished, furnished and lit"></div>
+          <div class="seam" role="slider" tabindex="0" aria-label="Reveal the finished space"
+               aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"></div>
+          <span class="split-lbl l">Shell</span>
+          <span class="split-lbl r">Open</span>
+        </div>
+        <figcaption>
+          <b>Shell to open business</b>
+          <p>Demolition, framing, plumbing, electrical rough-in, ceiling, finishes and
+             the lighting, under one contract. The glazing line is the giveaway that
+             it is the same room &mdash; everything else changed.</p>
+        </figcaption>
+      </figure>
     </div>
   </div>
 </section>
