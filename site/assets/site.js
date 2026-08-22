@@ -198,35 +198,48 @@
     sio.observe(spine);
   }
 
-  /* ── split state ───────────────────────────────────────────────────── */
-  var split = document.getElementById("split");
-  if (split) {
-    var after = split.querySelector(".after"), seam = split.querySelector(".seam"), pos = 50;
-    var setPos = function (p) {
-      pos = clamp(p, 0, 100);
-      /* The night layer occupies everything RIGHT of the seam, so the
-         labels read left-to-right as as-found then lit. */
-      after.style.clipPath = "inset(0 0 0 " + pos + "%)";
-      seam.style.left = pos + "%";
-      seam.setAttribute("aria-valuenow", Math.round(pos));
-    };
-    setPos(50);
-    var sFrom = function (ev) {
-      var r = split.getBoundingClientRect();
+  /* ── split state ─────────────────────────────────────────────────────
+     More than one of these can sit on a page now — the photographed feature
+     plus any number of lighting studies under it — so each keeps its own
+     position, and one shared set of pointer handlers decides which is being
+     dragged rather than every instance binding its own to the window. */
+  var splits = [].slice.call(document.querySelectorAll(".split"));
+  if (splits.length) {
+    var active = null;
+
+    var sFrom = function (el, ev) {
+      var r = el.getBoundingClientRect();
       var pt = ev.touches ? ev.touches[0] : ev;
-      setPos((pt.clientX - r.left) / r.width * 100);
+      el.wwdSeam((pt.clientX - r.left) / r.width * 100);
     };
-    var sDrag = false;
-    split.addEventListener("mousedown", function (e) { sDrag = true; sFrom(e); e.preventDefault(); });
-    addEventListener("mousemove", function (e) { if (sDrag) sFrom(e); });
-    addEventListener("mouseup", function () { sDrag = false; });
-    split.addEventListener("touchstart", function (e) { sDrag = true; sFrom(e); }, { passive: true });
-    addEventListener("touchmove", function (e) { if (sDrag) { sFrom(e); if (e.cancelable) e.preventDefault(); } }, { passive: false });
-    addEventListener("touchend", function () { sDrag = false; });
-    seam.addEventListener("keydown", function (e) {
-      if (e.key === "ArrowLeft")  { setPos(pos - 4); e.preventDefault(); }
-      if (e.key === "ArrowRight") { setPos(pos + 4); e.preventDefault(); }
+
+    splits.forEach(function (el) {
+      var after = el.querySelector(".after"), seam = el.querySelector(".seam");
+      if (!after || !seam) return;
+      var pos = 50;
+      el.wwdSeam = function (p) {
+        pos = clamp(p, 0, 100);
+        /* The night layer occupies everything RIGHT of the seam, so the
+           labels read left-to-right as as-found then lit. */
+        after.style.clipPath = "inset(0 0 0 " + pos + "%)";
+        seam.style.left = pos + "%";
+        seam.setAttribute("aria-valuenow", Math.round(pos));
+      };
+      el.wwdSeam(50);
+      el.addEventListener("mousedown", function (e) { active = el; sFrom(el, e); e.preventDefault(); });
+      el.addEventListener("touchstart", function (e) { active = el; sFrom(el, e); }, { passive: true });
+      seam.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowLeft")  { el.wwdSeam(pos - 4); e.preventDefault(); }
+        if (e.key === "ArrowRight") { el.wwdSeam(pos + 4); e.preventDefault(); }
+      });
     });
+
+    addEventListener("mousemove", function (e) { if (active) sFrom(active, e); });
+    addEventListener("mouseup", function () { active = null; });
+    addEventListener("touchmove", function (e) {
+      if (active) { sFrom(active, e); if (e.cancelable) e.preventDefault(); }
+    }, { passive: false });
+    addEventListener("touchend", function () { active = null; });
   }
 
   /* ── film: play only while visible ─────────────────────────────────── */

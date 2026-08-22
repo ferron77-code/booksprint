@@ -27,6 +27,56 @@ CTA_S = u'<a class="btn btn-s" href="portfolio.html">See the work</a>'
 
 
 # ══════════════════════════════════════════════════════════ COMMERCIAL
+
+# ── ground-up study ───────────────────────────────────────────────────
+# Five stages of one building, generated rather than photographed, which is
+# why it carries its own "a study" eyebrow and says so in the lede. Each
+# stage was made from the finished building as the reference so the five
+# frames stay the same building on the same lot instead of drifting.
+#
+# Needs stage-<slug>.jpg in assets/img at 1100x821. The whole section is
+# skipped unless every stage is on disk, so it cannot ship half-built.
+STAGES = [
+    ("site",     "Foundation",  "Slab, footings and stub-ups. Everything that has to be right before anything is visible."),
+    ("shell",    "Structure",   "Walls to full height, bond beam poured, joists set. Openings are still holes."),
+    ("dryin",    "Dried in",    "Roof on, glazing in, asphalt down. The building stops being weather-dependent."),
+    ("finished", "Finished",    "Finish coat, canopy clad, kerbs, bays and planting. Handed over in daylight."),
+    ("night",    "Switched on", "And the part most contractors leave to somebody else \u2014 the lighting that decides how it reads at seven."),
+]
+
+
+def groundup_html():
+    import os as _os
+    IMGDIR = "/home/user/booksprint/site/assets/img"
+    files = ["stage-%s.jpg" % slug for slug, _, _ in STAGES]
+    if not all(_os.path.exists(_os.path.join(IMGDIR, f)) for f in files):
+        return ""
+    items = []
+    for i, (slug, label, blurb) in enumerate(STAGES, 1):
+        items.append("""
+        <li class="stage">
+          <img src="assets/img/stage-%s.jpg" alt="%s stage" loading="lazy" decoding="async" width="1100" height="821">
+          <span class="sn">%02d</span>
+          <b>%s</b>
+          <p>%s</p>
+        </li>""" % (slug, label, i, label, blurb))
+    return """
+<section class="sec" id="groundup">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="eyebrow">Ground up &middot; a study</p>
+      <h2 class="disp">Slab to<br>switched on</h2>
+      <p class="lede">One building, five stages, the same corner of the lot each time.
+         A visualisation rather than a photographed job &mdash; it is here because it
+         shows the sequence, and because the last frame is the part that usually
+         belongs to a different company.</p>
+    </div>
+    <ol class="stages rv">%s
+    </ol>
+  </div>
+</section>
+""" % ("".join(items))
+
 body = phero(
     "medical-day.jpg", "medical-night.jpg", "",
     "Commercial &amp; buildouts",
@@ -128,6 +178,8 @@ body += u"""
   </div>
 </section>
 """
+body += groundup_html()
+
 body += CLOSE.format(
     h=u"Tell us about<br>the space",
     p=u"Send the lease plan, the landlord's work letter, or just photos of the shell. We will tell you what it actually takes.")
@@ -197,7 +249,7 @@ body += u"""
     <div class="head rv">
       <p class="eyebrow">Day &rarr; night</p>
       <h2 class="disp">The version<br>that matters</h2>
-      <p class="lede">Drag the seam. The left half is what a daytime photo shows a prospective buyer or a dinner guest arriving at seven. The right half is what they actually see.</p>
+      <p class="lede">A daytime photo is what a prospective buyer or a dinner guest arriving at seven is shown. The other half is what they actually see.</p>
     </div>
     <div class="split rv" id="split">
       <img src="assets/img/estate-day.jpg" alt="Residential estate exterior in daylight">

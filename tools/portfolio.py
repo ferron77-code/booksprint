@@ -23,6 +23,73 @@ from pages_common import phero
 SITE = "/home/user/booksprint/site"
 IMG = os.path.join(SITE, "assets/img")
 
+# ── lighting studies ──────────────────────────────────────────────────
+# Generated visualisations, not photographs of completed jobs. They live
+# under their own heading for exactly that reason: a prospect can always
+# tell which is which, and nobody can ask "whose house is that?" and get
+# silence. Renderings are ordinary practice in lighting and architectural
+# work — what is not ordinary is passing one off as a finished project.
+#
+# Each entry needs study-<slug>-day.jpg and study-<slug>-night.jpg in
+# assets/img at the same dimensions. Entries whose images are not on disk
+# are skipped, so this list can run ahead of the artwork.
+# slug, title, blurb, left label, right label
+STUDIES = [
+    ("oak", "Live Oak Uplighting",
+     "Uplights set at the base of the trunk and angled to carry the whole "
+     "canopy, so the branch structure reads against the sky instead of the "
+     "tree becoming a dark mass with a bright bottom.", "Unlit", "Lit"),
+    ("palms", "Palm Row &amp; Facade Grazing",
+     "A row lit to the same height with the same beam, and the facade grazed "
+     "from close in. Matching the trunks matters more than the brightness "
+     "&mdash; an uneven row is the first thing the eye finds.", "Unlit", "Lit"),
+    ("garden", "Garden Path &amp; Planting Beds",
+     "Low fixtures inside the beds picking out leaf texture, path lights kept "
+     "below eye level, and nothing aimed where somebody walking will look "
+     "straight into it.", "Unlit", "Lit"),
+]
+
+
+def studies_html():
+    """Skips any study whose day/night pair is not on disk yet."""
+    out = []
+    for slug, title, blurb, lbl_l, lbl_r in STUDIES:
+        day = os.path.join(IMG, "study-%s-day.jpg" % slug)
+        night = os.path.join(IMG, "study-%s-night.jpg" % slug)
+        if not (os.path.exists(day) and os.path.exists(night)):
+            continue
+        out.append("""
+      <figure class="study rv">
+        <div class="split">
+          <img src="assets/img/study-%s-day.jpg" alt="%s, daylight, lighting off">
+          <div class="after"><img src="assets/img/study-%s-night.jpg" alt="The same view after dark with the lighting on"></div>
+          <div class="seam" role="slider" tabindex="0" aria-label="Reveal the lit state"
+               aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"></div>
+          <span class="split-lbl l">%s</span>
+          <span class="split-lbl r">%s</span>
+        </div>
+        <figcaption><b>%s</b><p>%s</p></figcaption>
+      </figure>""" % (slug, title.replace("&amp;", "and"), slug,
+                      lbl_l, lbl_r, title, blurb))
+    if not out:
+        return ""
+    return """
+<section class="sec" id="studies">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="eyebrow">Lighting studies</p>
+      <h2 class="disp">What the light does,<br>before anyone digs</h2>
+      <p class="lede">These are visualisations, not photographs of finished jobs &mdash;
+         the same studies we put in front of a client to settle a scheme before a
+         fixture is bought. The photographed work is above.</p>
+    </div>
+    <div class="studies rv">%s
+    </div>
+  </div>
+</section>
+""" % ("".join(out))
+
+
 # slug, filter keys, kind label, title, blurb
 REAL = [
     ("walls",    "lighting residential landscape", "Estate Garden &middot; Wall Grazing",
@@ -136,7 +203,7 @@ body += u"""
     <div class="head rv">
       <p class="eyebrow">Featured project &middot; the same view, twice</p>
       <h2 class="disp">Daylight &rarr; After dark</h2>
-      <p class="lede">Nobody hires a lighting company for how a property looks at noon. Drag the seam and see the only version that matters.</p>
+      <p class="lede">Nobody hires a lighting company for how a property looks at noon. The version that matters is the one after dark.</p>
     </div>
     <div class="split rv" id="split">
       <img src="assets/img/estate-day.jpg" alt="Residential estate exterior in daylight">
@@ -210,6 +277,9 @@ body += u"""
   </div>
 </section>
 """ % (fbtns, len(real) + len(concept), grid)
+
+# The studies sit below the photographed work, never mixed into it.
+body += studies_html()
 
 body += CLOSE.format(
     h=u"Yours could be<br>the next one",
