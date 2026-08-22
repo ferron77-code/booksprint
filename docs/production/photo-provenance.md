@@ -13,9 +13,9 @@ phone shot. They carry the site.
 | site file | source | used for |
 |---|---|---|
 | `hero-wide.jpg` | `03_DSC01443-HDR.jpg` | homepage hero |
-| `walls.jpg` / `scene-walls.jpg` | `01_DSC01438-HDR.jpg` | portfolio, homepage tile, residential relight scene |
-| `palm.jpg` | `02_DSC01423-HDR.jpg` | portfolio, contact hero |
-| `garden.jpg` / `scene-garden.jpg` | `06_DSC01433-HDR.jpg` | portfolio, residential hero, property-managers relight |
+| `walls.jpg` / `scene-walls.jpg` | `01_DSC01438-HDR.jpg` | portfolio, homepage carousel, portfolio case study |
+| `palm.jpg` | `02_DSC01423-HDR.jpg` | portfolio, homepage carousel |
+| ~~`garden.jpg`~~ | `06_DSC01433-HDR.jpg` | **removed** — see below |
 | `hedge.jpg` | `05_DSC01373-HDR.jpg` | portfolio, property-managers hero |
 | `pool.jpg` | `04_IMG_7266.jpeg` | portfolio, homepage tile |
 | `interior.jpg` | `08_DSC01213-HDR-Edit.jpg` | portfolio |
@@ -33,6 +33,23 @@ Four more images, all served from the same site host.
 
 `18_untitled (81 of 301).jpg` is frame 81 of a 301-frame shoot, so it belongs
 to the same professional session as the DSC set. Treat it as their own.
+
+## One property, three photographs
+
+`01`, `02` and `06` are all the same estate garden: the same white sculptural
+panels on the same lawn, shot from three angles. Run as three portfolio
+entries they read as padding — the client spotted two of them side by side and
+said so.
+
+- `06` (`garden.jpg`) was **`01` from a step back** and is removed from the
+  site entirely, along with `scene-garden.jpg` derived from it.
+- `01` and `02` stay, because the compositions genuinely differ, but they are
+  now labelled **Estate Garden · Wall Grazing** and **Estate Garden ·
+  Specimen Trees**, and the second one's copy opens "The same garden, looking
+  the other way." One job, two techniques, stated plainly.
+
+Worth checking the rest of any future batch the same way: adjacent tiles that
+share a background read as repetition even when the subject differs.
 
 ## In use — provenance to confirm
 

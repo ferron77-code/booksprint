@@ -25,15 +25,12 @@ IMG = os.path.join(SITE, "assets/img")
 
 # slug, filter keys, kind label, title, blurb
 REAL = [
-    ("walls",    "lighting residential landscape", "Landscape &middot; Architectural",
+    ("walls",    "lighting residential landscape", "Estate Garden &middot; Wall Grazing",
      "Sculpture Wall Grazing",
      "Each panel gets its own fixture at its own aim. Grazing light this close to a surface is unforgiving &mdash; a fixture a few degrees out shows up as a hot spot from across the garden."),
-    ("palm",     "lighting residential landscape", "Landscape &middot; Specimen",
+    ("palm",     "lighting residential landscape", "Estate Garden &middot; Specimen Trees",
      "Specimen Palm Uplighting",
-     "Uplights set back far enough to carry the whole trunk and catch the crown, without throwing glare at anyone walking the path."),
-    ("garden",   "lighting residential landscape", "Landscape &middot; Garden",
-     "Garden Wall &amp; Canopy",
-     "Wall grazing and tree uplighting working together, with the fixtures themselves invisible from the house."),
+     "The same garden, looking the other way. Uplights set back far enough to carry the whole trunk and catch the crown, without throwing glare at anyone walking the path."),
     ("hedge",    "lighting residential property landscape", "Grounds &middot; Perimeter",
      "Perimeter &amp; Lawn Lighting",
      "A run of in-grade fixtures along a hedge line. Even spacing matters more than output here &mdash; the eye reads the gaps, not the brightness."),
@@ -49,6 +46,9 @@ REAL = [
     ("deck",     "lighting commercial property", "Retrofit &middot; Parking Deck",
      "Parking Deck Retrofit",
      "Linear fixtures down the drive lane and across the bays. On a deck the ceiling is the reflector, so getting the spacing right does more than adding output would."),
+    ("deck-wide","lighting commercial property", "Retrofit &middot; Parking Deck",
+     "Deck Drive Lane",
+     "A second deck, lit down the drive lane rather than across the bays. Bollards and floor markings carry as much of the safety job as the fixtures do."),
     ("planting", "lighting residential landscape", "Landscape &middot; Planting",
      "Planting Bed &amp; Canopy",
      "Low fixtures inside the bed picking out leaf texture, with the palms lit from behind so the canopy reads against the sky rather than disappearing into it."),
