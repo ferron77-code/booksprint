@@ -21,6 +21,22 @@ scr = io.open(os.path.join(SITE, "assets/scroll.js"), encoding="utf-8").read()
 # ITSELF IS UNTOUCHED; this only ever affects the bundled copy. PNGs are left
 # alone: the brand lockups carry alpha, and the scrub frames are left alone so
 # scrubbing stays smooth.
+FRAME_W, FRAME_H = 720, 405
+
+
+def shrink_frame(raw):
+    """Scrub frames are 960x540 on the site. The preview only has to be
+    scrubbable, not sharp, and there are two folders of them now."""
+    try:
+        from PIL import Image
+    except ImportError:
+        return raw
+    out = io.BytesIO()
+    Image.open(io.BytesIO(raw)).convert("RGB").resize(
+        (FRAME_W, FRAME_H), Image.LANCZOS).save(out, "JPEG", quality=72, optimize=True)
+    return out.getvalue() if out.tell() < len(raw) else raw
+
+
 PREVIEW_MAXW = 1000
 PREVIEW_Q = 72
 
@@ -54,6 +70,11 @@ for d in IMG_DIRS:
     path = os.path.join(SITE, d, fn)
     # the scrub frame folder is desktop-only progressive enhancement; the
     # preview keeps the plain video instead of inlining 121 stills
+    # Every real browser plays H.264, so the VP9 twin of a clip is pure weight
+    # here — two full copies of the same seconds. Dropped from the bundle, and
+    # its <source> line is stripped below so nothing points at a missing asset.
+    if fn.endswith(".webm") and os.path.exists(path[:-5] + ".mp4"):
+        continue
     if os.path.isdir(path) or fn.endswith(SKIP) or fn.startswith("og-"):
         continue
     mime = mimetypes.guess_type(fn)[0] or "application/octet-stream"
@@ -78,7 +99,7 @@ def frame_src(base):
         names = sorted(f for f in os.listdir(d) if f.endswith(".jpg"))[::3]
         uris = []
         for fn in names:
-            raw = io.open(os.path.join(d, fn), "rb").read()
+            raw = shrink_frame(io.open(os.path.join(d, fn), "rb").read())
             total += len(raw)
             uris.append("data:image/jpeg;base64," + base64.b64encode(raw).decode("ascii"))
         out = json.dumps(uris).replace("<", "\\u003c")
@@ -130,6 +151,8 @@ for slug in PAGES:
     # asset rewrite below would turn their absolute URLs into data URIs and
     # drag every share card into the bundle.
     s = re.sub(r'<link rel="canonical".*?<meta name="theme-color"[^>]*>\n', '', s, flags=re.S)
+    # by this point asset paths are already @@tokens@@, so match on the type
+    s = re.sub(r'\n[ \t]*<source [^>]*type="video/webm">', '', s)
     # a page can carry more than one scrub; give each its own frames
     for m in re.finditer(r'(<section class="scrub"[^>]*data-base=")([^"]+)(")', s):
         fs = frame_src(m.group(2))
