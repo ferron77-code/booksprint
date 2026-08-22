@@ -51,26 +51,21 @@ said so.
 Worth checking the rest of any future batch the same way: adjacent tiles that
 share a background read as repetition even when the subject differs.
 
-## In use — provenance to confirm
+## Provenance — confirmed
 
-**Three filenames say they were downloaded from somewhere.**
+**All parking and garage photographs are the company's own work**, confirmed by
+the client 2026-08-22.
+
 `15_PARKING_LOT_DOWNLOADED`, `16_garage_DOWNLOAD` and `17_garage_light_yw`
-were published on the company's own site, but the first two carry "DOWNLOAD"
-in the filename, which usually means an image pulled from a manufacturer,
-supplier or stock library rather than shot on a job.
+carry "DOWNLOAD" in their filenames, which normally suggests an image pulled
+from a manufacturer or stock library. In this case it does not — the owners
+confirmed these are their installs. Recorded here because the filenames will
+raise the same question for the next person who looks.
 
-This matters more than the earlier flags, because the portfolio presents these
-as completed Worldwide Distributors projects. **Confirm with the owners before
-launch.** If they are not their own installs, either drop them or relabel them
-the way the concept renderings are labelled.
+One left open: `07_HIGHBAY.jpeg`, in use on the Commercial page and in the
+portfolio. Its filename also sits outside the DSC set and it was not part of
+the confirmation above, so it is worth a separate word with the owners.
 
-Same question, lower stakes, for `07_HIGHBAY.jpeg`.
-
-
-
-| site file | source | note |
-|---|---|---|
-| `highbay.jpg` | `07_HIGHBAY.jpeg` | Commercial high-bay interior. Filename sits outside the DSC set, so this may be a manufacturer or supplier photograph. |
 
 ## Not used
 
