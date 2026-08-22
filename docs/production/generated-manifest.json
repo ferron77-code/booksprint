@@ -1,0 +1,93 @@
+[
+  {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_195449_c3cf06ca-f14c-4967-a38c-1f75a3ed48cb.png",
+    "as": "study-oak-day.jpg",
+    "w": 1100,
+    "h": 821,
+    "note": "Live oak, unlit"
+  },
+  {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_195622_468a9aa0-b4ac-4b9e-9e31-e09b248f8ff4.png",
+    "as": "study-oak-night.jpg",
+    "w": 1100,
+    "h": 821,
+    "note": "Live oak, lit"
+  },
+  {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200047_9fdf622d-9b5e-4f58-b4aa-d62f67ef10e1.png",
+    "as": "study-palms-day.jpg",
+    "w": 1100,
+    "h": 821,
+    "note": "Palm row, unlit"
+  },
+  {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200133_30167590-fef1-42b2-8405-980853f4fc47.png",
+    "as": "study-palms-night.jpg",
+    "w": 1100,
+    "h": 821,
+    "note": "Palm row, lit"
+  },
+  {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200047_eb203c03-ecee-42cf-9a1d-9def48247ecd.png",
+    "as": "study-garden-day.jpg",
+    "w": 1100,
+    "h": 821,
+    "note": "Garden path, unlit"
+  },
+  {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200134_22ebcde6-529d-4723-9a60-364a544b4f95.png",
+    "as": "study-garden-night.jpg",
+    "w": 1100,
+    "h": 821,
+    "note": "Garden path, lit"
+  },
+  {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200704_f26cf529-400f-4e17-87e4-97e971ba0d3b.png",
+    "as": "stage-site.jpg",
+    "w": 1100,
+    "h": 821,
+    "note": "01 Foundation"
+  },
+  {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200704_efc0f9a1-5f67-40dc-9ba1-f1406c184df0.png",
+    "as": "stage-shell.jpg",
+    "w": 1100,
+    "h": 821,
+    "note": "02 Structure"
+  },
+  {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200704_5b70f622-22de-4b27-ae56-8319381d2d6b.png",
+    "as": "stage-dryin.jpg",
+    "w": 1100,
+    "h": 821,
+    "note": "03 Dried in"
+  },
+  {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200623_265f3aa9-9524-4a8d-b55e-0f2ec4cc0a9b.png",
+    "as": "stage-finished.jpg",
+    "w": 1100,
+    "h": 821,
+    "note": "04 Finished"
+  },
+  {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200704_0f4ae4fc-1408-4c4d-ba39-4a2f6cc2e7c7.png",
+    "as": "stage-night.jpg",
+    "w": 1100,
+    "h": 821,
+    "note": "05 Switched on"
+  },
+  {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200047_20a00abb-4132-4084-b046-1244599942a5.png",
+    "as": "study-buildout-day.jpg",
+    "w": 1100,
+    "h": 821,
+    "note": "Bare shell"
+  },
+  {
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200133_d2dc127d-9865-43b4-91da-415b38f4de17.png",
+    "as": "study-buildout-night.jpg",
+    "w": 1100,
+    "h": 821,
+    "note": "Finished and lit"
+  }
+]

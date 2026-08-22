@@ -68,6 +68,21 @@ footage and the logo artwork: download from Higgsfield, upload into the
 conversation. Files land in `/root/.claude/uploads/` and can be placed from
 there. A zip of the set is one step instead of eight.
 
+**Or skip the hand-carry entirely.** `tools/fetch-generated.py` reads
+`docs/production/generated-manifest.json`, downloads every entry, centre-crops
+to the target aspect, resizes and writes the JPEG straight into
+`site/assets/img/`. It is idempotent and safe to re-run.
+
+    python3 tools/fetch-generated.py --check    # is this session able to fetch?
+    python3 tools/fetch-generated.py            # do it
+    python3 tools/build.py
+
+The catch is *where the session runs*, not what it is. A session on
+claude.ai/code runs in a container behind the egress proxy and `--check` will
+say BLOCKED. The same command from a session on your own machine — the Claude
+Code CLI in this repo, or Cowork — uses your network and simply works. Nothing
+about the script changes between the two.
+
 ## Adding another study
 
 1. Generate the unlit frame.
