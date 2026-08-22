@@ -2,18 +2,24 @@
 
 ## What the client supplied
 
-One PNG, 1536 x 585, carrying two lockups:
+Three rounds. The last one is what the site runs on.
 
-| Lockup | Mark | Wordmark | Strapline |
-| --- | --- | --- | --- |
-| eLighting | bulb enclosing a blue sphere cut as a lowercase **e** | LIGHTING | WE HAVE **SOLUTIONS** |
-| eBuilt | location pin enclosing the same sphere | BUILT, roof over the I and L | COMMERCIAL AND RESIDENTIAL |
+| Round | File | What it is |
+| --- | --- | --- |
+| 1 | `supplied-original.png`, 1536x585 | both lockups on one canvas, screen-grab resolution |
+| 2 | `lockup-elighting-master.png`, 2089x547 | the eLighting lockup on its own, with alpha |
+| 2 | `lockup-ebuilt-master.png`, 2116x634 | the eBuilt lockup on its own, with alpha |
+| 3 | `sting.mp4` / `.webm` | a 6s logo animation, 1280x720, built on black |
 
-**The alpha channel is clean** — 70% fully transparent, 23% fully opaque, the
-rest a 2-3px antialiased edge, and the letter strokes are solid at 252-254.
-An earlier note in this file called it a bad key with black speckle; that was
-wrong. The speckle was the transparent region being shown against black. It
-is a proper cutout and it is good enough to work from directly.
+The artwork is **chrome with navy outlines and a blue drop shadow** — not flat
+white, which is what the first low-resolution file suggested. That matters:
+the dark outlines carry the letterforms on a light background and the chrome
+carries them on a dark one, so **one set of artwork reads on both surfaces**.
+It was measured on the day surface and the night surface before being placed;
+no ink variant is needed and the one that was made has been deleted.
+
+The alpha channels are clean throughout — 44-58% fully transparent, 35-44%
+fully opaque, the rest an antialiased edge.
 
 ## The brand colour
 
@@ -27,43 +33,68 @@ of the measurement.
 
 ## What is on the site, and where it came from
 
-Every mark on the site is **traced from the supplied artwork**, not redrawn.
-The blue region of each mark was isolated by colour, the white shell by
-luminance, each mask cleaned and vectorised with potrace, and the result
-centred in a 100x100 viewBox. `tools/../scratchpad/trace.py` did the work; the
-paths are checked in below.
+**The marks** are traced from the artwork, not redrawn. The blue of each mark
+was isolated by colour and the shell by luminance, each mask cleaned and
+vectorised with potrace, then centred in a 100x100 viewBox.
+`tools/trace-logo.py` regenerates them from `supplied-original.png`.
 
-| File | What it is |
+**The lockups** are the client's own artwork, resized. No tracing, no redraw.
+
+| File | Where it is used |
 | --- | --- |
-| `site/assets/brand/mark-e.svg` | the monogram alone — the blue **e**, traced off the eBuilt sphere, which is the least occluded of the two |
-| `site/assets/brand/mark-elighting.svg` | bulb shell + monogram |
-| `site/assets/brand/mark-ebuilt.svg` | pin shell + monogram |
-| `site/assets/favicon.svg` | monogram on the dark ground |
-| `site/assets/brand/lockup-{eLighting,eBuilt}-light.png` | the full lockup with wordmark and strapline, white artwork, for dark grounds |
-| `site/assets/brand/lockup-{eLighting,eBuilt}-ink.png` | the same, remapped to dark ink with the blue preserved and the bevel intact, for light grounds |
+| `mark-e.svg` | the monogram — inline in the site header, and in the Supply panel |
+| `mark-elighting.svg`, `mark-ebuilt.svg` | reusable copies of the two marks; the site itself now leads with the full lockups instead |
+| `favicon.svg` | monogram on the dark ground |
+| `lockup-elighting.png`, `lockup-ebuilt.png` | 180px tall, PNG8/192, ~28KB each — the eLighting and eBuilt division panels |
+| `lockup-*-master.png` | full-resolution originals, for print and anything larger |
+| `img/sting.mp4`, `.webm`, `sting-poster.jpg` | the logo animation, on the homepage |
 
-The header and the division panels carry the traced paths **inline**, so the
-shell takes `currentColor` and the monogram takes `var(--brand)` — both follow
-the clock instead of sitting at one fixed value. The standalone SVGs in
-`assets/brand/` are the reusable copies; nothing on the site links to them.
+The 180px files are quantised to 192 colours. At the 52px they display, that
+is a 3.5x downsample and the quantisation is not visible; it takes them from
+140KB to 28KB.
+
+The marks stay **inline** in the header so the shell takes `currentColor` and
+the monogram takes `var(--brand)` — both follow the clock. The lockups cannot,
+being raster, which is why they only sit where the artwork works on both
+surfaces.
 
 ### The shape of the e
 
 Worth knowing, because it is easy to get wrong: their **e** is not a disc with
 a letter knocked out of it. It is a single spiral — the counter opens into the
 aperture at the lower right, and the crossbar is thick and angled, running out
-to the sphere's edge. Filling it with any even-odd rule as if it had an
-enclosed counter produces the wrong shape.
+to the sphere's edge. Filling it as if it had an enclosed counter produces the
+wrong shape.
 
-### The full lockups are not placed on the site
+### The logo animation
 
-The wordmark type is white with a bevel and an outer glow. It reads on a dark
-ground and disappears on a light one, and the site is light by day. The ink
-variant solves that, but swapping a raster between the two as the clock turns
-would be worse than what is there now: the inline SVG marks are sharp at any
-size and already follow the palette. So the lockups are shipped as assets and
-left for a fixed-dark placement — a social preview image is the obvious one,
-and the site currently has no `og:image` at all.
+Six seconds: the bulb fades up, the wordmark wipes in behind a light sweep,
+then the glow settles. Motion is finished by about 4.5s, so it is trimmed
+there and holds on its last frame.
+
+It sits in a black band above the closing block on the homepage only — not in
+the shared chrome, and not on a page where it would be the second video
+competing for attention. It runs **once**, the first time it scrolls into
+view; replaying it on every pass would turn a brand moment into a tic. Under
+reduced motion, or with no JavaScript, the poster is the whole of it.
+
+Two things were needed to make it sit on the page rather than in a box:
+
+- The source's black ground is a flat 8/255, not true black, so the video's
+  rectangle showed an edge. `colorlevels` crushes anything below 0.055 to
+  zero at encode time, and the band is `#000`, so `mix-blend-mode: screen`
+  makes the video's ground exactly the band's.
+- Crushing the blacks cost VP9 a lot of its efficiency (250KB -> 696KB), so a
+  light `hqdn3d` pass goes in ahead of it. Final weights: 132KB H.264,
+  257KB VP9, 40KB poster. MP4 is listed first, so nearly every browser only
+  fetches the 132KB.
+
+Regenerate with:
+
+    ffmpeg -i <source> -t 4.6 -map 0:0 -an \
+      -vf "crop=1280:624:0:0,colorlevels=rimin=0.055:gimin=0.055:bimin=0.055,\
+           hqdn3d=3:2:6:6,scale=900:-2" \
+      -c:v libx264 -crf 30 -preset slow -movflags +faststart sting.mp4
 
 ## How blue and amber divide the site
 
@@ -97,10 +128,11 @@ monogram alone rather than an invented mark.
 ## Still needed from the client
 
 1. **The original vector artwork** (`.ai`, `.eps`, or a clean `.svg`). The
-   traces are faithful and resolution-independent, but they are traces of a
-   1536px raster: the outlines carry a fraction of a pixel of softening that
-   real curves would not have, and the wordmark type has not been vectorised
-   at all — it is still raster.
+   marks are traced and so are resolution-independent, but they are traces of
+   a raster and carry a fraction of a pixel of softening real curves would
+   not. The wordmark type is **not** vectorised at all — the lockups on the
+   page are images, which is why they cannot follow the clock and why they
+   need a fixed pixel height.
 2. **Confirmation of the parent lockup.** The supplied file shows the two
    division marks. Whether Worldwide Distributors has a mark of its own, or
    whether the wordmark is the whole of it, is unanswered — the header

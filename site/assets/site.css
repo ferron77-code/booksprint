@@ -250,7 +250,15 @@ a.panel::before{
 a.panel:hover::before{opacity:1}
 .panel > *{position:relative}
 .panel .lock{width:46px;height:46px;color:var(--text);margin-bottom:14px;display:block}
-.panel .lock.mono{width:38px;height:38px;margin:4px 0 18px}
+/* eLighting and eBuilt lead with their own lockup. The artwork is chrome
+   with navy outlines, so it holds on the day surface and the night one
+   alike and needs no second variant. */
+.panel .lockup{height:52px;width:auto;margin:0;display:block}
+.panel h3{margin:0 0 2px}
+/* Supply has no lockup of its own, so its heading is the monogram set
+   beside the name, sized to the same 52px block the other two occupy. */
+.wm-supply{display:flex;align-items:center;gap:11px;height:52px}
+.panel .lock.mono{width:40px;height:40px;flex:none;margin:0}
 
 .panel .n{font-family:var(--f-m);font-size:10px;letter-spacing:.15em;color:var(--brand)}
 .panel h3{
@@ -337,6 +345,17 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .note .t{display:block;font-family:var(--f-m);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--brand);margin-bottom:7px;font-weight:600}
 
 /* ── contact / close ────────────────────────────────── */
+/* Their logo animation, on a dark ground of its own. The artwork is built
+   on black with a glow around it, so unlike everything else on the page it
+   cannot follow the clock — it is fixed, the way the hero is. */
+.plate{background:#000;display:flex;justify-content:center;
+  padding:clamp(26px,3.4vw,44px) var(--pad)}
+/* The clip is built on black, so screening it over a black band makes its
+   own black exactly the band and the video's rectangle stops showing an
+   edge. Without blend support it simply sits on black, which is no worse
+   than the artwork was designed for. */
+.plate-film{width:min(560px,100%);height:auto;display:block;mix-blend-mode:screen}
+
 .close{position:relative;overflow:hidden;border-top:1px solid var(--line)}
 .close::before{content:"";position:absolute;inset:0;background:radial-gradient(85% 100% at 50% 125%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 70%)}
 .close .wrap{position:relative;z-index:2}

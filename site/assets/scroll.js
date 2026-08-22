@@ -610,6 +610,26 @@
     vids.forEach(function (v) { io.observe(v); });
   }
 
+
+  /* ── Logo sting ─────────────────────────────────────────
+     Their logo animation runs once, the first time it comes into view, and
+     then holds on its last frame. Replaying it on every pass would turn a
+     brand moment into a tic. Under reduced motion, or with no JavaScript at
+     all, the poster is the whole of it. */
+  function sting() {
+    var v = document.querySelector("video[data-sting]");
+    if (!v || reduce) return;
+    var io = new IntersectionObserver(function (es) {
+      for (var i = 0; i < es.length; i++) {
+        if (!es[i].isIntersecting) continue;
+        io.disconnect();
+        v.play().catch(function () { /* refused: the poster stands in */ });
+        return;
+      }
+    }, { threshold: 0.4 });
+    io.observe(v);
+  }
+
   /* ── 9. Carousel ─────────────────────────────────────────────────────
      Drives the scroll-snapping row from arrows and dots. The row already
      works by swipe or trackpad on its own, so the controls are revealed
@@ -677,6 +697,7 @@
 
   carousels();
   autoplayClips();
+  sting();
   filmScrub();
   relight();
   filters();

@@ -14,15 +14,22 @@ scr = io.open(os.path.join(SITE, "assets/scroll.js"), encoding="utf-8").read()
 
 # ── assets, base64'd once ────────────────────────────────────────────
 assets, total = {}, 0
-for fn in sorted(os.listdir(os.path.join(SITE, "assets/img"))):
-    path = os.path.join(SITE, "assets/img", fn)
+# assets/brand carries the logo artwork; the -master and supplied- files are
+# there for the client, are megabytes each and are not referenced by any page,
+# so they stay out of the bundle
+IMG_DIRS = ["assets/img", "assets/brand"]
+SKIP = ("-master.png", "supplied-original.png")
+for d in IMG_DIRS:
+  for fn in sorted(os.listdir(os.path.join(SITE, d))):
+    path = os.path.join(SITE, d, fn)
     # the scrub frame folder is desktop-only progressive enhancement; the
     # preview keeps the plain video instead of inlining 121 stills
-    if os.path.isdir(path):
+    if os.path.isdir(path) or fn.endswith(SKIP):
         continue
     mime = mimetypes.guess_type(fn)[0] or "application/octet-stream"
     raw = io.open(path, "rb").read()
     total += len(raw)
+    assert fn not in assets, "asset name collides across folders: " + fn
     assets[fn] = "data:%s;base64,%s" % (mime, base64.b64encode(raw).decode("ascii"))
 # Scrub frames live in folders, so they cannot be tokenised like the other
 # assets. Bundle each folder on demand as a list of data URIs and hand it
@@ -85,7 +92,7 @@ for slug in PAGES:
     s = s.replace('<script src="assets/scroll.js" defer></script>',
                   "<script>\n" + scr + "\n</script>" + BRIDGE)
     # asset refs become tokens the shell substitutes at navigation time
-    s = re.sub(r'assets/(?:img/)?([A-Za-z0-9._-]+\.(?:jpg|png|mp4|webm|svg))', r'@@\1@@', s)
+    s = re.sub(r'assets/(?:img/|brand/)?([A-Za-z0-9._-]+\.(?:jpg|png|mp4|webm|svg))', r'@@\1@@', s)
     # the PHP endpoint does not exist in a preview
     s = s.replace('action="contact.php"', 'action="#"')
     m = re.search(r'id="scrub"[^>]*data-base="([^"]+)"', s)
