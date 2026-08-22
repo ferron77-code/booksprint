@@ -66,10 +66,10 @@ def groundup_html():
     <div class="head rv">
       <p class="eyebrow">Ground up &middot; a study</p>
       <h2 class="disp">Slab to<br>switched on</h2>
-      <p class="lede">One building, five stages, the same corner of the lot each time.
-         A visualisation rather than a photographed job &mdash; it is here because it
-         shows the sequence, and because the last frame is the part that usually
-         belongs to a different company.</p>
+      <p class="lede">One building, five stages, from a poured slab to the lights
+         going on. A visualisation rather than a photographed job &mdash; it is here
+         because it shows the sequence, and because the last frame is the part that
+         usually belongs to a different company.</p>
     </div>
     <ol class="stages rv">%s
     </ol>
