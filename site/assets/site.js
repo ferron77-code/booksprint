@@ -30,8 +30,8 @@
     { h: 21.2, t: "#06080D", b: "#0D1219" },
     { h: 24,   t: "#05070B", b: "#0A0F17" }
   ];
-  var DAY = { s: "#F4F6F8", s2: "#E9EDF1", tx: "#10151B", mu: "#5B6672", ln: "#D8DEE5", ac: "#B9741A", ai: "#FFF6E8" };
-  var NGT = { s: "#12161B", s2: "#181D23", tx: "#F0EDE7", mu: "#8E9299", ln: "#262C34", ac: "#F2C879", ai: "#14100A" };
+  var DAY = { s: "#F4F6F8", s2: "#E9EDF1", tx: "#10151B", mu: "#5B6672", ln: "#D8DEE5", ac: "#B9741A", ai: "#FFF6E8", br: "#003FD6", bi: "#FFFFFF" };
+  var NGT = { s: "#12161B", s2: "#181D23", tx: "#F0EDE7", mu: "#8E9299", ln: "#262C34", ac: "#F2C879", ai: "#14100A", br: "#6C9BFF", bi: "#071026" };
 
   function hx(h) { return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]; }
   function mix(a, b, t) {
@@ -74,6 +74,15 @@
     root.style.setProperty("--line",      mix(DAY.ln, NGT.ln, m));
     root.style.setProperty("--accent",    mix(DAY.ac, NGT.ac, m));
     root.style.setProperty("--accent-ink",mix(DAY.ai, NGT.ai, m));
+    /* The brand blue is #003FD6 on paper. It has to lift off the dark
+       surface at night or the mark goes muddy, so it rides the same
+       surface curve the rest of the palette does. */
+    root.style.setProperty("--brand",    mix(DAY.br, NGT.br, m));
+    root.style.setProperty("--brand-ink",mix(DAY.bi, NGT.bi, m));
+    root.style.setProperty("--chev", "url(\"data:image/svg+xml;charset=utf-8,"
+      + "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E"
+      + "%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23"
+      + mix(DAY.br, NGT.br, m).slice(1) + "' stroke-width='1.6'/%3E%3C/svg%3E\")");
 
     var hh = Math.floor(hr), mm = Math.floor((hr - hh) * 60);
     var ap = hh < 12 ? "AM" : "PM", h12 = hh % 12 || 12;

@@ -98,7 +98,7 @@ body += u"""
     </div>
     <div class="scrub-copy">
       <div class="wrap">
-        <p class="eyebrow">E-Built &middot; scroll to walk it</p>
+        <p class="eyebrow"><span class="cased">eBuilt</span> &middot; scroll to walk it</p>
         <h2 class="disp">Empty shell to<br>open doors</h2>
         <p>Months of work in one continuous move. Keep scrolling and the shell
            becomes a finished, lit space &mdash; the same sequence a tenant

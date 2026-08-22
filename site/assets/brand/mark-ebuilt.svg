@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 116" role="img" aria-label="eBuilt">
+  <!-- Redrawn from the supplied lockup: outlined pin, blue e monogram inside. -->
+  <path fill="none" stroke="currentColor" stroke-width="6.5" stroke-linejoin="round"
+        d="M73.5 69.8A34 34 0 1 0 20 43.1L22 106Z"/>
+  <mask id="eb-cut">
+    <rect width="100" height="116" fill="#fff"/>
+    <g fill="none" stroke="#000" stroke-width="7" stroke-linecap="round">
+      <path d="M37.4 42H70.6"/>
+      <path d="M70.6 42A16.6 16.6 0 1 0 63.5 55.6"/>
+    </g>
+  </mask>
+  <circle cx="54" cy="42" r="25" fill="#003FD6" mask="url(#eb-cut)"/>
+</svg>

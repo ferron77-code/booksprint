@@ -36,8 +36,14 @@ HEAD = u"""<!doctype html>
 <header class="hdr">
   <div class="wrap hdr-in">
     <a class="brand" href="index.html">
-      <b>Worldwide Distributors</b>
-      <span>Lighting &middot; Electrical &middot; Construction</span>
+      <svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+        <mask id="hdr-e"><rect width="100" height="100" fill="#fff"/><g fill="none" stroke="#000" stroke-width="9.5" stroke-linecap="round"><path d="M27.5 50H72.5"/><path d="M72.5 50A22.5 22.5 0 1 0 62.9 68.4"/></g></mask>
+        <circle cx="50" cy="50" r="46" fill="currentColor" mask="url(#hdr-e)"/>
+      </svg>
+      <span class="wm">
+        <b>Worldwide Distributors</b>
+        <span>Lighting &middot; Electrical &middot; Construction</span>
+      </span>
     </a>
     <nav class="nav" aria-label="Primary">
 {nav}

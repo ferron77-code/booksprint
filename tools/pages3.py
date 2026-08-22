@@ -34,7 +34,7 @@ body += u"""
 
     <div class="note rv" id="sent" hidden>
       <span class="t">Thank you</span>
-      <p><b>Your enquiry is in.</b> We will get back to you shortly. If it is urgent, call <a href="tel:+13059698769" style="color:var(--accent)">(305) 969-8769</a>.</p>
+      <p><b>Your enquiry is in.</b> We will get back to you shortly. If it is urgent, call <a href="tel:+13059698769" style="color:var(--brand)">(305) 969-8769</a>.</p>
     </div>
 
     <!-- The action below posts to contact.php, included in this folder.
@@ -71,7 +71,7 @@ body += u"""
       <label class="field" style="position:absolute;left:-9999px" aria-hidden="true" tabindex="-1">
         <span>Leave this blank</span><input type="text" name="website" tabindex="-1" autocomplete="off"></label>
       <button class="btn btn-p" type="submit">Send enquiry</button>
-      <p class="formnote">Prefer to talk? Call <a href="tel:+13059698769" style="color:var(--accent)">(305) 969-8769</a>. We use what you send here to answer your enquiry, nothing else.</p>
+      <p class="formnote">Prefer to talk? Call <a href="tel:+13059698769" style="color:var(--brand)">(305) 969-8769</a>. We use what you send here to answer your enquiry, nothing else.</p>
     </form>
   </div>
 </section>

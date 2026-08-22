@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 116" role="img" aria-label="eLighting">
+  <!-- Redrawn from the supplied lockup: outlined bulb, blue e monogram inside.
+       The outline takes currentColor so it sits on either surface; the disc
+       carries the brand blue. -->
+  <g fill="none" stroke="currentColor" stroke-width="6.5" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M37 69.2A32 32 0 1 1 63 69.2L61 84H39Z"/>
+    <path d="M41 92h18M43 100h14"/>
+  </g>
+  <mask id="el-cut">
+    <rect width="100" height="116" fill="#fff"/>
+    <g fill="none" stroke="#000" stroke-width="6.6" stroke-linecap="round">
+      <path d="M34.4 40H65.6"/>
+      <path d="M65.6 40A15.6 15.6 0 1 0 58.9 52.8"/>
+    </g>
+  </mask>
+  <circle cx="50" cy="40" r="24" fill="#003FD6" mask="url(#el-cut)"/>
+</svg>
