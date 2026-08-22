@@ -98,11 +98,11 @@ body += u"""
     </div>
     <div class="scrub-copy">
       <div class="wrap">
-        <p class="eyebrow"><span class="cased">eBuilt</span> &middot; scroll to walk it</p>
+        <p class="eyebrow"><span class="cased">eBuilt</span> &middot; four months, one move</p>
         <h2 class="disp">Empty shell to<br>open doors</h2>
-        <p>Months of work in one continuous move. Keep scrolling and the shell
-           becomes a finished, lit space &mdash; the same sequence a tenant
-           lives through, minus the four months.</p>
+        <p>Months of work in one continuous move: the shell becomes a finished,
+           lit space &mdash; the same sequence a tenant lives through, minus
+           the four months of it.</p>
         <div class="scrub-bar"><i></i></div>
         <ol class="scrub-steps">
           <li>Shell</li><li>Demolition</li><li>Framing</li>
@@ -183,9 +183,9 @@ body += u"""
       <p class="rl-count"><b>0</b> fixtures on</p>
       <div class="rl-copy">
         <div class="wrap">
-          <p class="eyebrow">Landscape lighting &middot; scroll to switch it on</p>
+          <p class="eyebrow">Landscape lighting &middot; how an install goes</p>
           <h2 class="disp">One fixture<br>at a time</h2>
-          <p>This is roughly how an install actually goes: a transformer, a run of cable, and then each fixture aimed at the one thing it is there for. Keep scrolling.</p>
+          <p>This is roughly how an install actually goes: a transformer, a run of cable, and then each fixture aimed at the one thing it is there for.</p>
         </div>
       </div>
     </div>
@@ -215,7 +215,7 @@ body += u"""
     <div class="head rv">
       <p class="eyebrow">Colour temperature</p>
       <h2 class="disp">Warm, or the<br>house looks like a car park</h2>
-      <p class="lede">This is the single most common mistake in residential exteriors. Same fixture, same wattage &mdash; move the slider and watch a home turn into a loading dock.</p>
+      <p class="lede">This is the single most common mistake in residential exteriors. Same fixture, same wattage: one reads as a home, the other reads as a loading dock.</p>
     </div>
     <div class="kelvin grid g2 rv" style="gap:0;background:none">
       <svg class="kroom" viewBox="0 0 800 520" role="img" aria-label="Illustrated interior lit at the selected colour temperature">

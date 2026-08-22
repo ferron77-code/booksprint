@@ -134,7 +134,7 @@ body += u"""
 <section class="sec sec-tight">
   <div class="wrap">
     <div class="head rv">
-      <p class="eyebrow">Featured project &middot; drag the seam</p>
+      <p class="eyebrow">Featured project &middot; the same view, twice</p>
       <h2 class="disp">Daylight &rarr; After dark</h2>
       <p class="lede">Nobody hires a lighting company for how a property looks at noon. Drag the seam and see the only version that matters.</p>
     </div>
