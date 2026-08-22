@@ -199,3 +199,7 @@ dist
 !.dev.vars.example
 __pycache__/
 *.pyc
+
+### Generated source video (fetched by tools/fetch-generated.py, not tracked)
+site/assets/img/*-src.mp4
+site/assets/img/buildfly-quarter.mp4
