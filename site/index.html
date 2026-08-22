@@ -54,8 +54,17 @@
 <!-- ══ HERO ════════════════════════════════════════════════ -->
 <section class="hero">
   <div class="hero-shots" aria-hidden="true">
-    <img class="day"   src="assets/img/hero-day.jpg"   alt="" fetchpriority="high">
-    <img class="night" src="assets/img/hero-night.jpg" alt="" fetchpriority="high">
+    <!-- The still sits underneath and carries the hero on its own: it shows
+         through before the clip buffers, if the clip fails, and instead of
+         it entirely under prefers-reduced-motion. -->
+    <img src="assets/img/hero-still.jpg" alt="" fetchpriority="high">
+    <video class="hero-film" data-autopause muted loop playsinline autoplay
+           preload="metadata" poster="assets/img/hero-still.jpg">
+      <!-- mp4 first: every mainstream browser takes it. The webm is
+           here for builds shipped without H.264. -->
+      <source src="assets/img/hero-fly.mp4"  type="video/mp4">
+      <source src="assets/img/hero-fly.webm" type="video/webm">
+    </video>
   </div>
   <div class="hero-scrim" aria-hidden="true"></div>
   <div class="hero-in">
@@ -74,7 +83,6 @@
       </div>
     </div>
   </div>
-  <span class="rend">Concept imagery &middot; pending project photography</span>
 </section>
 
 <!-- ══ FORK ════════════════════════════════════════════════ -->
@@ -287,19 +295,75 @@
       <h2 class="disp">Finished work,<br>after dark</h2>
       <p class="lede">No renderings in this row &mdash; these are completed Worldwide Distributors projects, shot at night, which is the only version of a lighting job anyone actually sees.</p>
     </div>
-    <div class="grid g3 rv">
-      <a class="tile" href="portfolio.html">
-        <img src="assets/img/walls.jpg" alt="Sculptural garden walls lit at night" loading="lazy">
-        <div class="cap"><span class="cat">Landscape &middot; Architectural</span><h4>Sculpture Wall Grazing</h4></div>
-      </a>
-      <a class="tile" href="portfolio.html">
-        <img src="assets/img/pool.jpg" alt="A pool and terrace lit at night" loading="lazy">
-        <div class="cap"><span class="cat">Exterior &middot; Pool</span><h4>Pool &amp; Terrace</h4></div>
-      </a>
-      <a class="tile" href="portfolio.html">
-        <img src="assets/img/highbay.jpg" alt="Commercial high-bay lighting over an open floor" loading="lazy">
-        <div class="cap"><span class="cat">Commercial &middot; High Bay</span><h4>High-Bay Lighting</h4></div>
-      </a>
+    <div class="carou rv" data-carou>
+      <div class="carou-track">
+        <article class="carou-item">
+          <a class="tile" href="portfolio.html">
+            <img src="assets/img/walls.jpg" alt="Sculptural garden walls lit at night" loading="lazy">
+          </a>
+          <div class="carou-body"><span class="k">Landscape &middot; Architectural</span><h3>Sculpture Wall Grazing</h3></div>
+        </article>
+        <article class="carou-item">
+          <a class="tile" href="portfolio.html">
+            <img src="assets/img/pool.jpg" alt="A pool and terrace lit at night" loading="lazy">
+          </a>
+          <div class="carou-body"><span class="k">Exterior &middot; Pool</span><h3>Pool &amp; Terrace</h3></div>
+        </article>
+        <article class="carou-item">
+          <a class="tile" href="portfolio.html">
+            <img src="assets/img/lot.jpg" alt="A commercial parking lot lit at night" loading="lazy">
+          </a>
+          <div class="carou-body"><span class="k">Exterior &middot; Parking</span><h3>Parking Lot &amp; Approach</h3></div>
+        </article>
+        <article class="carou-item">
+          <a class="tile" href="portfolio.html">
+            <img src="assets/img/palm.jpg" alt="A palm uplit at night" loading="lazy">
+          </a>
+          <div class="carou-body"><span class="k">Landscape &middot; Specimen</span><h3>Specimen Palm Uplighting</h3></div>
+        </article>
+        <article class="carou-item">
+          <a class="tile" href="portfolio.html">
+            <img src="assets/img/garden.jpg" alt="Garden walls and tree canopy lit at night" loading="lazy">
+          </a>
+          <div class="carou-body"><span class="k">Landscape &middot; Garden</span><h3>Garden Wall &amp; Canopy</h3></div>
+        </article>
+        <article class="carou-item">
+          <a class="tile" href="portfolio.html">
+            <img src="assets/img/planting.jpg" alt="A planting bed lit at night" loading="lazy">
+          </a>
+          <div class="carou-body"><span class="k">Landscape &middot; Planting</span><h3>Planting Bed &amp; Canopy</h3></div>
+        </article>
+        <article class="carou-item">
+          <a class="tile" href="portfolio.html">
+            <img src="assets/img/hedge.jpg" alt="A hedge line and lawn lit at night" loading="lazy">
+          </a>
+          <div class="carou-body"><span class="k">Grounds &middot; Perimeter</span><h3>Perimeter &amp; Lawn</h3></div>
+        </article>
+        <article class="carou-item">
+          <a class="tile" href="portfolio.html">
+            <img src="assets/img/deck.jpg" alt="A parking deck lit at night" loading="lazy">
+          </a>
+          <div class="carou-body"><span class="k">Retrofit &middot; Parking Deck</span><h3>Parking Deck Retrofit</h3></div>
+        </article>
+        <article class="carou-item">
+          <a class="tile" href="portfolio.html">
+            <img src="assets/img/highbay.jpg" alt="Commercial high-bay lighting" loading="lazy">
+          </a>
+          <div class="carou-body"><span class="k">Commercial &middot; High Bay</span><h3>High-Bay Lighting</h3></div>
+        </article>
+        <article class="carou-item">
+          <a class="tile" href="portfolio.html">
+            <img src="assets/img/interior.jpg" alt="Interior pendant lighting at night" loading="lazy">
+          </a>
+          <div class="carou-body"><span class="k">Interior &middot; Residential</span><h3>Interior Pendants</h3></div>
+        </article>
+      </div>
+      <div class="carou-ui">
+        <button class="carou-btn" type="button" data-dir="-1" aria-label="Previous project">&larr;</button>
+        <button class="carou-btn" type="button" data-dir="1"  aria-label="Next project">&rarr;</button>
+        <div class="carou-dots" role="tablist" aria-label="Projects"></div>
+        <span class="carou-count"></span>
+      </div>
     </div>
     <div class="btns rv" style="margin-top:26px">
       <a class="btn btn-s" href="portfolio.html">All projects &rarr;</a>

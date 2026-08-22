@@ -556,6 +556,97 @@
     });
   }
 
+  /* ── 8. Background clips ─────────────────────────────────────────────
+     Autoplaying background video pauses whenever it scrolls off screen —
+     there is no reason to decode frames nobody is looking at — and fades
+     in over its own poster once it has something to show. */
+  function autoplayClips() {
+    var vids = [].slice.call(document.querySelectorAll("video[data-autopause]"));
+    if (!vids.length) return;
+    if (reduce) { vids.forEach(function (v) { v.pause(); v.removeAttribute("autoplay"); }); return; }
+
+    vids.forEach(function (v) {
+      var show = function () { v.classList.add("on"); };
+      if (v.readyState >= 2) show(); else v.addEventListener("loadeddata", show, { once: true });
+      v.play().catch(function () { /* autoplay refused: the still stands in */ });
+    });
+
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) e.target.play().catch(function () {});
+        else e.target.pause();
+      });
+    }, { threshold: 0.05 });
+    vids.forEach(function (v) { io.observe(v); });
+  }
+
+  /* ── 9. Carousel ─────────────────────────────────────────────────────
+     Drives the scroll-snapping row from arrows and dots. The row already
+     works by swipe or trackpad on its own, so the controls are revealed
+     only once this runs — no dead buttons if the script never loads. */
+  function carousels() {
+    [].slice.call(document.querySelectorAll(".carou")).forEach(function (el) {
+      var track = el.querySelector(".carou-track");
+      var items = [].slice.call(el.querySelectorAll(".carou-item"));
+      var prev = el.querySelector('[data-dir="-1"]');
+      var next = el.querySelector('[data-dir="1"]');
+      var dots = el.querySelector(".carou-dots");
+      var count = el.querySelector(".carou-count");
+      if (!track || items.length < 2) return;
+
+      /* how many fit at once, so the last page is not a partial one */
+      function perView() {
+        var w = items[0].getBoundingClientRect().width + 2;
+        return Math.max(1, Math.round(track.clientWidth / w));
+      }
+      function pages() { return Math.max(1, items.length - perView() + 1); }
+
+      if (dots) {
+        items.forEach(function (_, i) {
+          var d = document.createElement("button");
+          d.type = "button";
+          d.className = "carou-dot";
+          d.setAttribute("role", "tab");
+          d.setAttribute("aria-label", "Go to project " + (i + 1));
+          d.addEventListener("click", function () { to(i); });
+          dots.appendChild(d);
+        });
+      }
+
+      function index() {
+        var x = track.scrollLeft, w = items[0].getBoundingClientRect().width + 2;
+        return clamp(Math.round(x / w), 0, items.length - 1);
+      }
+      function to(i) {
+        i = clamp(i, 0, pages() - 1);
+        track.scrollTo({ left: i * (items[0].getBoundingClientRect().width + 2) });
+      }
+      function sync() {
+        var i = index(), last = pages() - 1;
+        if (prev) prev.disabled = i <= 0;
+        if (next) next.disabled = i >= last;
+        if (dots) [].slice.call(dots.children).forEach(function (d, k) {
+          d.setAttribute("aria-selected", String(k === i));
+          d.hidden = k > last;
+        });
+        if (count) count.textContent = (i + 1) + " / " + (last + 1);
+      }
+
+      if (prev) prev.addEventListener("click", function () { to(index() - 1); });
+      if (next) next.addEventListener("click", function () { to(index() + 1); });
+      track.addEventListener("scroll", function () {
+        clearTimeout(track._t);
+        track._t = setTimeout(sync, 90);
+      }, { passive: true });
+      addEventListener("resize", sync);
+
+      el.classList.add("ready");
+      sync();
+    });
+  }
+
+  carousels();
+  autoplayClips();
   filmScrub();
   relight();
   filters();

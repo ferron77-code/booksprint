@@ -110,8 +110,23 @@ part of the flight: out of the courtyard, along the pool, up over the roof to
 a top-down of the whole lit property. 87 frames at 860px, 2.4MB, with a 960px
 clip as the mobile and reduced-motion fallback.
 
-The remaining 45 seconds are not wasted — the opening approach to the facade
-would make a strong hero once the cuts either side of it are trimmed.
+**The opening approach is now the homepage hero.** 0.6s to 8.5s, stopping short
+of the first cut: a slow pull-back from the lit entry out to the whole facade
+against a dusk sky. Silent, looping, and paused whenever it scrolls off screen.
+
+It ships as both `hero-fly.mp4` (H.264, 916KB) and `hero-fly.webm` (VP9, 508KB),
+mp4 listed first so every mainstream browser takes it. The webm exists because
+Chromium builds without proprietary codecs cannot play H.264 at all — including
+the one used to test this site, which is how the gap was found. Under
+`prefers-reduced-motion` neither plays and `hero-still.jpg` carries the hero
+on its own.
+
+With the hero now being real footage, the "Concept imagery" label that sat on
+it has been removed. The other five page heroes are still renderings and keep
+theirs.
+
+Roughly 26 seconds of the flight remain unused — the stretch after 48s, where
+the drone is too high for the frames to read.
 
 ## Gaps
 

@@ -80,7 +80,7 @@ for slug in PAGES:
     s = s.replace('<script src="assets/scroll.js" defer></script>',
                   "<script>\n" + scr + "\n</script>" + BRIDGE)
     # asset refs become tokens the shell substitutes at navigation time
-    s = re.sub(r'assets/(?:img/)?([A-Za-z0-9._-]+\.(?:jpg|png|mp4|svg))', r'@@\1@@', s)
+    s = re.sub(r'assets/(?:img/)?([A-Za-z0-9._-]+\.(?:jpg|png|mp4|webm|svg))', r'@@\1@@', s)
     # the PHP endpoint does not exist in a preview
     s = s.replace('action="contact.php"', 'action="#"')
     m = re.search(r'id="scrub"[^>]*data-base="([^"]+)"', s)
