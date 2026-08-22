@@ -32,6 +32,39 @@ NAV = [
     ("contact.html", "Contact"),
 ]
 
+
+# ── licence numbers ───────────────────────────────────────────────────
+# Florida §489.119(5)(b) requires the certification or registration number
+# in advertising, and a website counts. Until the real numbers arrive these
+# are placeholders, and they are deliberately shaped so nobody can mistake
+# one for a licence: all X, never digits. A plausible-looking invented
+# number on a contractor's live site misrepresents licensure, which is a
+# worse problem than an obviously blank one.
+#
+# To go live: replace the values, keep the keys, re-run tools/build.py.
+# Drop any the company does not actually hold — do not leave a placeholder
+# standing in for a licence they have not got. check.py fails the build
+# while any X remains, so this cannot ship by accident.
+LICENCES = [
+    ("Electrical", "EC-XXXXXXX"),
+    ("Building",   "CGC-XXXXXX"),
+]
+
+
+def licence_line(sep=" &middot; ", label=True):
+    """One line of licence numbers. `label=False` where the surrounding
+    markup already says "Licence" — the property managers table does."""
+    live = [(k, v) for k, v in LICENCES if v.strip()]
+    if not live:
+        return "Licence no. pending"
+    body = sep.join("%s %s" % (k, v) for k, v in live)
+    return ("Licence " + body) if label else body
+
+
+def licence_pending():
+    return any("X" in v for _, v in LICENCES)
+
+
 HEAD = u"""<!doctype html>
 <html lang="en">
 <head>
@@ -107,7 +140,7 @@ FOOT = u"""
     <div>
       <a href="tel:+13059698769">(305) 969-8769</a><br>
       <a href="mailto:info@elighting.org">info@elighting.org</a><br>
-      <span class="tbd">Licence no. pending</span>
+      <span class="tbd">{licences}</span>
     </div>
   </div>
 </footer>
@@ -182,8 +215,9 @@ def page(slug, title, desc, body):
         '      <a href="%s"%s>%s</a>' % (h, ' aria-current="page"' if h == slug else "", t)
         for h, t in NAV
     )
+    foot = FOOT.replace("{licences}", licence_line())
     html = HEAD.format(title=title, desc=desc, nav=nav,
                        url=SITE_URL + "/" + slug,
-                       social=social(slug, title, desc)) + body + FOOT
+                       social=social(slug, title, desc)) + body + foot
     io.open(os.path.join(OUT, slug), "w", encoding="utf-8").write(html)
     return len(html)

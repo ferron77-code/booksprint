@@ -104,4 +104,27 @@ if len(origins) > 1:
 elif origins:
     print("     social cards on %s" % origins.pop())
 
+# ── licence numbers ───────────────────────────────────────────────────
+# Florida requires the real number in advertising. The placeholders are all
+# X on purpose so they cannot pass for one, and this fails the build while
+# any is still standing, so the site cannot go live carrying them.
+#
+# This reads the BUILT PAGES, not chrome.py. An earlier version imported the
+# module and a stale __pycache__ served it the previous values — the gate
+# passed while the source said otherwise, which is exactly how something like
+# this ships by accident. What is on the page is the only thing that matters,
+# so that is what gets checked.
+stale = {}
+for f in pages:
+    src = io.open(f, encoding="utf-8").read()
+    for m in re.findall(r'[A-Z]{2,4}-X{4,}', src):
+        stale.setdefault(os.path.basename(f), set()).add(m)
+if stale:
+    bad += 1
+    print("FAIL licence placeholders are still on the pages")
+    for name in sorted(stale):
+        print("     %-24s %s" % (name, ", ".join(sorted(stale[name]))))
+    print("     Set LICENCES in tools/chrome.py, then rebuild.")
+    print("     Drop any the company does not hold rather than leaving a stand-in.")
+
 print("\n%d page(s) with problems" % bad)

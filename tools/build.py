@@ -13,6 +13,14 @@ into site/assets/img/, add a row to PROJECTS in portfolio.py, re-run this.
 """
 import os, subprocess, sys
 
+# Python invalidates a .pyc by comparing mtime in WHOLE SECONDS. Edit a
+# generator and rebuild inside the same second — ordinary when a script does
+# both — and the stale bytecode still looks current, so the build quietly
+# emits the previous values. That is how a licence number that had been
+# changed went on carrying its old value through several rebuilds here.
+sys.dont_write_bytecode = True
+os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 STEPS = [
     ("pages.py",     "commercial, residential"),
@@ -21,6 +29,7 @@ STEPS = [
     ("page404.py",   "404"),
     ("portfolio.py", "portfolio"),
     ("kroom.py",     "colour-temperature illustration"),
+    ("licences.py",  "licence numbers into index.html"),
     ("check.py",     "validate"),
 ]
 

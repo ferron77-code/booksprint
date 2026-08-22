@@ -167,3 +167,48 @@ After go-live, paste a page URL into these and confirm the card renders:
 
 Facebook and LinkedIn cache aggressively. If a card is wrong at launch, fix it
 and then use the debugger's re-scrape button, or the old one persists.
+
+
+---
+
+# Licence numbers
+
+    tools/chrome.py:  LICENCES = [("Electrical", "EC-XXXXXXX"),
+                                  ("Building",   "CGC-XXXXXX")]
+
+Florida §489.119(5)(b) requires the certification or registration number in
+advertising, and a website counts.
+
+**These are placeholders and they are shaped so nobody can mistake one for a
+licence** — all X, never digits. A plausible invented number on a licensed
+contractor's live site misrepresents licensure, which is a worse problem than
+an obviously blank one.
+
+To go live: set the real values, keep the keys, run `python3 tools/build.py`.
+All seven pages take them from that one constant — three slots on the
+homepage and the property-managers table included. **Drop any entry the
+company does not actually hold** rather than leaving a stand-in beside a real
+one.
+
+`check.py` fails the build while any `XX` placeholder is still on a built
+page, so the site cannot go live carrying them.
+
+## Two traps found while wiring this up, both worth knowing
+
+**The gate first read `chrome.py` by importing it, and a stale `__pycache__`
+served it the previous values** — so it passed while the source said
+otherwise. It reads the built pages now. What is on the page is the only
+thing that matters, and it cannot be fooled by a cache.
+
+**That stale cache was not a fluke.** Python invalidates a `.pyc` by
+comparing mtime in *whole seconds*. `chrome.py` and its `.pyc` were written
+132 milliseconds apart inside the same second, so the bytecode looked current
+and the build kept emitting the old licence number through several rebuilds.
+`build.py` now sets `sys.dont_write_bytecode` and `PYTHONDONTWRITEBYTECODE`,
+which is cheap here and removes the whole class of problem.
+
+**index.html is hand-written and does not read chrome.py.** Setting the real
+numbers would have left the homepage — the page carrying the "Licensed &
+Insured" proof strip — still showing placeholders. `tools/licences.py` writes
+them into the slots marked `data-licence` there, and runs as part of the
+build.

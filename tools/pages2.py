@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from chrome import page, CLOSE
+from chrome import licence_line, page, CLOSE
 from pages_common import phero, CTA_P, CTA_S
 
 # ══════════════════════════════════════════════════════════ PROPERTY MANAGERS
@@ -41,7 +41,7 @@ body += u"""
       <p class="lede">Managers ask for the same documents every time. Rather than making you chase them, ask and we will send the current set directly.</p>
     </div>
     <dl class="rows rv">
-      <div class="row"><dt>Licence</dt><dd><span class="tbd">Licence number pending &mdash; to be published here once confirmed.</span></dd></div>
+      <div class="row"><dt>Licence</dt><dd><span class="tbd">LICENCE_SLOT</span></dd></div>
       <div class="row"><dt>Insurance</dt><dd>Certificate of insurance issued to your entity, with the additional-insured language your management agreement requires.</dd></div>
       <div class="row"><dt>W-9</dt><dd>Current, signed, sent on request.</dd></div>
       <div class="row"><dt>References</dt><dd>Available on request for properties comparable to yours.</dd></div>
@@ -95,6 +95,8 @@ body += u"""
 body += CLOSE.format(
     h=u"Send us the<br>property list",
     p=u"Addresses and the recurring problems, or just the one building that keeps generating work orders. We will walk it.")
+
+body = body.replace("LICENCE_SLOT", licence_line(label=False))
 
 page("property-managers.html",
      "For Property &amp; Association Managers — Worldwide Distributors",
