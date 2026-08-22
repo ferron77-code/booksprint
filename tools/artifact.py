@@ -130,11 +130,11 @@ for slug in PAGES:
     # asset rewrite below would turn their absolute URLs into data URIs and
     # drag every share card into the bundle.
     s = re.sub(r'<link rel="canonical".*?<meta name="theme-color"[^>]*>\n', '', s, flags=re.S)
-    m = re.search(r'id="scrub"[^>]*data-base="([^"]+)"', s)
-    if m:
-        fs = frame_src(m.group(1))
+    # a page can carry more than one scrub; give each its own frames
+    for m in re.finditer(r'(<section class="scrub"[^>]*data-base=")([^"]+)(")', s):
+        fs = frame_src(m.group(2))
         if fs:
-            s = s.replace('id="scrub"', 'id="scrub" data-frame-src=\'' + fs + "'", 1)
+            s = s.replace(m.group(0), m.group(0) + " data-frame-src='" + fs + "'", 1)
     missing = set(re.findall(r"@@([A-Za-z0-9._-]+)@@", s)) - set(assets)
     assert not missing, (slug, missing)
     docs[slug] = s

@@ -79,8 +79,13 @@
      wheel. Desktop only: below 900px, and under reduced motion, the plain
      <video> already in the markup stays and this never initialises. */
   function filmScrub() {
-    var wrap = document.getElementById("scrub");
-    if (!wrap) return;
+    /* A page can carry more than one of these now. Everything below was
+       already scoped to `wrap`, so each gets its own frame array, loader and
+       scene — nothing is shared but the code. */
+    [].slice.call(document.querySelectorAll(".scrub")).forEach(setupScrub);
+  }
+
+  function setupScrub(wrap) {
     if (reduce || innerWidth < 900) { wrap.dataset.mode = "video"; return; }
 
     var cv = wrap.querySelector("canvas"), ctx = cv.getContext("2d", { alpha: false });

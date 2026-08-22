@@ -45,9 +45,54 @@ STAGES = [
 ]
 
 
+IMGDIR = "/home/user/booksprint/site/assets/img"
+
+
+def buildfly_html():
+    """The drone orbit, scroll-scrubbed. Returns "" until the frames exist,
+    so the static strip keeps the section until the video has been cut."""
+    import os as _os, glob as _glob
+    folder = _os.path.join(IMGDIR, "buildfly")
+    frames = sorted(_glob.glob(_os.path.join(folder, "f*.jpg")))
+    if len(frames) < 20:
+        return ""
+    poster = ("assets/img/buildfly-poster.jpg"
+              if _os.path.exists(_os.path.join(IMGDIR, "buildfly-poster.jpg"))
+              else "assets/img/stage-night.jpg")
+    steps = "".join("<li>%s</li>" % label for _, label, _ in STAGES)
+    return """
+<section class="scrub" id="buildfly" data-frames="%d" data-base="assets/img/buildfly/" data-mode="video">
+  <div class="scrub-stick">
+    <div class="scrub-stage">
+      <video muted loop playsinline preload="none" poster="%s">
+        <source src="assets/img/buildfly.mp4" type="video/mp4">
+        <source src="assets/img/buildfly.webm" type="video/webm">
+      </video>
+      <canvas aria-hidden="true"></canvas>
+      <div class="scrub-vig"></div>
+    </div>
+    <div class="scrub-copy">
+      <div class="wrap">
+        <p class="eyebrow">Ground up &middot; a study</p>
+        <h2 class="disp">Slab to<br>switched on</h2>
+        <p>One building and one unbroken circle around it, from a poured slab to
+           the lights going on. A visualisation rather than a photographed job
+           &mdash; it is here because the last part of it is the part that usually
+           belongs to a different company.</p>
+        <div class="scrub-bar"><i></i></div>
+        <ol class="scrub-steps">%s</ol>
+      </div>
+    </div>
+  </div>
+</section>
+""" % (len(frames), poster, steps)
+
+
 def groundup_html():
     import os as _os
-    IMGDIR = "/home/user/booksprint/site/assets/img"
+    fly = buildfly_html()
+    if fly:
+        return fly
     files = ["stage-%s.jpg" % slug for slug, _, _ in STAGES]
     if not all(_os.path.exists(_os.path.join(IMGDIR, f)) for f in files):
         return ""

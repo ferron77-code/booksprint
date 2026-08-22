@@ -123,6 +123,52 @@ part-built sequence is worse than none. Five across on a wide screen; a
 snapping horizontal strip under 900px, where five stacked would bury the last
 one, which is the one that matters.
 
+## The drone orbit
+
+Seedance 2.5 takes a `start_image` and an `end_image`, so the shot is anchored
+at both ends rather than described and hoped for: the aerial slab at one end,
+an aerial night frame at the other. The model has to get from one to the
+other, so the camera comes round and the building rises across one take.
+
+**The first pass read as AI and the reason was specific.** It put up solid
+walls and then subtracted the windows and doors from them. No building is ever
+built that way, and the eye catches it without being able to name it. Every
+prompt since says how a tilt-up building actually goes up — panels cast flat
+on the slab with their openings already formed, craned upright and braced, so
+an opening exists from the moment the wall does — and forbids the failure
+outright. The structure stage goes in as a reference image because it *shows*
+walls standing with the openings still open, which is a state worth showing
+rather than describing.
+
+A full 360 needs its end frame matched to the start frame's camera, or the
+circle does not close where it opened.
+
+| Take | Length | Notes |
+| --- | --- | --- |
+| `buildfly-src.mp4` | 20s | full 360, the keeper |
+| `buildfly-quarter.mp4` | 15s | quarter turn, same fix, comparison only |
+
+## Cutting a take into the scrub
+
+    python3 tools/fetch-generated.py     # brings the mp4 down (raw, unresized)
+    python3 tools/scrub-frames.py site/assets/img/buildfly-src.mp4 buildfly
+    python3 tools/build.py
+
+`scrub-frames.py` writes `f001.jpg…` at 960x540 — the size the engine already
+uses — plus an H.264 and a VP9 fallback and a poster. `groundup_html()` counts
+the folder itself, so `data-frames` needs no editing.
+
+**The section upgrades itself.** With fewer than 20 frames on disk it stays the
+five-card static strip; with the frames present it becomes the scroll-scrubbed
+orbit, carrying the same five stage labels as its step list. Nothing to switch
+by hand, and no way to ship a half-built version.
+
+`filmScrub()` drove a single `#scrub` by id. It now drives every `.scrub` on
+the page, each with its own frame array, loader and scene. Verified with both
+scrubs live on the commercial page: four distinct frames across four scroll
+positions on each, independently, no errors. The preview bundler was injecting
+frames into the first scrub only, and now does each.
+
 ## Still outstanding
 
 - The buildout pair needs placing on the commercial page.
