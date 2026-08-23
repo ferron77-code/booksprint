@@ -66,7 +66,7 @@ SOCIAL_LINKS = [
     ("Facebook",  "https://www.facebook.com/YOUR-PAGE",
      '<path fill="currentColor" d="M14 8.5V7.2c0-.6.4-.8.7-.8H16V4h-2c-2 0-2.5 '
      '1.5-2.5 2.5v2H10v2.5h1.5V20H14v-9h1.9l.3-2.5H14z"/>'),
-    ("Instagram", "https://www.instagram.com/YOUR-HANDLE",
+    ("Instagram", "https://www.instagram.com/elightingdesigns",
      '<rect x="4.15" y="4.15" width="15.7" height="15.7" rx="4.6" fill="none" '
      'stroke="currentColor" stroke-width="1.7"/>'
      '<circle cx="12" cy="12" r="3.7" fill="none" stroke="currentColor" '
