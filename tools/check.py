@@ -132,7 +132,17 @@ if stale:
 # rather than fails. It still has to be said out loud on every build, or the
 # placeholder sits there until someone happens to look.
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from chrome import SOCIAL_LINKS
+from chrome import SOCIAL_LINKS, SITE_URL, SITE_URL_CONFIRMED
+
+# Every canonical and every og:url on the site is built from one string. If it
+# is the wrong domain nothing looks broken — the pages render perfectly and
+# quietly tell search engines they are copies of something else.
+if not SITE_URL_CONFIRMED:
+    bad += 1
+    print("FAIL the site origin has not been confirmed")
+    print("     Every canonical and og:url currently says %s" % SITE_URL)
+    print("     Confirm the domain with the company, then set")
+    print("     SITE_URL_CONFIRMED = True in tools/chrome.py.")
 waiting = [n for n, u, _ in SOCIAL_LINKS if not u or "YOUR-" in u]
 if waiting:
     print("NOTE  no URL yet for: %s" % ", ".join(waiting))

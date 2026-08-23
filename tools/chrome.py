@@ -7,10 +7,22 @@ import io, os
 OUT = "/home/user/booksprint/site"
 
 # Absolute origin, no trailing slash. Social scrapers will not resolve a
-# relative og:image, so this has to be the real domain before go-live.
-# Taken from the company's own contact address (info@elighting.org) — CONFIRM
-# IT with them; if the site lives anywhere else, every share card breaks.
+# relative og:image, so this has to be the real domain before go-live, and a
+# canonical tag pointing at a domain the company does not own actively tells
+# search engines the real version of these pages lives somewhere else.
+#
+# There are at least three domains in play and nobody has said which one this
+# site is for:
+#   worldwidedistributorsinc.com  the site the photographs were pulled from
+#   elighting.org                 the domain of their contact address
+#   elightingindustries.com       linked from the @elightingdesigns Instagram
+#
+# So this value is a guess until someone confirms it. Set SITE_URL_CONFIRMED
+# to True only when the company has actually said so; check.py fails the
+# build until then, because a wrong origin here is invisible on the page and
+# breaks every share card and canonical at once.
 SITE_URL = "https://www.elighting.org"
+SITE_URL_CONFIRMED = False
 
 # Per-page alt text for the share card. Describes the photograph, since that
 # is what a screen reader announces when the card is posted.
