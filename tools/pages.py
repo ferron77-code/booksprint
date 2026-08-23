@@ -28,11 +28,13 @@ CTA_S = u'<a class="btn btn-s" href="portfolio.html">See the work</a>'
 
 # ══════════════════════════════════════════════════════════ COMMERCIAL
 
-# ── ground-up study ───────────────────────────────────────────────────
+# ── ground up ─────────────────────────────────────────────────────────
 # Five stages of one building, generated rather than photographed, which is
-# why it carries its own "a study" eyebrow and says so in the lede. Each
-# stage was made from the finished building as the reference so the five
-# frames stay the same building on the same lot instead of drifting.
+# why it carries a credit line saying so. That line is the whole of the
+# disclosure: the copy itself is the company talking about the job, not the
+# site talking about its own footage. Each stage was made from the finished
+# building as the reference so the five frames stay the same building on the
+# same lot instead of drifting.
 #
 # Needs stage-<slug>.jpg in assets/img at 1100x821. The whole section is
 # skipped unless every stage is on disk, so it cannot ship half-built.
@@ -41,7 +43,7 @@ STAGES = [
     ("shell",    "Structure",   "Walls to full height, bond beam poured, joists set. Openings are still holes."),
     ("dryin",    "Dried in",    "Roof on, glazing in, asphalt down. The building stops being weather-dependent."),
     ("finished", "Finished",    "Finish coat, canopy clad, kerbs, bays and planting. Handed over in daylight."),
-    ("night",    "Switched on", "And the part most contractors leave to somebody else \u2014 the lighting that decides how it reads at seven."),
+    ("night",    "Switched on", "Site poles, facade and canopy live. The part that decides how the building reads at seven."),
 ]
 
 
@@ -73,14 +75,16 @@ def buildfly_html():
     </div>
     <div class="scrub-copy">
       <div class="wrap">
-        <p class="eyebrow">Ground up &middot; a study</p>
+        <p class="eyebrow">Ground up</p>
         <h2 class="disp">Slab to<br>switched on</h2>
-        <p>One building and one unbroken circle around it, from a poured slab to
-           the lights going on. A visualisation rather than a photographed job
-           &mdash; it is here because the last part of it is the part that usually
-           belongs to a different company.</p>
+        <p>A ground-up job runs from the slab to the day the lights come on. On
+           most of them the last stretch &mdash; conduit, gear, fixtures and
+           aiming &mdash; goes to an electrical contractor who arrives after the
+           building is finished. Here it is the same company, so the lighting is
+           laid out while the walls are still open.</p>
         <div class="scrub-bar"><i></i></div>
         <ol class="scrub-steps">%s</ol>
+        <p class="credit">Visualisation, not a filmed job</p>
       </div>
     </div>
   </div>
@@ -109,12 +113,14 @@ def groundup_html():
 <section class="sec" id="groundup">
   <div class="wrap">
     <div class="head rv">
-      <p class="eyebrow">Ground up &middot; a study</p>
+      <p class="eyebrow">Ground up</p>
       <h2 class="disp">Slab to<br>switched on</h2>
-      <p class="lede">One building, five stages, from a poured slab to the lights
-         going on. A visualisation rather than a photographed job &mdash; it is here
-         because it shows the sequence, and because the last frame is the part that
-         usually belongs to a different company.</p>
+      <p class="lede">A ground-up job runs from the slab to the day the lights come
+         on. On most of them the last stage &mdash; conduit, gear, fixtures and
+         aiming &mdash; goes to an electrical contractor who arrives after the
+         building is finished. Here it is the same company, so the lighting is laid
+         out while the walls are still open.</p>
+      <p class="credit">Visualisations, not photographs of a finished job</p>
     </div>
     <ol class="stages rv">%s
     </ol>

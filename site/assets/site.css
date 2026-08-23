@@ -549,6 +549,11 @@ html.js .rv.on{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.2,.
   font-family:var(--f-m);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:rgba(244,241,236,.38)}
 .scrub-steps li{transition:color .35s}
 .scrub-steps li.on{color:#F2C879}
+/* Where a picture on this site is generated rather than photographed, it
+   carries a credit saying so. Quiet, but never hidden. */
+.credit{font-family:var(--f-m);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text-mute);margin:16px 0 0}
+.scrub-copy .credit{color:rgba(196,200,206,.66)}
 @media(max-width:900px){
   .scrub{height:auto}
   /* The dark ground belongs to the pinned frame. Once the section unpins and
@@ -567,6 +572,7 @@ html.js .rv.on{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.2,.
   .scrub-bar i{background:var(--brand)}
   .scrub-steps{color:var(--text-mute)}
   .scrub-steps li.on{color:var(--brand)}
+  .scrub-copy .credit{color:var(--text-mute)}
 }
 
 /* ── progressive relight ────────────────────────────────────────────── */
