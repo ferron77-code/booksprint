@@ -163,11 +163,20 @@
     wrap.dataset.mode = "canvas";
     addEventListener("resize", size);
 
+    /* Finish the sequence before the pin lets go. The section is 420vh over a
+       100vh sticky panel, so scene progress reaches 1 at the exact moment the
+       panel starts sliding out of view — which put the payoff, the lights
+       coming on, on the same frame as the exit. Running the frames over the
+       first HOLD of the scroll leaves the last stretch pinned on the finished
+       shot, so it lands and is then held rather than swept away. */
+    var HOLD = 0.82;
+
     scene(wrap, function (p) {
-      want = Math.round(smooth(p) * (n - 1));
+      var q = clamp(p / HOLD, 0, 1);
+      want = Math.round(smooth(q) * (n - 1));
       paint(want);
-      if (bar) bar.style.transform = "scaleX(" + p.toFixed(4) + ")";
-      var k = Math.min(steps.length - 1, Math.floor(p * steps.length));
+      if (bar) bar.style.transform = "scaleX(" + q.toFixed(4) + ")";
+      var k = Math.min(steps.length - 1, Math.floor(q * steps.length));
       for (var j = 0; j < steps.length; j++) steps[j].classList.toggle("on", j <= k);
     });
   }
