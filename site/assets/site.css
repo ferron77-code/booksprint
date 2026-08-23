@@ -130,6 +130,12 @@ a{color:inherit}
 .btn-p:hover{background:var(--text);color:var(--surface)}
 .btn-s{border-color:var(--line);color:var(--text)}
 .btn-s:hover{border-color:var(--brand);color:var(--brand)}
+/* The home hero is the one that runs light type over the picture. Its
+   secondary button was still taking the page's ink, so in daylight it was
+   near-black on a photograph beside a near-white headline. The interior
+   heroes set their headline dark and are left alone. */
+.hero .btn-s{border-color:rgba(244,241,236,.45);color:#F4F1EC}
+.hero .btn-s:hover{border-color:#F4F1EC;background:rgba(244,241,236,.12);color:#F4F1EC}
 .btn-sm{padding:11px 15px;font-size:11px}
 .btns{display:flex;flex-wrap:wrap;gap:10px}
 
@@ -545,16 +551,22 @@ html.js .rv.on{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.2,.
 .scrub-steps li.on{color:#F2C879}
 @media(max-width:900px){
   .scrub{height:auto}
-  .scrub-stick{position:static;height:auto;display:block}
+  /* The dark ground belongs to the pinned frame. Once the section unpins and
+     the copy comes out from over the picture, it has to come out onto the
+     page it is actually sitting on, or it is grey type on black. */
+  .scrub-stick{position:static;height:auto;display:block;background:none}
   .scrub-stage{height:auto;aspect-ratio:16/9}
   .scrub canvas{display:none}
   .scrub video{position:static}
   .scrub-copy{position:static;padding:22px 0 0;background:none}
   .scrub-copy h2,.scrub-copy p{color:inherit}
+  .scrub-copy .eyebrow{color:var(--brand)}
   .scrub-copy h2{color:var(--text)}
   .scrub-copy p{color:var(--text-mute)}
   .scrub-bar{background:var(--line)}
+  .scrub-bar i{background:var(--brand)}
   .scrub-steps{color:var(--text-mute)}
+  .scrub-steps li.on{color:var(--brand)}
 }
 
 /* ── progressive relight ────────────────────────────────────────────── */

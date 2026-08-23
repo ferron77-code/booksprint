@@ -85,8 +85,25 @@
     [].slice.call(document.querySelectorAll(".scrub")).forEach(setupScrub);
   }
 
+  /* On a phone, and under reduced motion, there is no scrub: the section
+     collapses to an ordinary 16:9 clip sitting in the flow. The markup ships
+     that clip inert — no autoplay, nothing preloaded — because on the desktop
+     path the canvas covers it and downloading a hidden video is waste. So the
+     clip only becomes a clip here, where it is the whole of the section. */
+  function scrubFallback(wrap) {
+    wrap.dataset.mode = "video";
+    var v = wrap.querySelector("video");
+    if (!v) return;
+    v.preload = "metadata";
+    v.setAttribute("controls", "");
+    if (reduce) return;
+    v.setAttribute("autoplay", "");
+    v.setAttribute("data-autopause", "");
+    v.play().catch(function () { /* refused: the controls make it tappable */ });
+  }
+
   function setupScrub(wrap) {
-    if (reduce || innerWidth < 900) { wrap.dataset.mode = "video"; return; }
+    if (reduce || innerWidth < 900) { scrubFallback(wrap); return; }
 
     var cv = wrap.querySelector("canvas"), ctx = cv.getContext("2d", { alpha: false });
     var bar = wrap.querySelector(".scrub-bar i");
@@ -711,9 +728,9 @@
   }
 
   carousels();
-  autoplayClips();
   sting();
   filmScrub();
+  autoplayClips();
   relight();
   filters();
   sequence(heroFixture());

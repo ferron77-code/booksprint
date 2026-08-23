@@ -133,7 +133,7 @@ document.addEventListener("submit", function (e) {
 </script>
 """
 
-docs = {}
+docs, frames = {}, {}
 for slug in PAGES:
     s = io.open(os.path.join(SITE, slug + ".html"), encoding="utf-8").read()
     # inline stylesheet and script
@@ -153,11 +153,18 @@ for slug in PAGES:
     s = re.sub(r'<link rel="canonical".*?<meta name="theme-color"[^>]*>\n', '', s, flags=re.S)
     # by this point asset paths are already @@tokens@@, so match on the type
     s = re.sub(r'\n[ \t]*<source [^>]*type="video/webm">', '', s)
-    # a page can carry more than one scrub; give each its own frames
+    # A page can carry more than one scrub; give each its own frames. The
+    # frames go in behind their own token rather than inline, because a phone
+    # never runs the scrub and megabytes of stills it will not look at are the
+    # difference between a page that appears and a page that hangs. The shell
+    # decides, at navigation time, whether this viewport gets them.
     for m in re.finditer(r'(<section class="scrub"[^>]*data-base=")([^"]+)(")', s):
         fs = frame_src(m.group(2))
         if fs:
-            s = s.replace(m.group(0), m.group(0) + " data-frame-src='" + fs + "'", 1)
+            key = m.group(2).strip("/").split("/")[-1]
+            frames[key] = fs
+            s = s.replace(m.group(0),
+                          m.group(0) + " data-frame-src='@@f:" + key + "@@'", 1)
     missing = set(re.findall(r"@@([A-Za-z0-9._-]+)@@", s)) - set(assets)
     assert not missing, (slug, missing)
     docs[slug] = s
@@ -168,13 +175,17 @@ def j(o):
     return json.dumps(o).replace("<", "\\u003c").replace(">", "\\u003e")
 
 SHELL = u"""<title>Worldwide Distributors</title>
+<!-- Without this a phone lays the shell out at 980px, the site inside
+     believes it is on a desktop, and every mobile layout in it is
+     skipped. The pages themselves carry one; the shell needs its own. -->
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
   html,body{margin:0;padding:0;height:100%%;background:#0B0E13;overflow:hidden}
   #f{border:0;width:100%%;height:100%%;display:block}
 </style>
 <iframe id="f" title="Worldwide Distributors website preview"></iframe>
 <script>
-var DOCS = %s, ASSETS = %s;
+var DOCS = %s, ASSETS = %s, FRAMES = %s;
 var f = document.getElementById("f");
 
 /* Appended to a page when it is opened at a fragment. A srcdoc document has
@@ -191,6 +202,14 @@ var ACTIVATE =
 function show(slug, frag) {
   if (!DOCS[slug]) slug = "index";
   var html = DOCS[slug].replace(/@@([A-Za-z0-9._-]+)@@/g, function (m, k) { return ASSETS[k] || m; });
+  /* The scrub is desktop-only. On a phone the section falls back to its
+     video, so handing that phone a few megabytes of stills buys nothing and
+     costs it the seconds before anything appears at all. */
+  var wide = innerWidth >= 900 &&
+             !(matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+  html = html.replace(/@@f:([A-Za-z0-9._-]+)@@/g, function (m, k) {
+    return wide ? (FRAMES[k] || "null") : "null";
+  });
   /* A fragment cannot ride in on the URL here — the page is srcdoc, it has
      no address of its own. Append a step that runs after the page scripts
      and does what arriving at that fragment would have done. */
@@ -211,7 +230,7 @@ addEventListener("message", function (e) {
 addEventListener("hashchange", function () { route(location.hash); });
 route(location.hash);
 </script>
-""" % (j(docs), j(assets))
+""" % (j(docs), j(assets), j(frames))
 
 io.open(OUT, "w", encoding="utf-8").write(SHELL)
 print("source assets: %.1f MB" % (total / 1048576.0))
