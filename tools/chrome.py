@@ -11,18 +11,23 @@ OUT = "/home/user/booksprint/site"
 # canonical tag pointing at a domain the company does not own actively tells
 # search engines the real version of these pages lives somewhere else.
 #
-# There are at least three domains in play and nobody has said which one this
-# site is for:
-#   worldwidedistributorsinc.com  the site the photographs were pulled from
-#   elighting.org                 the domain of their contact address
-#   elightingindustries.com       linked from the @elightingdesigns Instagram
+# Confirmed 2026-08-23: the site stays under Worldwide Distributors Inc, and
+# so does the address. That matches what the pages actually say — Worldwide
+# Distributors is the umbrella, eLighting and eBuilt are its divisions — and
+# it is a domain the company demonstrably runs, since every photograph on
+# this site was pulled from it (see docs/production/photo-provenance.md).
 #
-# So this value is a guess until someone confirms it. Set SITE_URL_CONFIRMED
-# to True only when the company has actually said so; check.py fails the
-# build until then, because a wrong origin here is invisible on the page and
-# breaks every share card and canonical at once.
-SITE_URL = "https://www.elighting.org"
-SITE_URL_CONFIRMED = False
+# The two other domains in play stay out of it for now:
+#   elighting.org            the domain of their contact address
+#   elightingindustries.com  linked from the @elightingdesigns Instagram
+# Both should 301 here at launch rather than stay live, or the new site
+# starts from nothing while the old links keep pointing elsewhere.
+#
+# STILL TO CHECK AT DEPLOY: www versus apex. This has to match the host the
+# site is actually served from, or the canonical points at a redirect. One
+# line to change once that is known.
+SITE_URL = "https://www.worldwidedistributorsinc.com"
+SITE_URL_CONFIRMED = True
 
 # Per-page alt text for the share card. Describes the photograph, since that
 # is what a screen reader announces when the card is posted.
