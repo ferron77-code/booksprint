@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from chrome import page
+from chrome import page, social_links
 from pages_common import phero
 
 body = phero(
@@ -20,6 +20,7 @@ body += u"""
       <div class="ci"><b>Phone</b><p><a href="tel:+13059698769">(305) 969-8769</a></p></div>
       <div class="ci"><b>Email</b><p><a href="mailto:info@elighting.org">info@elighting.org</a></p></div>
       <div class="ci"><b>Where we work</b><p>Headquartered in Miami, Florida.<br>Serving Florida.</p></div>
+      {social_ci}
     </div>
   </div>
 </section>
@@ -141,6 +142,13 @@ body += u"""
 })();
 </script>
 """
+
+# The contact details row gets a labelled "Follow" item, but only if there is
+# an account to point at — an empty one would just be a heading over nothing.
+_soc = social_links("soc")
+body = body.replace(
+    "{social_ci}",
+    '<div class="ci"><b>Follow</b>%s</div>' % _soc if _soc else "")
 
 page("contact.html",
      "Contact — Worldwide Distributors",

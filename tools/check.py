@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import io, os, re, glob
+import io, os, re, sys, glob
 from html.parser import HTMLParser
 
 SITE = "/home/user/booksprint/site"
@@ -126,5 +126,18 @@ if stale:
         print("     %-24s %s" % (name, ", ".join(sorted(stale[name]))))
     print("     Set LICENCES in tools/chrome.py, then rebuild.")
     print("     Drop any the company does not hold rather than leaving a stand-in.")
+
+# Social profiles are optional in a way a licence number is not — a company
+# with no Facebook page is not a company with a problem — so this reports
+# rather than fails. It still has to be said out loud on every build, or the
+# placeholder sits there until someone happens to look.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from chrome import SOCIAL_LINKS
+waiting = [n for n, u, _ in SOCIAL_LINKS if not u or "YOUR-" in u]
+if waiting:
+    print("NOTE  no URL yet for: %s" % ", ".join(waiting))
+    print("      The footer and contact rows render nothing until SOCIAL_LINKS")
+    print("      in tools/chrome.py has a real profile URL. Delete any account")
+    print("      the company does not run rather than leaving it pointing nowhere.")
 
 print("\n%d page(s) with problems" % bad)

@@ -51,6 +51,49 @@ LICENCES = [
 ]
 
 
+# ── social profiles ───────────────────────────────────────────────────
+# Set the URL for each account the company actually runs, and delete the
+# row for any it does not. An empty URL renders nothing at all — better a
+# missing icon than a link into a dead profile, which reads worse than
+# having no social presence. check.py reports the placeholders on every
+# build so they cannot be quietly forgotten.
+#
+# Each mark is inline SVG on a 24-box, drawn with currentColor so it takes
+# the footer's ink and the hover colour without a second asset. The third
+# field is the whole of the SVG body, not a single path: the Instagram
+# mark needs a real knockout for its lens and cannot be one filled shape.
+SOCIAL_LINKS = [
+    ("Facebook",  "https://www.facebook.com/YOUR-PAGE",
+     '<path fill="currentColor" d="M14 8.5V7.2c0-.6.4-.8.7-.8H16V4h-2c-2 0-2.5 '
+     '1.5-2.5 2.5v2H10v2.5h1.5V20H14v-9h1.9l.3-2.5H14z"/>'),
+    ("Instagram", "https://www.instagram.com/YOUR-HANDLE",
+     '<rect x="4.15" y="4.15" width="15.7" height="15.7" rx="4.6" fill="none" '
+     'stroke="currentColor" stroke-width="1.7"/>'
+     '<circle cx="12" cy="12" r="3.7" fill="none" stroke="currentColor" '
+     'stroke-width="1.7"/>'
+     '<circle cx="16.9" cy="7.1" r="1.05" fill="currentColor"/>'),
+]
+
+
+def social_links(cls="soc"):
+    """The footer/contact row. Returns "" when nothing is set, so a site with
+    no accounts yet simply has no row rather than an empty heading."""
+    live = [(n, u, d) for n, u, d in SOCIAL_LINKS if u and "YOUR-" not in u]
+    if not live:
+        return ""
+    a = "".join(
+        '<a href="%s" aria-label="Worldwide Distributors on %s"'
+        ' rel="noopener" target="_blank">'
+        '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">'
+        '%s</svg></a>' % (u, n, mark)
+        for n, u, mark in live)
+    return '<div class="%s">%s</div>' % (cls, a)
+
+
+def social_pending():
+    return any("YOUR-" in u for _, u, _ in SOCIAL_LINKS)
+
+
 def licence_line(sep=" &middot; ", label=True):
     """One line of licence numbers. `label=False` where the surrounding
     markup already says "Licence" — the property managers table does."""
@@ -141,6 +184,7 @@ FOOT = u"""
       <a href="tel:+13059698769">(305) 969-8769</a><br>
       <a href="mailto:info@elighting.org">info@elighting.org</a><br>
       <span class="tbd">{licences}</span>
+      {social}
     </div>
   </div>
 </footer>
@@ -215,7 +259,10 @@ def page(slug, title, desc, body):
         '      <a href="%s"%s>%s</a>' % (h, ' aria-current="page"' if h == slug else "", t)
         for h, t in NAV
     )
-    foot = FOOT.replace("{licences}", licence_line())
+    # social() writes the share-card meta; social_links() writes the row of
+    # profile icons in the footer. Different jobs, similar names.
+    foot = (FOOT.replace("{licences}", licence_line())
+                .replace("{social}", social_links()))
     html = HEAD.format(title=title, desc=desc, nav=nav,
                        url=SITE_URL + "/" + slug,
                        social=social(slug, title, desc)) + body + foot
