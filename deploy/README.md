@@ -31,3 +31,13 @@ thing they test.
 Do not put a review copy on the production domain root. The canonical tags all
 point at `https://www.worldwidedistributorsinc.com`, which is correct for
 launch and wrong for a preview sitting anywhere else.
+
+## The zip
+
+`deploy/wwd-site.zip` is the whole of `site/` in one file, for dragging onto
+Netlify Drop. It is deliberately **not** tracked in git — it duplicates files
+that are already in the repo, and git keeps every version of every blob
+forever, so committing 28 MB on each rebuild would grow the repository
+permanently for something one command reproduces:
+
+    cd site && zip -qr ../deploy/wwd-site.zip .

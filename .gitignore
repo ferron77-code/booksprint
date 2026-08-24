@@ -203,3 +203,9 @@ __pycache__/
 ### Generated source video (fetched by tools/fetch-generated.py, not tracked)
 site/assets/img/*-src.mp4
 site/assets/img/buildfly-quarter.mp4
+
+### Deployment bundles (rebuild with: cd site && zip -qr ../deploy/wwd-site.zip .)
+# A zip of site/, which is already tracked file by file. Git keeps every blob
+# forever, so committing a 28 MB duplicate on each rebuild would grow the repo
+# permanently for something reproducible in one command.
+deploy/*.zip
