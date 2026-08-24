@@ -657,7 +657,7 @@ html.js .rv.on{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.2,.
     inset:auto;
     top:64px;
     width:100%;
-    height:min(36vh,290px);
+    height:min(42vh,330px);
     margin:0 0 clamp(16px,2.6vh,28px);
     /* The copy has to pass BEHIND it, not over it. .seq-stick > .wrap sits at
        z-index 2, so the pinned fixture has to clear that or the six stages
@@ -666,8 +666,22 @@ html.js .rv.on{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.2,.
        and out of sight. */
     z-index:3;
     background:var(--surface);
-    box-shadow:0 10px 18px -12px rgba(0,0,0,.28);
     transition:background-color .12s linear;
+    /* Full bleed. Boxed to the text column it had two visible vertical edges
+       at a different inset from the copy beside it, which is most of what
+       made it read as a card pasted onto the page rather than part of it. */
+    width:100vw;
+    margin-left:calc(50% - 50vw);
+    margin-right:calc(50% - 50vw);
+    /* The light itself is soft; the rectangle holding it is not, and a hard
+       horizontal line under a glow is the other half of the card effect.
+       Feather the bottom so the panel dissolves into the page and the copy
+       emerges through the fade instead of appearing at an edge. */
+    /* The fixture is drawn around 40% of the box height and its beam falls
+       below that, so the fade has to start under the object itself. Any
+       higher and the copy behind shows through the middle of the barrel. */
+    -webkit-mask-image:linear-gradient(to bottom,#000 80%,rgba(0,0,0,.5) 93%,transparent 100%);
+    mask-image:linear-gradient(to bottom,#000 80%,rgba(0,0,0,.5) 93%,transparent 100%);
   }
 }
 .seq-grid{display:grid;grid-template-columns:minmax(0,31%) minmax(0,31%);justify-content:space-between;gap:clamp(30px,5vw,80px);align-items:center}
