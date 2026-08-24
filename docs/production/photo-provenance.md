@@ -144,3 +144,33 @@ the drone is too high for the frames to read.
 
 Parking is now covered by photography. Still carrying renderings: commercial
 buildouts, medical fit-outs and retail. See `shot-list.html` for what to shoot.
+
+## Portfolio grid: which tiles are generated
+
+The grid mixes ten photographs of the company's own work with five generated
+day/night pairs. Until 2026-08-24 nothing on the page said which was which —
+the provenance lived only in this file. For a licensed contractor bidding
+commercial work that is one question away from an awkward answer, so every
+generated tile now carries a small **Visualisation** credit in its body. The
+photographs carry nothing, which is the point: the unlabelled ones are the
+real jobs.
+
+Generated tiles, all `CONCEPT` rows in `tools/portfolio.py`:
+
+| tile | images | note |
+|---|---|---|
+| Medical Office Fit-Out | `medical-day/night.jpg` | |
+| Two-Storey Commercial Shell | `groundup-day/night.jpg` | added 2026-08-24 |
+| Estate Uplighting | `estate-day/night.jpg` | |
+| Parking Structure Retrofit | `garage-day/night.jpg` | |
+| Court & Grounds Lighting | `court-day/night.jpg` | |
+
+`groundup-day.jpg` and `groundup-night.jpg` are copies of `stage-finished.jpg`
+and `stage-night.jpg` — the final two frames of the ground-up sequence on the
+Commercial page, so the portfolio tile and the drone orbit are the same
+building. That is deliberate: it reads as one project seen twice rather than
+two unrelated visualisations.
+
+The Buildouts filter had exactly one entry before this and left two empty
+columns of grid background beside it. Two things fixed it: this second tile,
+and inert filler cells that finish any short last row.

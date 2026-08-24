@@ -9,8 +9,11 @@ Two kinds of entry:
 
   RENDER   a day/night rendering pair that cross-fades on the visitor's
            clock, illustrating a category the company works in but has no
-           photography of yet. These carry no on-page label; which entries
-           are which is recorded in docs/production/photo-provenance.md.
+           photography of yet. Each one carries a "Visualisation" credit on
+           the tile. Nothing on the page used to distinguish these from the
+           photographs, which put a licensed contractor's portfolio one
+           question away from an awkward answer; the provenance is still
+           recorded in docs/production/photo-provenance.md as well.
 
 Photographs lead. To add a project: put the file(s) in site/assets/img/, add
 a row below, run tools/build.py. Rows whose images are missing are skipped.
@@ -127,6 +130,8 @@ REAL = [
 CONCEPT = [
     ("medical", "buildout commercial", "Buildout &middot; Medical", "Medical Office Fit-Out",
      "Exam rooms, corridors and a waiting area from bare shell to open practice. Colour rendering and glare control are clinical requirements here, not preferences."),
+    ("groundup", "buildout commercial", "Buildout &middot; Ground up", "Two-Storey Commercial Shell",
+     "Slab, structure, envelope and fit-out on one contract, then the facade wash, canopy and parking light that decide how it reads at seven. The building and the lighting are the same job, which is why the fixtures are laid out while the walls are still open."),
     ("estate",  "lighting residential landscape", "Landscape &middot; Estate", "Estate Uplighting",
      "Facade grazing, tree uplighting and path lighting on a low-voltage system sized so the last fixture is as bright as the first."),
     ("garage",  "lighting commercial property", "Retrofit &middot; Parking", "Parking Structure Retrofit",
@@ -155,13 +160,20 @@ def tile_concept(slug, cats, kind, title, blurb):
           <img class="day"   src="assets/img/%s-day.jpg"   alt="%s in daylight" loading="lazy">
           <img class="night" src="assets/img/%s-night.jpg" alt="%s lit after dark" loading="lazy">
         </span>
-        <div class="pf-body"><span class="k">%s</span><h3>%s</h3><p>%s</p></div>
+        <div class="pf-body"><span class="k">%s</span><h3>%s</h3><p>%s</p>
+          <p class="credit">Visualisation</p></div>
       </article>""" % (cats, slug, title.replace("&amp;", "and"), slug,
                        title.replace("&amp;", "and"), kind, title, blurb)
 
 grid = "\n".join([tile_real(*p) for p in real] + [tile_concept(*p) for p in concept])
 
-FILTERS = [("all", "Everything"), ("lighting", "Lighting"), ("landscape", "Landscape"),
+# Two axes, in this order: what the work was, then who it was for. There is
+# deliberately no "Lighting" chip. It sits on 13 of the 14 projects, so it
+# showed the same page as "Everything" and read as a broken filter — which is
+# exactly how the client reported it. This is a lighting company; the whole
+# portfolio is the lighting filter. The tag stays on the items in case a
+# future split needs it.
+FILTERS = [("all", "Everything"), ("landscape", "Landscape"),
            ("buildout", "Buildouts"), ("residential", "Residential"),
            ("commercial", "Commercial"), ("property", "Property Managers")]
 fbtns = "\n".join(
@@ -187,8 +199,10 @@ body += u"""
     </div>
 
     <div class="filt rv" data-target=".pf-grid" hidden>
+      <div class="filt-scroll">
 %s
-      <span class="filt-live">%d projects</span>
+      </div>
+      <span class="filt-live">%d of %d projects</span>
     </div>
 
     <div class="pf-grid rv">
@@ -276,7 +290,7 @@ body += u"""
     </div>
   </div>
 </section>
-""" % (fbtns, len(real) + len(concept), grid)
+""" % (fbtns, len(real) + len(concept), len(real) + len(concept), grid)
 
 # The studies sit below the photographed work, never mixed into it.
 body += studies_html()

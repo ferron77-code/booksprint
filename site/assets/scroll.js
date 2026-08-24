@@ -567,11 +567,32 @@
     if (!bar) return;
     var grid = document.querySelector(bar.dataset.target);
     if (!grid) return;
-    var items = [].slice.call(grid.children);
+    var items = [].slice.call(grid.children).filter(function (c) {
+      return c.classList.contains("pf-item");
+    });
     var btns = [].slice.call(bar.querySelectorAll("button"));
     var live = document.querySelector(".filt-live");
 
     bar.hidden = false;
+
+    /* The grid paints the hairlines between tiles by showing its own
+       background through a 2px gap. That is fine while the rows are full and
+       ugly the moment they are not: one tile in a three-column grid leaves
+       two whole columns of grey standing next to it. Fill the rest of the
+       last row with inert cells in the page colour. Recounted per call
+       because the column count changes with the breakpoint. */
+    function pad(n) {
+      var cols = getComputedStyle(grid).gridTemplateColumns.split(" ").length;
+      var want = n === 0 ? 0 : (cols - (n % cols)) % cols;
+      var have = grid.querySelectorAll(".pf-fill");
+      for (var i = have.length; i > want; i--) grid.removeChild(have[i - 1]);
+      for (var j = have.length; j < want; j++) {
+        var f = document.createElement("div");
+        f.className = "pf-fill";
+        f.setAttribute("aria-hidden", "true");
+        grid.appendChild(f);
+      }
+    }
 
     function apply(k, push) {
       var known = false;
@@ -587,7 +608,15 @@
         it.hidden = !hit;
         if (hit) n++;
       });
-      if (live) live.textContent = n + (n === 1 ? " project" : " projects");
+      /* The count is the only feedback a filter gives when the tiles that
+         survive it happen to be the ones already on screen. "5 projects" does
+         not read as a change; "5 of 14 projects" does. */
+      if (live) {
+        live.textContent = (n === items.length)
+          ? items.length + " projects"
+          : n + " of " + items.length + " projects";
+      }
+      pad(n);
       if (push && history.replaceState) {
         /* Throws in an opaque-origin document — a sandboxed iframe, or the
            page opened straight off a file:// path. The filter itself has
@@ -615,6 +644,9 @@
       b.addEventListener("click", function () { apply(b.dataset.f, true); });
     });
     addEventListener("hashchange", fromHash);
+    addEventListener("resize", function () {
+      pad(items.filter(function (i) { return !i.hidden; }).length);
+    });
     fromHash();
   }
 

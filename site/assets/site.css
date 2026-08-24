@@ -702,6 +702,7 @@ html.js .rv.on{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.2,.
 
 /* ── portfolio ──────────────────────────────────────────────────────── */
 .filt{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:clamp(20px,3vh,34px)}
+.filt-scroll{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .filt button{
   font-family:var(--f-m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
   background:none;border:1px solid var(--line);color:var(--text-mute);
@@ -710,12 +711,29 @@ html.js .rv.on{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.2,.
 .filt button:hover{border-color:var(--brand);color:var(--brand)}
 .filt button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
 .filt-live{font-family:var(--f-m);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-mute);margin-left:auto}
+/* On a phone these wrapped to four rows, which ate the screen, pushed the
+   grid below the fold and left the count stranded in the far corner — the
+   one piece of feedback a filter gives, in the least-looked-at place. One
+   scrolling line instead, with the count on its own line above it. */
+@media(max-width:760px){
+  .filt{display:block;position:relative;padding-top:22px;margin-bottom:18px}
+  .filt-scroll{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;padding-bottom:2px}
+  .filt-scroll::-webkit-scrollbar{display:none}
+  .filt-scroll button{flex:0 0 auto}
+  .filt-live{position:absolute;top:0;left:0;margin:0;font-size:10.5px;
+    color:var(--text-mute-strong)}
+}
 
 .pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line)}
 @media(max-width:940px){.pf-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:620px){.pf-grid{grid-template-columns:1fr}}
 .pf-item{background:var(--surface);display:flex;flex-direction:column}
 .pf-item[hidden]{display:none}
+/* Inert cells that finish a short last row, so the grid's own
+   background stops reading as a grey void beside a lone tile. */
+.pf-fill{background:var(--surface)}
+.pf-body .credit{margin-top:auto;padding-top:14px}
 .pf-item .tile{aspect-ratio:4/3}
 .pf-body{padding:18px 18px 22px;display:flex;flex-direction:column;gap:9px;flex:1}
 .pf-body .k{font-family:var(--f-m);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--brand)}
