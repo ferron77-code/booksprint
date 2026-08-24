@@ -21,7 +21,7 @@ scr = io.open(os.path.join(SITE, "assets/scroll.js"), encoding="utf-8").read()
 # ITSELF IS UNTOUCHED; this only ever affects the bundled copy. PNGs are left
 # alone: the brand lockups carry alpha, and the scrub frames are left alone so
 # scrubbing stays smooth.
-FRAME_W, FRAME_H = 720, 405
+FRAME_W, FRAME_H = 560, 315
 
 
 def shrink_frame(raw):
@@ -33,12 +33,12 @@ def shrink_frame(raw):
         return raw
     out = io.BytesIO()
     Image.open(io.BytesIO(raw)).convert("RGB").resize(
-        (FRAME_W, FRAME_H), Image.LANCZOS).save(out, "JPEG", quality=72, optimize=True)
+        (FRAME_W, FRAME_H), Image.LANCZOS).save(out, "JPEG", quality=58, optimize=True)
     return out.getvalue() if out.tell() < len(raw) else raw
 
 
-PREVIEW_MAXW = 1000
-PREVIEW_Q = 72
+PREVIEW_MAXW = 880
+PREVIEW_Q = 64
 
 
 def shrink(fn, raw):
@@ -56,6 +56,23 @@ def shrink(fn, raw):
     im.convert("RGB").save(out, "JPEG", quality=PREVIEW_Q, optimize=True)
     return out.getvalue() if out.tell() < len(raw) else raw
 
+
+# What the built pages actually point at. The bundler used to inline every
+# file in the asset folders, which meant the preview carried the unreferenced
+# stage stills, the retired buildout clip and the brand marks that only exist
+# as inline SVG in the markup — 1.4 MB nobody could see. The site keeps them
+# all; only the preview is selective.
+def _referenced():
+    import glob as _g
+    out = set()
+    for f in _g.glob(os.path.join(SITE, "*.html")):
+        src = io.open(f, encoding="utf-8").read()
+        out |= set(re.findall(
+            r'assets/(?:img/|brand/)?([A-Za-z0-9._-]+\.(?:jpg|png|mp4|webm|svg))', src))
+    return out
+
+
+REFERENCED = _referenced()
 
 assets, total = {}, 0
 # assets/brand carries the logo artwork; the -master and supplied- files are
@@ -77,6 +94,8 @@ for d in IMG_DIRS:
         continue
     if os.path.isdir(path) or fn.endswith(SKIP) or fn.startswith("og-"):
         continue
+    if fn not in REFERENCED:
+        continue
     mime = mimetypes.guess_type(fn)[0] or "application/octet-stream"
     raw = io.open(path, "rb").read()
     raw = shrink(fn, raw)
@@ -96,7 +115,7 @@ def frame_src(base):
     d = os.path.join(SITE, base.strip("/"))
     out = ""
     if os.path.isdir(d):
-        names = sorted(f for f in os.listdir(d) if f.endswith(".jpg"))[::3]
+        names = sorted(f for f in os.listdir(d) if f.endswith(".jpg"))[::6]
         uris = []
         for fn in names:
             raw = shrink_frame(io.open(os.path.join(d, fn), "rb").read())
