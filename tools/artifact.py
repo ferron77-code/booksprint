@@ -119,7 +119,21 @@ document.addEventListener("click", function (e) {
   /* page, or page plus a fragment — the headline links carry one, and an
      "ends with .html" test misses those and lets the iframe navigate
      about:srcdoc to a file that is not there */
-  var m = (a.getAttribute("href") || "").match(/^([A-Za-z0-9_-]+)\.html(?:#(.*))?$/);
+  var href = a.getAttribute("href") || "";
+
+  /* A link to a section of the page it is already on. On the real site the
+     browser handles this and scrolls. Here the document is a srcdoc, so it
+     has no address for a fragment to attach to: Chromium treats
+     about:srcdoc#scope as a navigation, throws the page away and leaves the
+     iframe empty, which reads as being dumped back to the start. Do the
+     scroll ourselves and never let it navigate. */
+  if (href.charAt(0) === "#" && href.length > 1) {
+    var t = document.getElementById(href.slice(1));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: "smooth" }); }
+    return;
+  }
+
+  var m = href.match(/^([A-Za-z0-9_-]+)\.html(?:#(.*))?$/);
   if (!m) return;
   e.preventDefault();
   parent.postMessage({ wwdGo: m[1], wwdHash: m[2] || "" }, "*");

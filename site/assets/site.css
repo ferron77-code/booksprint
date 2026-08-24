@@ -12,6 +12,7 @@
   --surface-2:#E9EDF1;
   --text:#10151B;
   --text-mute:#5B6672;
+  --text-mute-strong:#3C444E;
   --line:#D8DEE5;
   --accent:#B9741A;      /* the colour of light: glows, fixtures, the seam */
   --accent-ink:#FFF6E8;
@@ -458,7 +459,14 @@ html.js .rv.on{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.2,.
     color-mix(in srgb,var(--surface) 74%,transparent) 62%,
     var(--surface) 100%);
 }
-.phero .lede{margin-top:16px}
+/* On the interior heroes this paragraph sits on a photograph, not on a
+   flat surface. It was clearing 4.5:1 on average and less than that
+   wherever the picture behind it is bright, which on a phone in daylight
+   is most of it. Darker ink, plus a halo in the surface colour so busy
+   areas of the photograph cannot eat the letterforms. Both follow the
+   clock, so this holds at midnight as well as at noon. */
+.phero .lede{margin-top:16px;color:var(--text-mute-strong);
+  text-shadow:0 1px 12px var(--surface),0 0 3px var(--surface)}
 .phero .btns{margin-top:26px}
 
 /* ── ordered detail list ────────────────────────────── */
