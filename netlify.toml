@@ -17,10 +17,19 @@
   status = 200
   force = false
 
+# NOT immutable. That is only safe when the filename contains a content hash,
+# and these do not — the scrub frames are f001.jpg..f120.jpg and keep those
+# names when their contents change. Marking them immutable told every browser
+# that had ever loaded the page to keep the old footage for a year, which is
+# exactly what happened when the ground-up sequence was replaced.
+#
+# Ten minutes is long enough to cover a single visit without re-fetching
+# 120 frames, and short enough that a redeploy is visible almost immediately.
+# If these ever get fingerprinted filenames, immutable becomes correct again.
 [[headers]]
   for = "/assets/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=600"
 
 [[headers]]
   for = "/*.html"
