@@ -482,12 +482,12 @@
         ctx.setLineDash([5, 5]);
         ellipse(fx, fy, R * 1.32, R * 1.32 * Math.max(squash, 0.14), rot);
         ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.fillStyle = accent;
-        ctx.font = "500 9.5px ui-monospace,Menlo,monospace";
-        ctx.textAlign = "center";
-        ctx.fillText("RE-AIM \u00B7 CLEAN", fx, fy + R * 1.32 * Math.max(squash, 0.14) + S * 0.038);
         ctx.restore();
+        /* No label. The other annotation on this object is 48 degrees and
+           2700K — readings, the things a designer sets. "RE-AIM / CLEAN" was
+           a to-do list, the only imperative on the drawing, and the paragraph
+           beside it already says lenses fog and aim drifts. The dashed ring
+           around the aperture carries the idea on its own. */
       }
     }
 
