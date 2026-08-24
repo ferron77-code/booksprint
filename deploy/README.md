@@ -1,5 +1,22 @@
 # Putting the site somewhere the client can review it
 
+## Live review URL
+
+**https://worldwide-distributors.netlify.app**
+
+Netlify is linked to this GitHub repo, deploying `site/` from the branch
+`claude/website-strategy-analysis-20d1y5` with no build step. A push deploys
+itself in about a minute; nothing is uploaded by hand any more. Settings live
+in `netlify.toml` at the repo root rather than in the dashboard.
+
+Paths work with or without the extension — `/commercial` and
+`/commercial.html` both serve the same page, via the non-forcing redirect in
+that file.
+
+Still true here: the enquiry form does not send. Netlify runs no PHP, so
+`contact.php` is inert and the form looks right and does nothing. That is the
+reason the eventual home is the Hostinger subdomain below.
+
 `site/` is the whole deliverable: 409 files, 29 MB, already built. There is no
 build step on the server — it serves finished files.
 
