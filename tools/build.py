@@ -30,6 +30,7 @@ STEPS = [
     ("portfolio.py", "portfolio"),
     ("kroom.py",     "colour-temperature illustration"),
     ("licences.py",  "licence numbers into index.html"),
+    ("sitemap.py",   "robots.txt and sitemap.xml"),
     ("check.py",     "validate"),
 ]
 

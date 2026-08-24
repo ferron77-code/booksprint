@@ -1,0 +1,6 @@
+# Upload this OVER site/robots.txt on any staging or preview copy.
+# A second live copy of the site competes with the real one in search, and
+# every canonical on the pages points at the production domain, so a crawler
+# that finds staging is being told these pages live somewhere else anyway.
+User-agent: *
+Disallow: /

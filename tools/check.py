@@ -137,6 +137,20 @@ from chrome import SOCIAL_LINKS, SITE_URL, SITE_URL_CONFIRMED
 # Every canonical and every og:url on the site is built from one string. If it
 # is the wrong domain nothing looks broken — the pages render perfectly and
 # quietly tell search engines they are copies of something else.
+# The sitemap is the one file that tells a search engine which URLs are the
+# real ones. If it disagrees with the canonical tags, it is arguing with the
+# pages it points at.
+_sm = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                   "site", "sitemap.xml")
+if os.path.exists(_sm):
+    _src = io.open(_sm, encoding="utf-8").read()
+    _bad = [u for u in re.findall(r"<loc>(https?://[^/<]+)", _src) if u != SITE_URL]
+    if _bad:
+        bad += 1
+        print("FAIL sitemap.xml disagrees with the canonical origin")
+        print("     canonical: %s" % SITE_URL)
+        print("     sitemap:   %s" % ", ".join(sorted(set(_bad))))
+
 if not SITE_URL_CONFIRMED:
     bad += 1
     print("FAIL the site origin has not been confirmed")
