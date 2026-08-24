@@ -21,7 +21,7 @@ scr = io.open(os.path.join(SITE, "assets/scroll.js"), encoding="utf-8").read()
 # ITSELF IS UNTOUCHED; this only ever affects the bundled copy. PNGs are left
 # alone: the brand lockups carry alpha, and the scrub frames are left alone so
 # scrubbing stays smooth.
-FRAME_W, FRAME_H = 560, 315
+FRAME_W, FRAME_H = 960, 540
 
 
 def shrink_frame(raw):
@@ -33,12 +33,12 @@ def shrink_frame(raw):
         return raw
     out = io.BytesIO()
     Image.open(io.BytesIO(raw)).convert("RGB").resize(
-        (FRAME_W, FRAME_H), Image.LANCZOS).save(out, "JPEG", quality=58, optimize=True)
+        (FRAME_W, FRAME_H), Image.LANCZOS).save(out, "JPEG", quality=76, optimize=True)
     return out.getvalue() if out.tell() < len(raw) else raw
 
 
-PREVIEW_MAXW = 880
-PREVIEW_Q = 64
+PREVIEW_MAXW = 1000
+PREVIEW_Q = 72
 
 
 def shrink(fn, raw):
@@ -115,7 +115,7 @@ def frame_src(base):
     d = os.path.join(SITE, base.strip("/"))
     out = ""
     if os.path.isdir(d):
-        names = sorted(f for f in os.listdir(d) if f.endswith(".jpg"))[::6]
+        names = sorted(f for f in os.listdir(d) if f.endswith(".jpg"))[::4]
         uris = []
         for fn in names:
             raw = shrink_frame(io.open(os.path.join(d, fn), "rb").read())
