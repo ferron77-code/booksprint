@@ -1,112 +1,118 @@
 [
-  {
-    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_195449_c3cf06ca-f14c-4967-a38c-1f75a3ed48cb.png",
-    "as": "study-oak-day.jpg",
-    "w": 1100,
-    "h": 821,
-    "note": "Live oak, unlit"
-  },
-  {
-    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_195622_468a9aa0-b4ac-4b9e-9e31-e09b248f8ff4.png",
-    "as": "study-oak-night.jpg",
-    "w": 1100,
-    "h": 821,
-    "note": "Live oak, lit"
-  },
-  {
-    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200047_9fdf622d-9b5e-4f58-b4aa-d62f67ef10e1.png",
-    "as": "study-palms-day.jpg",
-    "w": 1100,
-    "h": 821,
-    "note": "Palm row, unlit"
-  },
-  {
-    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200133_30167590-fef1-42b2-8405-980853f4fc47.png",
-    "as": "study-palms-night.jpg",
-    "w": 1100,
-    "h": 821,
-    "note": "Palm row, lit"
-  },
-  {
-    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200047_eb203c03-ecee-42cf-9a1d-9def48247ecd.png",
-    "as": "study-garden-day.jpg",
-    "w": 1100,
-    "h": 821,
-    "note": "Garden path, unlit"
-  },
-  {
-    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200134_22ebcde6-529d-4723-9a60-364a544b4f95.png",
-    "as": "study-garden-night.jpg",
-    "w": 1100,
-    "h": 821,
-    "note": "Garden path, lit"
-  },
-  {
-    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200704_f26cf529-400f-4e17-87e4-97e971ba0d3b.png",
-    "as": "stage-site.jpg",
-    "w": 1100,
-    "h": 821,
-    "note": "01 Foundation"
-  },
-  {
-    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200704_efc0f9a1-5f67-40dc-9ba1-f1406c184df0.png",
-    "as": "stage-shell.jpg",
-    "w": 1100,
-    "h": 821,
-    "note": "02 Structure"
-  },
-  {
-    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200704_5b70f622-22de-4b27-ae56-8319381d2d6b.png",
-    "as": "stage-dryin.jpg",
-    "w": 1100,
-    "h": 821,
-    "note": "03 Dried in"
-  },
-  {
-    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200623_265f3aa9-9524-4a8d-b55e-0f2ec4cc0a9b.png",
-    "as": "stage-finished.jpg",
-    "w": 1100,
-    "h": 821,
-    "note": "04 Finished"
-  },
-  {
-    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200704_0f4ae4fc-1408-4c4d-ba39-4a2f6cc2e7c7.png",
-    "as": "stage-night.jpg",
-    "w": 1100,
-    "h": 821,
-    "note": "05 Switched on"
-  },
-  {
-    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200047_20a00abb-4132-4084-b046-1244599942a5.png",
-    "as": "study-buildout-day.jpg",
-    "w": 1100,
-    "h": 821,
-    "note": "Bare shell"
-  },
-  {
-    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200133_d2dc127d-9865-43b4-91da-415b38f4de17.png",
-    "as": "study-buildout-night.jpg",
-    "w": 1100,
-    "h": 821,
-    "note": "Finished and lit"
-  },
-  {
-    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_210428_3876260e-4b96-4edb-813b-1df1ce1fd7ef.png",
-    "as": "stage-night-aerial.jpg",
-    "w": 1100,
-    "h": 821,
-    "note": "Aerial night end frame, also the video's poster"
-  },
-  {
-    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_211701_ca8eb7d0-d746-47c4-9e58-b511b8c80a90.mp4",
-    "as": "buildfly-src.mp4",
-    "raw": true,
-    "note": "20s full 360 orbit, tilt-up panels with openings pre-formed. The keeper."
-  },
-  {
-    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_211533_2623ca48-c866-485d-896c-3e9641c675f7.mp4",
-    "as": "buildfly-quarter.mp4",
-    "raw": true,
-    "note": "15s quarter turn, same construction fix. Comparison only."
-  }
+ {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_195449_c3cf06ca-f14c-4967-a38c-1f75a3ed48cb.png",
+  "as": "study-oak-day.jpg",
+  "w": 1100,
+  "h": 821,
+  "note": "Live oak, unlit"
+ },
+ {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_195622_468a9aa0-b4ac-4b9e-9e31-e09b248f8ff4.png",
+  "as": "study-oak-night.jpg",
+  "w": 1100,
+  "h": 821,
+  "note": "Live oak, lit"
+ },
+ {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200047_9fdf622d-9b5e-4f58-b4aa-d62f67ef10e1.png",
+  "as": "study-palms-day.jpg",
+  "w": 1100,
+  "h": 821,
+  "note": "Palm row, unlit"
+ },
+ {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200133_30167590-fef1-42b2-8405-980853f4fc47.png",
+  "as": "study-palms-night.jpg",
+  "w": 1100,
+  "h": 821,
+  "note": "Palm row, lit"
+ },
+ {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200047_eb203c03-ecee-42cf-9a1d-9def48247ecd.png",
+  "as": "study-garden-day.jpg",
+  "w": 1100,
+  "h": 821,
+  "note": "Garden path, unlit"
+ },
+ {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200134_22ebcde6-529d-4723-9a60-364a544b4f95.png",
+  "as": "study-garden-night.jpg",
+  "w": 1100,
+  "h": 821,
+  "note": "Garden path, lit"
+ },
+ {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200704_f26cf529-400f-4e17-87e4-97e971ba0d3b.png",
+  "as": "stage-site.jpg",
+  "w": 1100,
+  "h": 821,
+  "note": "01 Foundation"
+ },
+ {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200704_efc0f9a1-5f67-40dc-9ba1-f1406c184df0.png",
+  "as": "stage-shell.jpg",
+  "w": 1100,
+  "h": 821,
+  "note": "02 Structure"
+ },
+ {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200704_5b70f622-22de-4b27-ae56-8319381d2d6b.png",
+  "as": "stage-dryin.jpg",
+  "w": 1100,
+  "h": 821,
+  "note": "03 Dried in"
+ },
+ {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200623_265f3aa9-9524-4a8d-b55e-0f2ec4cc0a9b.png",
+  "as": "stage-finished.jpg",
+  "w": 1100,
+  "h": 821,
+  "note": "04 Finished"
+ },
+ {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200704_0f4ae4fc-1408-4c4d-ba39-4a2f6cc2e7c7.png",
+  "as": "stage-night.jpg",
+  "w": 1100,
+  "h": 821,
+  "note": "05 Switched on"
+ },
+ {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200047_20a00abb-4132-4084-b046-1244599942a5.png",
+  "as": "study-buildout-day.jpg",
+  "w": 1100,
+  "h": 821,
+  "note": "Bare shell"
+ },
+ {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_200133_d2dc127d-9865-43b4-91da-415b38f4de17.png",
+  "as": "study-buildout-night.jpg",
+  "w": 1100,
+  "h": 821,
+  "note": "Finished and lit"
+ },
+ {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_210428_3876260e-4b96-4edb-813b-1df1ce1fd7ef.png",
+  "as": "stage-night-aerial.jpg",
+  "w": 1100,
+  "h": 821,
+  "note": "Aerial night end frame, also the video's poster"
+ },
+ {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_211701_ca8eb7d0-d746-47c4-9e58-b511b8c80a90.mp4",
+  "as": "buildfly-src.mp4",
+  "raw": true,
+  "note": "SUPERSEDED 2026-08-24. Its start frame was a finished parking lot, so the model tore the asphalt up mid-orbit to obey 'paved last' and relaid it \u2014 the lot read finished, then dirt, then finished. Replaced by job a897c37c, which starts on bare graded earth."
+ },
+ {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260822_211533_2623ca48-c866-485d-896c-3e9641c675f7.mp4",
+  "as": "buildfly-quarter.mp4",
+  "raw": true,
+  "note": "15s quarter turn, superseded along with the 20s take. Comparison only."
+ },
+ {
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3DeFAmO9HY6Alni1JzdsGuuJ7rN/hf_20260824_195518_a897c37c-0e6d-4c08-9110-710e634f6dd3.mp4",
+  "as": "buildfly-src.mp4",
+  "raw": true,
+  "note": "IN USE. 20s full 360 orbit, 1280x720, seedance_2_5 job a897c37c. Start frame de6468e4 is the poured slab on bare graded earth; end frame 973abad8 is the finished building lit at night. Ground only ever improves: dirt, then asphalt in the last third, then stripes, then kerbs and planting. Two hi-vis figures appear near the paver around frames 68-76 of 120 despite the machines-only instruction \u2014 see docs/production/generated-imagery.md."
+ }
 ]

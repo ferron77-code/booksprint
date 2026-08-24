@@ -178,6 +178,13 @@
     }
     pump();
     wrap.dataset.mode = "canvas";
+    /* Size the backing store now rather than waiting for the first frame to
+       arrive. size() used to be reached only from an image's onload handler,
+       so until one landed the canvas kept its default 300x150 and the browser
+       stretched that across the full panel — a 5.9x upscale on a 1760px
+       screen, far blurrier than the frames themselves. The bigger the frames,
+       the longer that window lasted. */
+    size();
     addEventListener("resize", size);
 
     /* Finish the sequence before the pin lets go. The section is 420vh over a

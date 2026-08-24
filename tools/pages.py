@@ -68,7 +68,6 @@ def buildfly_html():
     <div class="scrub-stage">
       <video muted loop playsinline preload="none" poster="%s">
         <source src="assets/img/buildfly.mp4" type="video/mp4">
-        <source src="assets/img/buildfly.webm" type="video/webm">
       </video>
       <canvas aria-hidden="true"></canvas>
       <div class="scrub-vig"></div>
