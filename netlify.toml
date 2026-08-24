@@ -26,12 +26,28 @@
 # Ten minutes is long enough to cover a single visit without re-fetching
 # 120 frames, and short enough that a redeploy is visible almost immediately.
 # If these ever get fingerprinted filenames, immutable becomes correct again.
+# Order matters: Netlify applies every matching rule and the last one wins
+# for a given header. So the broad rule goes first and /assets/ narrows it.
+
+# Everything by default revalidates. This has to be "/*" and not "/*.html":
+# pages are served at /commercial and / as well as /commercial.html, and a
+# glob ending in .html matches none of those. They were falling through to
+# Netlify's default, which happens to be the same value — but the rule that
+# was written to guarantee it was not doing anything.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# NOT immutable. That is only safe when the filename contains a content hash,
+# and the scrub frames are f001.jpg..f120.jpg — they keep those names when
+# their contents change. Marking them immutable told every browser that had
+# ever loaded the page to keep the old footage for a year.
+#
+# The stylesheet and scripts are a different case: tools/assetver.py stamps a
+# content hash into their URLs, so ten minutes here costs nothing and a real
+# change is visible immediately under a new address.
 [[headers]]
   for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=600"
-
-[[headers]]
-  for = "/*.html"
-  [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
