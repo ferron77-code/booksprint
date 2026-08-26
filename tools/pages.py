@@ -140,16 +140,16 @@ body += u"""
 <section class="sec" id="scope">
   <div class="wrap">
     <div class="head rv">
-      <p class="eyebrow">The problem we exist to solve</p>
-      <h2 class="disp">Four contractors,<br>three excuses</h2>
-      <p class="lede">A typical buildout means a general contractor, an electrician, a lighting supplier and a maintenance company. When the schedule slips, each one points at the other three and the tenant pays for the gap. We carry all four roles, so there is nothing to point at.</p>
+      <p class="eyebrow">How a buildout runs</p>
+      <h2 class="disp">One company,<br>start to finish</h2>
+      <p class="lede">General contracting, electrical, lighting, and ongoing service &mdash; all handled by one company. One team, one point of contact, from start to finish.</p>
     </div>
     <ol class="steps rv">
-      <li><b>Walk the space</b><p>We look at the shell as it stands &mdash; existing service, panel capacity, ceiling heights, what the landlord's work letter actually covers, and what it quietly does not.</p></li>
+      <li><b>Walk the space</b><p>We start with the shell as it stands &mdash; existing service, panel capacity and ceiling heights &mdash; and set out what the space needs before any work is priced.</p></li>
       <li><b>Scope and schedule</b><p>One scope covering build, electrical and lighting, with the long-lead items flagged up front. Fixtures and materials get sourced at distributor pricing, which is where most of the schedule risk lives.</p></li>
       <li><b>Build</b><p>Demolition, framing, rough-in, drywall, finishes. Our own crews on the trades we hold, so a delay in one stage does not mean renegotiating with a stranger.</p></li>
       <li><b>Light it properly</b><p>The part almost everyone treats as an afterthought. Layout, colour temperature and control, specified for what the space is actually for &mdash; not whatever fixture was in stock.</p></li>
-      <li><b>Hand over, then stay</b><p>Punch list, close-out, and an ongoing service relationship. When a ballast dies in year two, you call the same number you called in month one.</p></li>
+      <li><b>Hand over, then stay</b><p>Punch list, close-out, and an ongoing service relationship.</p></li>
     </ol>
   </div>
 </section>

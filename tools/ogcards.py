@@ -26,7 +26,7 @@ CARDS = [
     ("residential",       "palm.jpg",      "Nobody sees<br>the fixtures",               "Residential and landscape lighting design."),
     ("property-managers", "hedge.jpg",     "One call for<br>the whole property",        "Common areas, garages, grounds and service."),
     ("portfolio",         "walls.jpg",     "Every project has<br>a night version",      "Selected lighting, electrical and buildout work."),
-    ("contact",           "pool.jpg",      "Tell us what<br>you're building",           "Call (305) 969-8769 or send the drawings."),
+    ("contact",           "pool.jpg",      "Tell us what<br>you're building",           "Call (305) 969-8754 or send the drawings."),
 ]
 
 TPL = u"""<!doctype html><meta charset="utf-8">

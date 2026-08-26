@@ -50,6 +50,21 @@ NAV = [
 ]
 
 
+# ── contact details ──────────────────────────────────
+# Supplied by the company 2026-08-26. One place, so a change to the number
+# does not have to be chased through six files.
+#
+# NOTE: the number below replaces (305) 969-8754, which is what the pages
+# carried until now. The two differ in the last two digits. Confirm which
+# one actually rings before this goes in front of customers.
+PHONE      = u"(305) 969-8754"
+PHONE_TEL  = u"+13059698754"
+EMAIL      = u"info@elighting.org"
+ADDRESS    = u"12130 SW 114th Place"
+CITY       = u"Miami, Florida"
+HOURS      = u"Mon–Fri, 8am–5pm"
+
+
 # ── licence numbers ───────────────────────────────────────────────────
 # Florida §489.119(5)(b) requires the certification or registration number
 # in advertising, and a website counts. Until the real numbers arrive these
@@ -63,8 +78,8 @@ NAV = [
 # standing in for a licence they have not got. check.py fails the build
 # while any X remains, so this cannot ship by accident.
 LICENCES = [
-    ("Electrical", "EC-XXXXXXX"),
-    ("Building",   "CGC-XXXXXX"),
+    ("Electrical", "EC13013987"),
+    ("Building",   "CGC1539117"),
 ]
 
 
@@ -198,15 +213,17 @@ FOOT = u"""
       <a href="contact.html">Contact</a>
     </nav>
     <div>
-      <a href="tel:+13059698769">(305) 969-8769</a><br>
+      <a href="tel:+13059698754">(305) 969-8754</a><br>
       <a href="mailto:info@elighting.org">info@elighting.org</a><br>
+      12130 SW 114th Place, Miami, Florida<br>
+      Mon&ndash;Fri, 8am&ndash;5pm<br>
       <span class="tbd">{licences}</span>
       {social}
     </div>
   </div>
 </footer>
 
-<a class="callbar" href="tel:+13059698769">Call (305) 969-8769</a>
+<a class="callbar" href="tel:+13059698754">Call (305) 969-8754</a>
 
 <script src="assets/site.js"></script>
 <script src="assets/scroll.js" defer></script>
@@ -222,8 +239,8 @@ CLOSE = u"""
     <h2 class="disp rv" style="margin-top:14px">{h}</h2>
     <p class="lede rv">{p}</p>
     <div class="contact rv">
-      <div class="ci"><b>Talk to us</b><p><a href="tel:+13059698769">(305) 969-8769</a><br><a href="mailto:info@elighting.org">info@elighting.org</a></p></div>
-      <div class="ci"><b>Where we work</b><p>Headquartered in Miami, Florida.<br>Serving Florida.</p></div>
+      <div class="ci"><b>Talk to us</b><p><a href="tel:+13059698754">(305) 969-8754</a><br><a href="mailto:info@elighting.org">info@elighting.org</a></p></div>
+      <div class="ci"><b>Where we work</b><p>12130 SW 114th Place<br>Miami, Florida &middot; serving the state<br>Mon&ndash;Fri, 8am&ndash;5pm</p></div>
       <div class="ci"><b>Send the details</b><p><a href="contact.html">Project enquiry form &rarr;</a><br>Drawings, photos or a description &mdash; whatever you have.</p></div>
     </div>
   </div>

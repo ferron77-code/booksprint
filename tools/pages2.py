@@ -8,10 +8,9 @@ from pages_common import phero, CTA_P, CTA_S
 body = phero(
     "garage-day.jpg", "garage-night.jpg", "",
     "Property &amp; association managers",
-    "One vendor,<br>the whole property",
-    "Common-area and parking lighting, electrical service, panel work, unit turns and recurring "
-    "maintenance. The point is not that we are cheaper on any one line item &mdash; it is that "
-    "you stop coordinating four vendors across one address.",
+    "One vendor.<br>More coverage.",
+    "From lighting and electrical to repairs, improvements, and ongoing maintenance, "
+    "we help property managers handle more with one reliable team.",
     CTA_P + u'<a class="btn btn-s" href="#services">What we cover</a>')
 
 body += u"""
@@ -19,14 +18,13 @@ body += u"""
   <div class="wrap">
     <div class="head rv">
       <p class="eyebrow">Standing scope</p>
-      <h2 class="disp">The work that<br>keeps recurring</h2>
-      <p class="lede">Most of a manager's maintenance spend is the same handful of items across every property. These are the ones we carry in-house, which means one purchase order instead of four.</p>
+      <h2 class="disp">What we cover</h2>
     </div>
     <div class="grid g3 rv">
       <div class="panel"><span class="n">01</span><h3>Parking &amp;<br>garage lighting</h3><p>Pole and garage fixture replacement, LED retrofit, photocell and timer faults, and the bucket truck work that most vendors have to subcontract out.</p></div>
       <div class="panel"><span class="n">02</span><h3>Common<br>areas</h3><p>Corridors, lobbies, stairwells, amenity decks and exterior grounds &mdash; including emergency and egress fixtures.</p></div>
       <div class="panel"><span class="n">03</span><h3>Electrical<br>service</h3><p>Panel work, added circuits, breaker faults, exterior receptacles and the intermittent problems that come back if they are not root-caused.</p></div>
-      <div class="panel"><span class="n">04</span><h3>Unit<br>turns</h3><p>Fixture and device replacement, small remodels, paint-adjacent finish work between tenants, on turn-around timelines.</p></div>
+      <div class="panel"><span class="n">04</span><h3>Between<br>tenants</h3><p>Getting a unit ready for the next tenant &mdash; fixture and device replacement, small remodels and finish work, on turn-around timelines.</p></div>
       <div class="panel"><span class="n">05</span><h3>Landscape<br>lighting care</h3><p>Scheduled re-aiming, connection repair, lens cleaning and control resets so the grounds do not degrade one fixture at a time.</p></div>
       <div class="panel"><span class="n">06</span><h3>Energy<br>surveys</h3><p>A measured look at what the existing lighting actually draws, and an honest answer on whether a retrofit pays back or not.</p></div>
     </div>
@@ -66,8 +64,8 @@ body += u"""
       <div class="rl-copy">
         <div class="wrap">
           <p class="eyebrow">Parking lighting &middot; pole by pole</p>
-          <h2 class="disp">No dark gaps<br>between the pools</h2>
-          <p>A lot is not lit because the fixtures work. It is lit when the pools overlap and there is nowhere left that feels unsafe walking to your car. The gaps closing is the whole job.</p>
+          <h2 class="disp">A lot with no<br>dark spots left</h2>
+          <p>A parking lot is not lit because every pole is working. It is lit when the light from one pole reaches the next, and there is nowhere on the walk back to your car that feels unsafe. Closing those gaps is the whole job.</p>
         </div>
       </div>
     </div>

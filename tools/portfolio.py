@@ -94,51 +94,61 @@ def studies_html():
 
 
 # slug, filter keys, kind label, title, blurb
+#
+# Rewritten 2026-08-26. The names and blurbs used to describe a job rather
+# than the photograph: invented project identities ("Estate Garden",
+# "Grounds"), and claims about how each install was executed — fixture
+# counts, aiming, spacing, whether the system was sized to hold output at
+# the end of the run. None of that is visible in the frame and none of it
+# can be checked, which is exactly what the client meant by the names and
+# descriptions not matching. Every row below now says what is in the picture
+# and stops there.
 REAL = [
-    ("walls",    "lighting residential landscape", "Estate Garden &middot; Wall Grazing",
-     "Sculpture Wall Grazing",
-     "Each panel gets its own fixture at its own aim. Grazing light this close to a surface is unforgiving &mdash; a fixture a few degrees out shows up as a hot spot from across the garden."),
-    ("palm",     "lighting residential landscape", "Estate Garden &middot; Specimen Trees",
-     "Specimen Palm Uplighting",
-     "The same garden, looking the other way. Uplights set back far enough to carry the whole trunk and catch the crown, without throwing glare at anyone walking the path."),
-    ("hedge",    "lighting residential property landscape", "Grounds &middot; Perimeter",
-     "Perimeter &amp; Lawn Lighting",
-     "A run of in-grade fixtures along a hedge line. Even spacing matters more than output here &mdash; the eye reads the gaps, not the brightness."),
-    ("pool",     "lighting residential", "Exterior &middot; Pool",
-     "Pool &amp; Terrace",
-     "Pool, hedge and covered terrace lit as three separate layers so the space still reads as outdoor living after dark, not as a lit car park."),
-    ("interior", "lighting residential", "Interior &middot; Residential",
-     "Interior Pendants &amp; Coves",
-     "Decorative pendants doing the visual work while cove and recessed lighting carry the actual light level. Warm throughout."),
-    ("lot",      "lighting commercial property", "Exterior &middot; Parking",
-     "Parking Lot &amp; Approach",
-     "Pole lighting laid out so the pools overlap across the whole lot and the approach reads as one lit surface, not a row of bright spots with dark between them."),
-    ("deck",     "lighting commercial property", "Retrofit &middot; Parking Deck",
-     "Parking Deck Retrofit",
-     "Linear fixtures down the drive lane and across the bays. On a deck the ceiling is the reflector, so getting the spacing right does more than adding output would."),
-    ("deck-wide","lighting commercial property", "Retrofit &middot; Parking Deck",
-     "Deck Drive Lane",
-     "A second deck, lit down the drive lane rather than across the bays. Bollards and floor markings carry as much of the safety job as the fixtures do."),
-    ("planting", "lighting residential landscape", "Landscape &middot; Planting",
-     "Planting Bed &amp; Canopy",
-     "Low fixtures inside the bed picking out leaf texture, with the palms lit from behind so the canopy reads against the sky rather than disappearing into it."),
-    ("highbay",  "lighting commercial property", "Commercial &middot; High Bay",
-     "Commercial High-Bay Lighting",
-     "Rows of high-bay pendants over an open commercial floor, spaced so the light lands evenly and nobody works in someone else's shadow."),
+    ("walls",    "lighting residential landscape", "Residential &middot; Landscape",
+     "Garden Wall Uplighting",
+     "A run of sculptural garden wall panels, each one lit from the grass at its base. Light thrown up a flat surface from this close shows every difference in aim, so the panels are what the eye checks first."),
+    ("palm",     "lighting residential landscape", "Residential &middot; Landscape",
+     "Palm Uplighting",
+     "The same garden looking the other way, with a mature date palm uplit from the base. The fixtures sit back far enough to carry the trunk and reach the crown."),
+    ("hedge",    "lighting residential property landscape", "Residential &middot; Landscape",
+     "Hedge Line &amp; Lawn",
+     "A hedge run lit from in front along the edge of a lawn, photographed just after sunset while there is still colour in the sky."),
+    ("pool",     "lighting residential", "Residential &middot; Exterior",
+     "Pool &amp; Covered Terrace",
+     "Pool, hedge and covered terrace lit as three separate layers, so the terrace stays the brightest thing and the planting behind it holds the edge of the garden."),
+    ("interior", "lighting residential", "Residential &middot; Interior",
+     "Kitchen Pendants &amp; Coves",
+     "Three decorative pendants over the island doing the visual work, with cove and recessed lighting carrying the actual light level. Warm throughout."),
+    ("lot",      "lighting commercial property", "Commercial &middot; Exterior",
+     "Office Building &amp; Parking Lot",
+     "A two-storey office building and its lot after dark, from the air. Building, entrance, drive and parking bays are all lit, which is what the property looks like to anyone arriving in the evening."),
+    ("deck",     "lighting commercial property", "Commercial &middot; Parking",
+     "Parking Deck",
+     "Linear fixtures running down the drive lane of a parking deck and across the bays either side of it."),
+    ("deck-wide","lighting commercial property", "Commercial &middot; Parking",
+     "Parking Garage Drive Lane",
+     "A larger garage, lit down the length of the drive lane. Floor markings and column striping carry as much of the safety job here as the fixtures do."),
+    ("planting", "lighting residential landscape", "Residential &middot; Landscape",
+     "Planting Bed &amp; Palms",
+     "Low fixtures inside a planting bed picking out leaf texture, with the palms behind it lit so the trunks and canopy read against the night rather than disappearing into it."),
+    ("highbay",  "lighting commercial property", "Commercial &middot; Interior",
+     "High-Bay Lighting",
+     "Rows of round high-bay pendants over an open commercial floor, hung at a consistent height so the light lands evenly across the whole space."),
 ]
 
 CONCEPT = [
-    ("medical", "buildout commercial", "Buildout &middot; Medical", "Medical Office Fit-Out",
+    ("medical", "buildout commercial", "Commercial &middot; Buildout", "Medical Office Fit-Out",
      "Exam rooms, corridors and a waiting area from bare shell to open practice. Colour rendering and glare control are clinical requirements here, not preferences."),
-    ("groundup", "buildout commercial", "Buildout &middot; Ground up", "Two-Storey Commercial Shell",
+    ("groundup", "buildout commercial", "Commercial &middot; Buildout", "Two-Storey Commercial Shell",
      "Slab, structure, envelope and fit-out on one contract, then the facade wash, canopy and parking light that decide how it reads at seven. The building and the lighting are the same job, which is why the fixtures are laid out while the walls are still open."),
-    ("estate",  "lighting residential landscape", "Landscape &middot; Estate", "Estate Uplighting",
-     "Facade grazing, tree uplighting and path lighting on a low-voltage system sized so the last fixture is as bright as the first."),
-    ("garage",  "lighting commercial property", "Retrofit &middot; Parking", "Parking Structure Retrofit",
-     "A deck relit end to end. The argument for the retrofit is not the energy model, it is walking a resident through at nine at night."),
-    ("court",   "lighting residential exterior", "Exterior &middot; Sport", "Court &amp; Grounds Lighting",
-     "Even playing-surface light with the spill controlled so the neighbours keep their night sky and the grounds still read as landscape."),
+    ("estate",  "lighting residential landscape", "Residential &middot; Landscape", "Estate Uplighting",
+     "Facade grazing, tree uplighting and path lighting across the front of a house, with the drive and planting held at a lower level than the building itself."),
+    ("garage",  "lighting commercial property", "Commercial &middot; Parking", "Parking Structure Retrofit",
+     "A deck relit end to end. The argument for a retrofit is rarely the energy model &mdash; it is walking a resident through at nine at night."),
+    ("court",   "lighting residential exterior", "Residential &middot; Exterior", "Court &amp; Grounds Lighting",
+     "Even light across a playing surface with the spill kept off the boundary, so the neighbours keep their night sky and the grounds still read as landscape."),
 ]
+
 
 def has(*names):
     return all(os.path.exists(os.path.join(IMG, n)) for n in names)
@@ -235,7 +245,7 @@ body += u"""
     <div class="head rv">
       <p class="eyebrow">In detail</p>
       <h2 class="disp">What a project<br>actually involves</h2>
-      <p class="lede">Three completed jobs, and how the divisions stack on a single project.</p>
+      <p class="lede">Three completed jobs, and everything that goes into one of them.</p>
     </div>
   </div>
 
@@ -244,8 +254,8 @@ body += u"""
       <img src="assets/img/scene-walls.jpg" alt="Sculptural garden walls lit at night" data-par="9" loading="lazy">
     </div>
     <div class="cs-body">
-      <span class="eyebrow">Landscape &middot; Architectural</span>
-      <h3>Sculpture Wall Grazing</h3>
+      <span class="eyebrow">Residential &middot; Landscape</span>
+      <h3>Garden Wall Uplighting</h3>
       <p>A house lit properly has a few things deliberately bright and everything else deliberately not. Here the walls are the subject and the lawn is left to fall away, which is what stops the garden reading as a floodlit yard.</p>
       <ul class="cs-scope">
         <li><b>Design</b><span>What gets lit, what stays dark, beam angles and colour temperature</span></li>
@@ -261,9 +271,9 @@ body += u"""
       <img src="assets/img/pool.jpg" alt="Pool, terrace and hedge lit at night" data-par="9" loading="lazy">
     </div>
     <div class="cs-body">
-      <span class="eyebrow">Exterior &middot; Pool</span>
-      <h3>Pool &amp; Terrace</h3>
-      <p>Three separate layers &mdash; water, planting, covered terrace &mdash; each on its own circuit and its own level. Put them all at one brightness and an outdoor room turns into a parking lot with a pool in it.</p>
+      <span class="eyebrow">Residential &middot; Exterior</span>
+      <h3>Pool &amp; Covered Terrace</h3>
+      <p>Three separate layers &mdash; water, planting, covered terrace &mdash; each on its own circuit and its own level. Put them all at one brightness and an outdoor room stops feeling like one.</p>
       <ul class="cs-scope">
         <li><b>Design</b><span>Layering by zone, glare control from seated eye height</span></li>
         <li><b>Electrical</b><span>Wet-location circuits, bonding, switching and controls</span></li>
@@ -278,8 +288,8 @@ body += u"""
       <img src="assets/img/highbay.jpg" alt="Commercial high-bay lighting over an open floor" data-par="9" loading="lazy">
     </div>
     <div class="cs-body">
-      <span class="eyebrow">Commercial &middot; High Bay</span>
-      <h3>Commercial High-Bay Lighting</h3>
+      <span class="eyebrow">Commercial &middot; Interior</span>
+      <h3>High-Bay Lighting</h3>
       <p>The commercial version of the same discipline. Spacing is the whole job: get it wrong and half the floor works in the other half's shadow, whatever the fixtures are rated at.</p>
       <ul class="cs-scope">
         <li><b>Survey</b><span>Existing draw and light levels measured, honest payback answer</span></li>

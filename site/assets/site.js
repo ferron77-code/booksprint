@@ -258,28 +258,37 @@
     fio.observe(film);
   }
 
-  /* ── colour temperature ────────────────────────────────────────────── */
+  /* ── colour temperature ──────────────────────────────────────────────
+     Four stops rather than a continuous sweep. The slider used to run
+     2700–5000K in 100K steps, which let it settle on readings like 3300K
+     that nothing is actually sold at; these four are the temperatures
+     printed on the box, and the names are the ones on the box too. The
+     input carries an index, not a kelvin value, so the thumb lands on a
+     stop by construction and the keyboard arrows step between them. */
+  /* Named KELVIN, not STOPS: there is already a module-scope STOPS holding
+     the sky gradient, and `var` inside this block shares that scope. A
+     second `var STOPS` here overwrote it, and skyAt then read `.t` off a
+     kelvin row and threw before the clock ever started. */
   var kS = document.getElementById("kSlide");
   if (kS) {
     var kV = document.getElementById("kVal"), kN = document.getElementById("kName"), kU = document.getElementById("kUse");
-    var PTS = [
-      { k: 2700, c: "#FFB25C" }, { k: 3000, c: "#FFC37E" }, { k: 3500, c: "#FFD6A8" },
-      { k: 4000, c: "#FFE7CC" }, { k: 4500, c: "#F6F2EC" }, { k: 5000, c: "#DCE7FA" }
+    var KELVIN = [
+      { k: 2700, c: "#FFB25C", n: "Soft White",
+        u: "<b>Restaurants, hotels, landscape, residential.</b> Warm light flatters skin, wood and stone, and it reads as hospitality. This is what almost every home exterior should be." },
+      { k: 3000, c: "#FFC98A", n: "Warm White",
+        u: "<b>Lobbies, offices, retail, medical waiting rooms.</b> Clean without feeling clinical — the safest choice when a space has to feel professional and comfortable at once." },
+      { k: 4000, c: "#FFE7CC", n: "Bright White",
+        u: "<b>Retail floors, corridors, common areas, garages.</b> Colours read accurately here, which is why it sells merchandise. Push further and a space starts to feel like a workplace." },
+      { k: 5000, c: "#DCE7FA", n: "Daylight",
+        u: "<b>Warehouses, parking structures, security, task areas.</b> Maximum perceived brightness. Put this on a patio and the patio feels like a loading dock — the most common lighting mistake we see." }
     ];
-    var kInfo = function (k) {
-      if (k < 3000) return ["Warm White", "<b>Restaurants, hotels, landscape, residential.</b> Warm light flatters skin, wood and stone, and it reads as hospitality. This is what almost every home exterior should be."];
-      if (k < 3800) return ["Soft White", "<b>Lobbies, offices, retail, medical waiting rooms.</b> Clean without feeling clinical — the safest choice when a space has to feel professional and comfortable at once."];
-      if (k < 4600) return ["Neutral White", "<b>Retail floors, corridors, common areas, garages.</b> Colours read accurately here, which is why it sells merchandise. Push further and a space starts to feel like a workplace."];
-      return ["Cool White", "<b>Warehouses, parking structures, security, task areas.</b> Maximum perceived brightness. Put this on a patio and the patio feels like a loading dock — the most common lighting mistake we see."];
-    };
     var applyK = function () {
-      var k = parseInt(kS.value, 10), i = 0;
-      while (i < PTS.length - 2 && k >= PTS[i + 1].k) i++;
-      root.style.setProperty("--k", mix(PTS[i].c, PTS[i + 1].c, clamp((k - PTS[i].k) / (PTS[i + 1].k - PTS[i].k), 0, 1)));
-      kV.textContent = k + "K";
-      var info = kInfo(k);
-      kN.textContent = info[0];
-      kU.innerHTML = info[1];
+      var st = KELVIN[clamp(parseInt(kS.value, 10) || 0, 0, KELVIN.length - 1)];
+      root.style.setProperty("--k", st.c);
+      kV.textContent = st.k + "K";
+      kN.textContent = st.n;
+      kU.innerHTML = st.u;
+      kS.setAttribute("aria-valuetext", st.k + "K, " + st.n);
     };
     kS.addEventListener("input", applyK);
     applyK();

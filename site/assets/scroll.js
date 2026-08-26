@@ -249,7 +249,7 @@
   }
 
   /* ── Hero fixture ────────────────────────────────────────────────────
-     One object holds the screen while the six stages change around it.
+     One object holds the screen while the five stages change around it.
      Drawn entirely in canvas 2D from a small orthographic projection, so
      there is no model to load, no image sequence, and nothing to keep in
      sync with a CDN. It costs about 4KB of code and no network at all.
@@ -321,7 +321,7 @@
       var bx = cx - ux * half, by = cy - uy * half;   /* back */
 
       /* ── power and colour ────────────────────────────────────────── */
-      var power = smooth(clamp((p - 0.50) / 0.16, 0, 1));
+      var power = smooth(clamp((p - 0.40) / 0.15, 0, 1));
       var warm  = "255,197,122";
 
       /* Light only reads against dark. On the daylight palette lay a soft
@@ -436,7 +436,7 @@
       }
 
       /* ── stage 02: the drawing ───────────────────────────────────── */
-      var spec = smooth(clamp((p - 0.17) / 0.10, 0, 1)) * (1 - smooth(clamp((p - 0.32) / 0.10, 0, 1)));
+      var spec = smooth(clamp((p - 0.20) / 0.09, 0, 1)) * (1 - smooth(clamp((p - 0.36) / 0.08, 0, 1)));
       if (spec > 0.01) {
         ctx.save();
         ctx.globalAlpha = spec;
@@ -472,8 +472,8 @@
         ctx.restore();
       }
 
-      /* ── stage 06: the service tick ──────────────────────────────── */
-      var care = smooth(clamp((p - 0.88) / 0.08, 0, 1));
+      /* ── stage 05: the service tick ──────────────────────────────── */
+      var care = smooth(clamp((p - 0.85) / 0.08, 0, 1));
       if (care > 0.01) {
         ctx.save();
         ctx.globalAlpha = care * 0.9;
@@ -508,7 +508,7 @@
   }
 
   /* ── 3. Pinned sequence ──────────────────────────────────────────────
-     Six stages advance one at a time while the section holds the viewport.
+     Five stages advance one at a time while the section holds the viewport.
      Without JS the same markup reads as a normal stacked list. */
   function sequence(paint) {
     [].slice.call(document.querySelectorAll(".seq")).forEach(function (el) {

@@ -37,4 +37,5 @@ row you have not photographed yet is skipped rather than showing a broken tile.
 | `kroom.py` | swaps the colour-temperature illustration into pages that use it |
 | `check.py` | markup nesting, local `src`/`href` resolution, cross-page anchors, duplicate ids |
 | `linkcheck.py` | full link audit: every href, anchor, tel, mailto, and which pages are reachable |
+| `lockups.py` | rebuilds the eLighting and eBuilt lockups, day and night, from the supplied artwork in `site/assets/brand/src/`. Not part of `build.py` — run it only when the artwork changes |
 | `artifact.py` | bundles the whole site into one file for review; not needed to publish |

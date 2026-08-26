@@ -10,16 +10,17 @@ body = phero(
     "One number.<br>One company<br>accountable.",
     "Lighting, electrical or construction &mdash; or all three. Tell us what you are working on "
     "and the right person calls you back, rather than routing you through three companies first.",
-    u'<a class="btn btn-p" href="tel:+13059698769">(305) 969-8769</a>'
+    u'<a class="btn btn-p" href="tel:+13059698754">(305) 969-8754</a>'
     u'<a class="btn btn-s" href="mailto:info@elighting.org">info@elighting.org</a>')
 
 body += u"""
 <section class="sec">
   <div class="wrap">
     <div class="contact rv" style="margin-top:0">
-      <div class="ci"><b>Phone</b><p><a href="tel:+13059698769">(305) 969-8769</a></p></div>
+      <div class="ci"><b>Phone</b><p><a href="tel:+13059698754">(305) 969-8754</a></p></div>
       <div class="ci"><b>Email</b><p><a href="mailto:info@elighting.org">info@elighting.org</a></p></div>
-      <div class="ci"><b>Where we work</b><p>Headquartered in Miami, Florida.<br>Serving Florida.</p></div>
+      <div class="ci"><b>Office</b><p>12130 SW 114th Place<br>Miami, Florida</p></div>
+      <div class="ci"><b>Hours</b><p>Monday to Friday<br>8am &ndash; 5pm</p></div>
       {social_ci}
     </div>
   </div>
@@ -43,12 +44,12 @@ body += u"""
       <p data-why="upload">A file did not finish uploading, usually a dropped connection. Worth trying again.</p>
       <p data-why="mail">The message could not be sent from the server.</p>
       <p data-why="">Something in that did not go through.</p>
-      <p class="formnote">Either way you can call <a href="tel:+13059698769" style="color:var(--brand)">(305) 969-8769</a> and we will take the details down the old way.</p>
+      <p class="formnote">Either way you can call <a href="tel:+13059698754" style="color:var(--brand)">(305) 969-8754</a> and we will take the details down the old way.</p>
     </div>
 
     <div class="note rv" id="sent" hidden>
       <span class="t">Thank you</span>
-      <p><b>Your enquiry is in.</b> We will get back to you shortly. If it is urgent, call <a href="tel:+13059698769" style="color:var(--brand)">(305) 969-8769</a>.</p>
+      <p><b>Your enquiry is in.</b> We will get back to you shortly. If it is urgent, call <a href="tel:+13059698754" style="color:var(--brand)">(305) 969-8754</a>.</p>
     </div>
 
     <!-- The action below posts to contact.php, included in this folder.
@@ -91,7 +92,7 @@ body += u"""
       <label class="field" style="position:absolute;left:-9999px" aria-hidden="true" tabindex="-1">
         <span>Leave this blank</span><input type="text" name="website" tabindex="-1" autocomplete="off"></label>
       <button class="btn btn-p" type="submit">Send enquiry</button>
-      <p class="formnote">Prefer to talk? Call <a href="tel:+13059698769" style="color:var(--brand)">(305) 969-8769</a>. We use what you send here to answer your enquiry, nothing else.</p>
+      <p class="formnote">Prefer to talk? Call <a href="tel:+13059698754" style="color:var(--brand)">(305) 969-8754</a>. We use what you send here to answer your enquiry, nothing else.</p>
     </form>
   </div>
 </section>
@@ -152,5 +153,5 @@ body = body.replace(
 
 page("contact.html",
      "Contact — Worldwide Distributors",
-     "Talk to Worldwide Distributors about lighting, electrical or construction in Florida. Call (305) 969-8769 or send a project enquiry.",
+     "Talk to Worldwide Distributors about lighting, electrical or construction in Florida. Call (305) 969-8754 or send a project enquiry.",
      body)

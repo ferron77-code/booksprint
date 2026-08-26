@@ -261,15 +261,16 @@ a.panel::before{
 a.panel:hover::before{opacity:1}
 .panel > *{position:relative}
 .panel .lock{width:46px;height:46px;color:var(--text);margin-bottom:14px;display:block}
-/* eLighting and eBuilt lead with their own lockup. The artwork is chrome
-   with navy outlines, so it holds on the day surface and the night one
-   alike and needs no second variant. */
-.panel .lockup{height:52px;width:auto;margin:0;display:block}
+/* eLighting and eBuilt lead with their own lockup, in the flat artwork the
+   company supplied. Its lettering is a mid grey that sits at about 2.9:1 on
+   the night surface, so a second variant with the neutrals lifted and the
+   blue opened up is stacked on top and cross-faded on --glow — the same
+   property the night photographs ride on, so the marks turn over with the
+   rest of the page rather than snapping at dusk. */
+.panel .lockup{position:relative;display:block;height:52px;width:-moz-fit-content;width:fit-content;margin:0}
+.panel .lockup img{height:52px;width:auto;display:block}
+.panel .lockup .ngt{position:absolute;left:0;top:0;opacity:var(--glow,0)}
 .panel h3{margin:0 0 2px}
-/* Supply has no lockup of its own, so its heading is the monogram set
-   beside the name, sized to the same 52px block the other two occupy. */
-.wm-supply{display:flex;align-items:center;gap:11px;height:52px}
-.panel .lock.mono{width:40px;height:40px;flex:none;margin:0}
 
 .panel .n{font-family:var(--f-m);font-size:10px;letter-spacing:.15em;color:var(--brand)}
 .panel h3{
@@ -331,6 +332,18 @@ a.panel:hover .go{color:var(--brand)}
 .kname{font-family:var(--f-m);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--text-mute)}
 .kuse{font-size:14.5px;color:var(--text-mute);margin:0;min-height:3.2em}
 .kuse b{color:var(--text);font-weight:600}
+/* Stop labels under the slider, each centred on the position its thumb
+   actually reaches. space-between will not do it: that spreads the
+   label boxes evenly, which is not the same as centring each one on a
+   quarter mark. The 11px inset is half the thumb, the range the thumb
+   centre cannot travel into at either end. */
+.kstops{list-style:none;margin:-4px 0 0;padding:0;position:relative;height:14px}
+.kstops li{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap;
+  font-family:var(--f-m);font-size:9.5px;letter-spacing:.1em;color:var(--text-mute)}
+.kstops li:nth-child(1){left:11px}
+.kstops li:nth-child(2){left:calc(11px + (100% - 22px) * .3333)}
+.kstops li:nth-child(3){left:calc(11px + (100% - 22px) * .6667)}
+.kstops li:nth-child(4){left:calc(100% - 11px)}
 input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:26px;background:none;cursor:ew-resize}
 input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:linear-gradient(90deg,#FF9C3F,#FFC97A,#FFE9C9,#F3F6FF,#CFE0FF)}
 input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:linear-gradient(90deg,#FF9C3F,#FFC97A,#FFE9C9,#F3F6FF,#CFE0FF)}
