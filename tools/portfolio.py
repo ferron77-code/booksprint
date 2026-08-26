@@ -9,7 +9,7 @@ Two kinds of entry:
 
   RENDER   a day/night rendering pair that cross-fades on the visitor's
            clock, illustrating a category the company works in but has no
-           photography of yet. Each one carries a "Visualisation" credit on
+           photography of yet. Each one carries a "Visualization" credit on
            the tile. Nothing on the page used to distinguish these from the
            photographs, which put a licensed contractor's portfolio one
            question away from an awkward answer; the provenance is still
@@ -27,7 +27,7 @@ SITE = "/home/user/booksprint/site"
 IMG = os.path.join(SITE, "assets/img")
 
 # ── lighting studies ──────────────────────────────────────────────────
-# Generated visualisations, not photographs of completed jobs. They live
+# Generated visualizations, not photographs of completed jobs. They live
 # under their own heading for exactly that reason: a prospect can always
 # tell which is which, and nobody can ask "whose house is that?" and get
 # silence. Renderings are ordinary practice in lighting and architectural
@@ -82,7 +82,7 @@ def studies_html():
     <div class="head rv">
       <p class="eyebrow">Lighting studies</p>
       <h2 class="disp">What the light does,<br>before anyone digs</h2>
-      <p class="lede">These are visualisations, not photographs of finished jobs &mdash;
+      <p class="lede">These are visualizations, not photographs of finished jobs &mdash;
          the same studies we put in front of a client to settle a scheme before a
          fixture is bought. The photographed work is above.</p>
     </div>
@@ -112,7 +112,7 @@ REAL = [
      "The same garden looking the other way, with a mature date palm uplit from the base. The fixtures sit back far enough to carry the trunk and reach the crown."),
     ("hedge",    "lighting residential property landscape", "Residential &middot; Landscape",
      "Hedge Line &amp; Lawn",
-     "A hedge run lit from in front along the edge of a lawn, photographed just after sunset while there is still colour in the sky."),
+     "A hedge run lit from in front along the edge of a lawn, photographed just after sunset while there is still color in the sky."),
     ("pool",     "lighting residential", "Residential &middot; Exterior",
      "Pool &amp; Covered Terrace",
      "Pool, hedge and covered terrace lit as three separate layers, so the terrace stays the brightest thing and the planting behind it holds the edge of the garden."),
@@ -121,7 +121,7 @@ REAL = [
      "Three decorative pendants over the island doing the visual work, with cove and recessed lighting carrying the actual light level. Warm throughout."),
     ("lot",      "lighting commercial property", "Commercial &middot; Exterior",
      "Office Building &amp; Parking Lot",
-     "A two-storey office building and its lot after dark, from the air. Building, entrance, drive and parking bays are all lit, which is what the property looks like to anyone arriving in the evening."),
+     "A two-story office building and its lot after dark, from the air. Building, entrance, drive and parking bays are all lit, which is what the property looks like to anyone arriving in the evening."),
     ("deck",     "lighting commercial property", "Commercial &middot; Parking",
      "Parking Deck",
      "Linear fixtures running down the drive lane of a parking deck and across the bays either side of it."),
@@ -138,15 +138,15 @@ REAL = [
 
 CONCEPT = [
     ("medical", "buildout commercial", "Commercial &middot; Buildout", "Medical Office Fit-Out",
-     "Exam rooms, corridors and a waiting area from bare shell to open practice. Colour rendering and glare control are clinical requirements here, not preferences."),
-    ("groundup", "buildout commercial", "Commercial &middot; Buildout", "Two-Storey Commercial Shell",
+     "Exam rooms, corridors and a waiting area from bare shell to open practice. Color rendering and glare control are clinical requirements here, not preferences."),
+    ("groundup", "buildout commercial", "Commercial &middot; Buildout", "Two-Story Commercial Shell",
      "Slab, structure, envelope and fit-out on one contract, then the facade wash, canopy and parking light that decide how it reads at seven. The building and the lighting are the same job, which is why the fixtures are laid out while the walls are still open."),
     ("estate",  "lighting residential landscape", "Residential &middot; Landscape", "Estate Uplighting",
      "Facade grazing, tree uplighting and path lighting across the front of a house, with the drive and planting held at a lower level than the building itself."),
     ("garage",  "lighting commercial property", "Commercial &middot; Parking", "Parking Structure Retrofit",
      "A deck relit end to end. The argument for a retrofit is rarely the energy model &mdash; it is walking a resident through at nine at night."),
     ("court",   "lighting residential exterior", "Residential &middot; Exterior", "Court &amp; Grounds Lighting",
-     "Even light across a playing surface with the spill kept off the boundary, so the neighbours keep their night sky and the grounds still read as landscape."),
+     "Even light across a playing surface with the spill kept off the boundary, so the neighbors keep their night sky and the grounds still read as landscape."),
 ]
 
 
@@ -171,7 +171,7 @@ def tile_concept(slug, cats, kind, title, blurb):
           <img class="night" src="assets/img/%s-night.jpg" alt="%s lit after dark" loading="lazy">
         </span>
         <div class="pf-body"><span class="k">%s</span><h3>%s</h3><p>%s</p>
-          <p class="credit">Visualisation</p></div>
+          <p class="credit">Visualization</p></div>
       </article>""" % (cats, slug, title.replace("&amp;", "and"), slug,
                        title.replace("&amp;", "and"), kind, title, blurb)
 
@@ -258,7 +258,7 @@ body += u"""
       <h3>Garden Wall Uplighting</h3>
       <p>A house lit properly has a few things deliberately bright and everything else deliberately not. Here the walls are the subject and the lawn is left to fall away, which is what stops the garden reading as a floodlit yard.</p>
       <ul class="cs-scope">
-        <li><b>Design</b><span>What gets lit, what stays dark, beam angles and colour temperature</span></li>
+        <li><b>Design</b><span>What gets lit, what stays dark, beam angles and color temperature</span></li>
         <li><b>Electrical</b><span>Transformer sizing, run lengths, buried splices done to last</span></li>
         <li><b>Install</b><span>Wall grazing, tree uplighting, path and step lighting</span></li>
         <li><b>Maintain</b><span>Re-aiming as planting grows, lens cleaning, connection repair</span></li>

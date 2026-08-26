@@ -39,7 +39,7 @@ body += u"""
       <p class="lede">Managers ask for the same documents every time. Rather than making you chase them, ask and we will send the current set directly.</p>
     </div>
     <dl class="rows rv">
-      <div class="row"><dt>Licence</dt><dd><span class="tbd">LICENCE_SLOT</span></dd></div>
+      <div class="row"><dt>License</dt><dd><span class="tbd">LICENCE_SLOT</span></dd></div>
       <div class="row"><dt>Insurance</dt><dd>Certificate of insurance issued to your entity, with the additional-insured language your management agreement requires.</dd></div>
       <div class="row"><dt>W-9</dt><dd>Current, signed, sent on request.</dd></div>
       <div class="row"><dt>References</dt><dd>Available on request for properties comparable to yours.</dd></div>

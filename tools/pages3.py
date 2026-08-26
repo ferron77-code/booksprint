@@ -117,7 +117,7 @@ body += u"""
    Every message is written in the markup above and starts hidden, so this
    only has to reveal the panel and the one line that applies — there is no
    HTML built in JavaScript here, and nothing to escape. With no script at
-   all the visitor simply sees the form again, which is the old behaviour
+   all the visitor simply sees the form again, which is the old behavior
    rather than a broken one. */
 (function () {
   var q = location.search;
@@ -144,7 +144,7 @@ body += u"""
 </script>
 """
 
-# The contact details row gets a labelled "Follow" item, but only if there is
+# The contact details row gets a labeled "Follow" item, but only if there is
 # an account to point at — an empty one would just be a heading over nothing.
 _soc = social_links("soc")
 body = body.replace(

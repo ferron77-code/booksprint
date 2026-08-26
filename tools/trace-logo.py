@@ -70,7 +70,7 @@ def emit(name, box, vb=100.0):
     x0,x1,y0,y1 = xs.min(),xs.max(),ys.min(),ys.max()
     w,h = x1-x0+1, y1-y0+1
     s = max(w,h)/vb
-    ox,oy = x0-(s*vb-w)/2.0, y0-(s*vb-h)/2.0     # centre in a square viewBox
+    ox,oy = x0-(s*vb-w)/2.0, y0-(s*vb-h)/2.0     # center in a square viewBox
     d_shell = trace(shell, ox, oy, s, turd=60)
     d_sph   = trace(sph,   ox, oy, s, turd=60)
     print("%-10s shell %5d chars   sphere %5d chars   source %dx%d"%(name,len(d_shell),len(d_sph),w,h))

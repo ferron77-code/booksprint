@@ -258,7 +258,7 @@
     fio.observe(film);
   }
 
-  /* ── colour temperature ──────────────────────────────────────────────
+  /* ── color temperature ──────────────────────────────────────────────
      Four stops rather than a continuous sweep. The slider used to run
      2700–5000K in 100K steps, which let it settle on readings like 3300K
      that nothing is actually sold at; these four are the temperatures
@@ -278,7 +278,7 @@
       { k: 3000, c: "#FFC98A", n: "Warm White",
         u: "<b>Lobbies, offices, retail, medical waiting rooms.</b> Clean without feeling clinical — the safest choice when a space has to feel professional and comfortable at once." },
       { k: 4000, c: "#FFE7CC", n: "Bright White",
-        u: "<b>Retail floors, corridors, common areas, garages.</b> Colours read accurately here, which is why it sells merchandise. Push further and a space starts to feel like a workplace." },
+        u: "<b>Retail floors, corridors, common areas, garages.</b> Colors read accurately here, which is why it sells merchandise. Push further and a space starts to feel like a workplace." },
       { k: 5000, c: "#DCE7FA", n: "Daylight",
         u: "<b>Warehouses, parking structures, security, task areas.</b> Maximum perceived brightness. Put this on a patio and the patio feels like a loading dock — the most common lighting mistake we see." }
     ];

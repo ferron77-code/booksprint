@@ -7,7 +7,7 @@
     python3 tools/fetch-generated.py --check   # reachability only, no writes
 
 Reads docs/production/generated-manifest.json — a list of
-{url, as, w, h, note} — downloads each, centre-crops to the target aspect,
+{url, as, w, h, note} — downloads each, center-crops to the target aspect,
 resizes and writes a JPEG into site/assets/img/. Idempotent: a file already
 on disk is left alone unless --force.
 
@@ -33,7 +33,7 @@ MAN  = os.path.join(ROOT, "docs", "production", "generated-manifest.json")
 
 
 def fit(im, w, h):
-    """Centre-crop to the target aspect, then resize. Never squashes."""
+    """Center-crop to the target aspect, then resize. Never squashes."""
     from PIL import Image
     sw, sh = im.size
     want, have = w / float(h), sw / float(sh)

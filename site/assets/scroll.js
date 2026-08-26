@@ -320,7 +320,7 @@
       var fx = cx + ux * half, fy = cy + uy * half;   /* front (aperture) */
       var bx = cx - ux * half, by = cy - uy * half;   /* back */
 
-      /* ── power and colour ────────────────────────────────────────── */
+      /* ── power and color ────────────────────────────────────────── */
       var power = smooth(clamp((p - 0.40) / 0.15, 0, 1));
       var warm  = "255,197,122";
 
@@ -586,7 +586,7 @@
        background through a 2px gap. That is fine while the rows are full and
        ugly the moment they are not: one tile in a three-column grid leaves
        two whole columns of grey standing next to it. Fill the rest of the
-       last row with inert cells in the page colour. Recounted per call
+       last row with inert cells in the page color. Recounted per call
        because the column count changes with the breakpoint. */
     function pad(n) {
       var cols = getComputedStyle(grid).gridTemplateColumns.split(" ").length;

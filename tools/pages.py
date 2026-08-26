@@ -42,7 +42,7 @@ STAGES = [
     ("site",     "Foundation",  "Slab, footings and stub-ups. Everything that has to be right before anything is visible."),
     ("shell",    "Structure",   "Walls to full height, bond beam poured, joists set. Openings are still holes."),
     ("dryin",    "Dried in",    "Roof on, glazing in, asphalt down. The building stops being weather-dependent."),
-    ("finished", "Finished",    "Finish coat, canopy clad, kerbs, bays and planting. Handed over in daylight."),
+    ("finished", "Finished",    "Finish coat, canopy clad, curbs, bays and planting. Handed over in daylight."),
     ("night",    "Switched on", "Site poles, facade and canopy live. The part that decides how the building reads at seven."),
 ]
 
@@ -83,7 +83,7 @@ def buildfly_html():
            laid out while the walls are still open.</p>
         <div class="scrub-bar"><i></i></div>
         <ol class="scrub-steps">%s</ol>
-        <p class="credit">Visualisation, not a filmed job</p>
+        <p class="credit">Visualization, not a filmed job</p>
       </div>
     </div>
   </div>
@@ -119,7 +119,7 @@ def groundup_html():
          aiming &mdash; goes to an electrical contractor who arrives after the
          building is finished. Here it is the same company, so the lighting is laid
          out while the walls are still open.</p>
-      <p class="credit">Visualisations, not photographs of a finished job</p>
+      <p class="credit">Visualizations, not photographs of a finished job</p>
     </div>
     <ol class="stages rv">%s
     </ol>
@@ -148,7 +148,7 @@ body += u"""
       <li><b>Walk the space</b><p>We start with the shell as it stands &mdash; existing service, panel capacity and ceiling heights &mdash; and set out what the space needs before any work is priced.</p></li>
       <li><b>Scope and schedule</b><p>One scope covering build, electrical and lighting, with the long-lead items flagged up front. Fixtures and materials get sourced at distributor pricing, which is where most of the schedule risk lives.</p></li>
       <li><b>Build</b><p>Demolition, framing, rough-in, drywall, finishes. Our own crews on the trades we hold, so a delay in one stage does not mean renegotiating with a stranger.</p></li>
-      <li><b>Light it properly</b><p>The part almost everyone treats as an afterthought. Layout, colour temperature and control, specified for what the space is actually for &mdash; not whatever fixture was in stock.</p></li>
+      <li><b>Light it properly</b><p>The part almost everyone treats as an afterthought. Layout, color temperature and control, specified for what the space is actually for &mdash; not whatever fixture was in stock.</p></li>
       <li><b>Hand over, then stay</b><p>Punch list, close-out, and an ongoing service relationship.</p></li>
     </ol>
   </div>
@@ -164,7 +164,7 @@ body += u"""
       <div class="panel" id="build">
         <span class="n">01</span><h3>Build</h3>
         <p>Commercial buildouts and tenant improvements from an empty leased shell through to an open business.</p>
-        <ul class="tags"><li>Demolition</li><li>Framing</li><li>Drywall</li><li>Plumbing</li><li>Finishes</li><li>Remodelling</li></ul>
+        <ul class="tags"><li>Demolition</li><li>Framing</li><li>Drywall</li><li>Plumbing</li><li>Finishes</li><li>Remodeling</li></ul>
       </div>
       <div class="panel" id="electrical">
         <span class="n">02</span><h3>Electrical</h3>
@@ -225,7 +225,7 @@ body += u"""
     </div>
     <div class="grid g4 rv">
       <div class="panel"><h3>Restaurants</h3><p>Kitchens, dining rooms and bar lighting, built around health-department reality and a hard opening date.</p></div>
-      <div class="panel"><h3>Medical</h3><p>Exam rooms, waiting areas and corridors &mdash; where colour rendering and glare control are clinical requirements, not preferences.</p></div>
+      <div class="panel"><h3>Medical</h3><p>Exam rooms, waiting areas and corridors &mdash; where color rendering and glare control are clinical requirements, not preferences.</p></div>
       <div class="panel"><h3>Retail</h3><p>Sales floors where the lighting is doing merchandising work, plus back-of-house and exterior signage circuits.</p></div>
       <div class="panel"><h3>Offices</h3><p>Professional offices, barber shops and service businesses. Straightforward buildouts on predictable schedules.</p></div>
     </div>
@@ -249,7 +249,7 @@ body = phero(
     "estate-day.jpg", "estate-night.jpg", "",
     "Residential lighting",
     "Nobody sees<br>your house at noon",
-    "Landscape and permanent exterior lighting, panel upgrades, troubleshooting and remodelling. "
+    "Landscape and permanent exterior lighting, panel upgrades, troubleshooting and remodeling. "
     "Designed for the twelve hours a day when lighting is the only thing anyone is looking at.",
     CTA_P + CTA_S)
 
@@ -268,7 +268,7 @@ body += u"""
       </div>
       <div class="panel">
         <span class="n">02</span><h3>Permanent<br>roofline</h3>
-        <p>Fixed track under the eaves &mdash; warm white year-round, colour for holidays, controlled from a phone. Installed once instead of hung and taken down every December.</p>
+        <p>Fixed track under the eaves &mdash; warm white year-round, color for holidays, controlled from a phone. Installed once instead of hung and taken down every December.</p>
       </div>
       <div class="panel">
         <span class="n">03</span><h3>Electrical</h3>
@@ -319,12 +319,12 @@ body += u"""
 <section class="sec sec-tight">
   <div class="wrap">
     <div class="head rv">
-      <p class="eyebrow">Colour temperature</p>
+      <p class="eyebrow">Color temperature</p>
       <h2 class="disp">Warm, or the<br>house looks like a car park</h2>
       <p class="lede">This is the single most common mistake in residential exteriors. Same fixture, same wattage: one reads as a home, the other reads as a loading dock.</p>
     </div>
     <div class="kelvin grid g2 rv" style="gap:0;background:none">
-      <svg class="kroom" viewBox="0 0 800 520" role="img" aria-label="Illustrated interior lit at the selected colour temperature">
+      <svg class="kroom" viewBox="0 0 800 520" role="img" aria-label="Illustrated interior lit at the selected color temperature">
         <defs>
           <radialGradient id="pool" cx="50%" cy="8%" r="78%">
             <stop offset="0%"  stop-color="var(--k,#FFD6A8)" stop-opacity=".95"/>
@@ -347,7 +347,7 @@ body += u"""
           <span class="kval" id="kVal">3500K</span>
           <span class="kname" id="kName">Soft White</span>
         </div>
-        <input type="range" id="kSlide" min="2700" max="5000" step="100" value="3500" aria-label="Colour temperature in kelvin">
+        <input type="range" id="kSlide" min="2700" max="5000" step="100" value="3500" aria-label="Color temperature in kelvin">
         <p class="kuse" id="kUse"></p>
       </div>
     </div>

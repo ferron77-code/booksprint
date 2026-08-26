@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import io, re, glob, os
 
-SVG = u'''<svg class="kroom" viewBox="0 0 800 520" role="img" aria-label="Illustrated interior lit at the selected colour temperature">
+SVG = u'''<svg class="kroom" viewBox="0 0 800 520" role="img" aria-label="Illustrated interior lit at the selected color temperature">
         <defs>
           <linearGradient id="cone" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%"   stop-color="var(--k,#FFD6A8)" stop-opacity=".78"/>

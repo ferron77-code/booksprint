@@ -1,6 +1,6 @@
 /* ==========================================================================
    Worldwide Distributors — site stylesheet
-   Every colour below is rewritten at runtime by site.js from one value:
+   Every color below is rewritten at runtime by site.js from one value:
    the time of day. See setTime() there.
    ========================================================================== */
 
@@ -14,7 +14,7 @@
   --text-mute:#5B6672;
   --text-mute-strong:#3C444E;
   --line:#D8DEE5;
-  --accent:#B9741A;      /* the colour of light: glows, fixtures, the seam */
+  --accent:#B9741A;      /* the color of light: glows, fixtures, the seam */
   --accent-ink:#FFF6E8;
   --brand:#003FD6;       /* the company's own blue, off the eLighting mark */
   --brand-ink:#FFFFFF;
@@ -106,7 +106,15 @@ a{color:inherit}
 }
 .hdr-in{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 0}
 .brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--text)}
-.brand .mark{width:34px;height:34px;flex:none;color:var(--brand);transition:color .12s linear}
+/* The Worldwide Distributors lockup, in the artwork the company supplied.
+   It is fixed navy and black, which disappears once the clock takes the
+   page dark, so a night variant with the ink lifted rides on top and
+   cross-fades on --glow — the same way the division lockups and the
+   night photography turn over. */
+.brand .mark-wwd{position:relative;display:block;width:93px;height:34px;flex:none}
+.brand .mark-wwd img{position:absolute;left:0;top:0;width:93px;height:34px;display:block}
+.brand .mark-wwd .ngt{opacity:var(--glow,0)}
+@media(max-width:420px){.brand .mark-wwd,.brand .mark-wwd img{width:76px;height:28px}}
 .brand .wm{display:flex;flex-direction:column;gap:2px;min-width:0}
 .brand b{
   font-family:var(--f-d);font-variation-settings:"wdth" 112,"wght" 800;
@@ -332,11 +340,11 @@ a.panel:hover .go{color:var(--brand)}
 .kname{font-family:var(--f-m);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--text-mute)}
 .kuse{font-size:14.5px;color:var(--text-mute);margin:0;min-height:3.2em}
 .kuse b{color:var(--text);font-weight:600}
-/* Stop labels under the slider, each centred on the position its thumb
+/* Stop labels under the slider, each centered on the position its thumb
    actually reaches. space-between will not do it: that spreads the
    label boxes evenly, which is not the same as centring each one on a
    quarter mark. The 11px inset is half the thumb, the range the thumb
-   centre cannot travel into at either end. */
+   center cannot travel into at either end. */
 .kstops{list-style:none;margin:-4px 0 0;padding:0;position:relative;height:14px}
 .kstops li{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap;
   font-family:var(--f-m);font-size:9.5px;letter-spacing:.1em;color:var(--text-mute)}
@@ -363,7 +371,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .split-lbl.r{right:12px;color:#F2C879}
 
 /* ── lighting studies ───────────────────────────────────
-   Generated visualisations, kept visually distinct from the photographed
+   Generated visualizations, kept visually distinct from the photographed
    grid above: stacked wide rather than tiled, each with its own caption. */
 /* ── ground-up stages ───────────────────────────────────
    Five across on a wide screen; a snapping horizontal strip on a phone,
@@ -475,7 +483,7 @@ html.js .rv.on{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.2,.
 /* On the interior heroes this paragraph sits on a photograph, not on a
    flat surface. It was clearing 4.5:1 on average and less than that
    wherever the picture behind it is bright, which on a phone in daylight
-   is most of it. Darker ink, plus a halo in the surface colour so busy
+   is most of it. Darker ink, plus a halo in the surface color so busy
    areas of the photograph cannot eat the letterforms. Both follow the
    clock, so this holds at midnight as well as at noon. */
 .phero .lede{margin-top:16px;color:var(--text-mute-strong);
@@ -649,7 +657,7 @@ html.js .rv.on{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.2,.
    page gutter */
 .seq-stick > .wrap{width:100%;position:relative;z-index:2}
 
-/* The fixture holds the centre of the viewport while the stage copy changes
+/* The fixture holds the center of the viewport while the stage copy changes
    in the columns either side of it. Hidden below 900px, where there is no
    room for an object and two columns of text at once. */
 .seq-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;display:none}
@@ -727,7 +735,7 @@ html.js .rv.on{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.2,.
   letter-spacing:.13em;text-transform:uppercase;color:var(--brand);
   border:1px solid var(--line);padding:6px 10px}
 
-/* pinned behaviour, only once the engine takes over */
+/* pinned behavior, only once the engine takes over */
 .seq-on{height:400vh}
 .seq-on .seq-stick{position:sticky;top:0;height:100vh;display:flex;align-items:center;padding:0}
 .seq-on .seq-stage{position:relative;min-height:min(60vh,440px)}
