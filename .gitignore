@@ -197,3 +197,6 @@ dist
 !.env.example
 .dev.vars*
 !.dev.vars.example
+
+### Packaged skills (build artifacts, regenerate with package_skill.py)
+*.skill
