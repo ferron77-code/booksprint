@@ -29,6 +29,7 @@ STEPS = [
     ("page404.py",   "404"),
     ("portfolio.py", "portfolio"),
     ("kroom.py",     "color-temperature illustration"),
+    ("carousel.py",  "project names into the homepage carousel"),
     ("licences.py",  "licence numbers into index.html"),
     ("sitemap.py",   "robots.txt and sitemap.xml"),
     ("assetver.py",  "cache-bust the stylesheet and scripts"),
