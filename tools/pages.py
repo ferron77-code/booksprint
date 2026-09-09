@@ -2,6 +2,7 @@
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from chrome import page, CLOSE
+from kroom import KCTL
 
 def phero(day, night, alt, eyebrow, h1, lede, btns):
     return u"""
@@ -342,14 +343,7 @@ body += u"""
         <rect x="470" y="244" width="150" height="8" fill="var(--k,#FFD6A8)" opacity=".45"/>
         <rect x="0" y="404" width="800" height="4" fill="var(--k,#FFD6A8)" opacity=".22"/>
       </svg>
-      <div class="kctl">
-        <div class="krow">
-          <span class="kval" id="kVal">3500K</span>
-          <span class="kname" id="kName">Soft White</span>
-        </div>
-        <input type="range" id="kSlide" min="2700" max="5000" step="100" value="3500" aria-label="Color temperature in kelvin">
-        <p class="kuse" id="kUse"></p>
-      </div>
+      {kctl}
     </div>
   </div>
 </section>
@@ -370,6 +364,11 @@ body += u"""
   </div>
 </section>
 """
+# One definition of the color-temperature control, shared with the homepage.
+# The markup and site.js have to agree on what the range input carries, and
+# they stopped agreeing the last time there were two copies of it.
+body = body.replace("{kctl}", KCTL)
+
 body += CLOSE.format(
     h=u"Show us the<br>front of the house",
     p=u"A couple of daytime photos and a rough idea of what you want lit is enough to start the conversation.")

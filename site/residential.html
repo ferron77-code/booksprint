@@ -218,10 +218,13 @@
       </svg>
       <div class="kctl">
         <div class="krow">
-          <span class="kval" id="kVal">3500K</span>
-          <span class="kname" id="kName">Soft White</span>
+          <span class="kval" id="kVal">3000K</span>
+          <span class="kname" id="kName">Warm White</span>
         </div>
-        <input type="range" id="kSlide" min="2700" max="5000" step="100" value="3500" aria-label="Color temperature in kelvin">
+        <input type="range" id="kSlide" min="0" max="3" step="1" value="1"
+               aria-label="Color temperature" list="kStops">
+        <datalist id="kStops"><option value="0"></option><option value="1"></option><option value="2"></option><option value="3"></option></datalist>
+        <ol class="kstops" aria-hidden="true"><li>2700K</li><li>3000K</li><li>4000K</li><li>5000K</li></ol>
         <p class="kuse" id="kUse"></p>
       </div>
     </div>
