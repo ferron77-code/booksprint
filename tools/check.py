@@ -76,7 +76,12 @@ for f in pages:
     src = io.open(f, encoding="utf-8").read()
     meta = dict(re.findall(r'<meta (?:property|name)="((?:og|twitter):[a-z_:]+)" content="([^"]*)"', src))
     bad_meta = []
-    for k in REQUIRED:
+    # A noindex page has no share card on purpose — thanks.html is only ever
+    # reached by sending the form, there is nothing to post a link to, and no
+    # og-thanks.jpg was ever drawn. It still needs a canonical, so the checks
+    # below this one continue to apply.
+    noindex = 'name="robots" content="noindex' in src
+    for k in ([] if noindex else REQUIRED):
         if k not in meta:
             bad_meta.append("no " + k)
         elif not meta[k].strip():
@@ -103,6 +108,47 @@ if len(origins) > 1:
     print("FAIL mixed origins in social tags: %s" % sorted(origins))
 elif origins:
     print("     social cards on %s" % origins.pop())
+
+# ── the enquiry form ──────────────────────────────────────────────────
+# Netlify picks the form up by reading the deployed HTML. Four things have
+# to be true or submissions are silently lost, and "silently" is the whole
+# problem: the page still looks like it worked. The old handler was PHP on a
+# host that does not run PHP, which is exactly this failure with a 404 in
+# front of it.
+#
+# The file inputs are checked too. Netlify Forms takes one file per field,
+# so a multiple attribute would drop everything after the first with no
+# error anywhere.
+form_src = ""
+for f in pages:
+    src = io.open(f, encoding="utf-8").read()
+    if 'name="enquiry"' in src:
+        form_src = src
+        form_page = os.path.basename(f)
+        break
+
+if not form_src:
+    bad += 1
+    print("FAIL the enquiry form is not on any page")
+else:
+    form_bad = []
+    if 'data-netlify="true"' not in form_src:
+        form_bad.append('no data-netlify="true" — Netlify will not see the form')
+    if 'name="form-name" value="enquiry"' not in form_src:
+        form_bad.append("no hidden form-name, or it does not match the form's name")
+    if 'action="thanks.html"' not in form_src:
+        form_bad.append("no success page on the action")
+    if 'data-netlify-honeypot' not in form_src:
+        form_bad.append("no honeypot")
+    if re.search(r'<input[^>]*type="file"[^>]*\bmultiple\b', form_src):
+        form_bad.append("a file input takes multiple files; Netlify keeps only the first")
+    if ".php" in form_src:
+        form_bad.append("still refers to a .php handler")
+    if form_bad:
+        bad += 1
+        print("FAIL %s enquiry form" % form_page)
+        for e in form_bad:
+            print("   ", e)
 
 # ── licence numbers ───────────────────────────────────────────────────
 # Florida requires the real number in advertising. The placeholders are all

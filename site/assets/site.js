@@ -302,42 +302,49 @@
 
   /* ── enquiry attachments ───────────────────────────────────────────────
      Lists what has been picked and totals it, so an over-size batch is
-     caught here rather than after a long upload on a phone. The server
-     enforces the same limits regardless — this only saves the round trip. */
+     caught here rather than after a long upload on a phone.
+
+     The ceiling is Netlify's: 8 MB for the whole submission, attachments and
+     text together, and the upload gives up after thirty seconds. 7.5 MB of
+     files leaves room for the rest of the form and the multipart overhead.
+     Nothing here is a security control — it saves the visitor a round trip
+     and a rejection they would not understand, and that is all. */
   (function () {
-    var input = document.getElementById("files");
-    if (!input) return;
-    var out = document.querySelector(".filelist");
-    var form = input.form;
-    var MAX_FILES = 8, MAX_ONE = 10 * 1024 * 1024, MAX_TOTAL = 20 * 1024 * 1024;
+    var form = document.querySelector('form[name="enquiry"]');
+    if (!form) return;
+    var inputs = [].slice.call(form.querySelectorAll('input[type="file"]'));
+    if (!inputs.length) return;
+    var out = form.querySelector(".filelist");
+    var MAX_TOTAL = 7.5 * 1024 * 1024;
 
     function kb(n) {
       return n >= 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB";
     }
     function check() {
-      var fs = input.files, total = 0, bad = [], rows = [];
-      for (var i = 0; i < fs.length; i++) {
-        total += fs[i].size;
-        var over = fs[i].size > MAX_ONE;
-        if (over) bad.push(fs[i].name + " is over 10 MB");
-        rows.push('<b>' + fs[i].name.replace(/[<&]/g, "") + "</b> " + kb(fs[i].size));
-      }
-      if (fs.length > MAX_FILES) bad.push("that is " + fs.length + " files, the limit is " + MAX_FILES);
-      if (total > MAX_TOTAL) bad.push("the batch comes to " + kb(total) + ", the limit is 20 MB");
+      var total = 0, rows = [];
+      inputs.forEach(function (inp) {
+        /* one file per input: Netlify Forms takes the first and drops the
+           rest, so the markup does not offer multiple */
+        var f = inp.files && inp.files[0];
+        if (!f) return;
+        total += f.size;
+        rows.push("<b>" + f.name.replace(/[<&]/g, "") + "</b> " + kb(f.size));
+      });
+      var over = total > MAX_TOTAL;
       if (out) {
-        out.innerHTML = fs.length
-          ? rows.join("<br>") + "<br>" + fs.length + (fs.length === 1 ? " file, " : " files, ") + kb(total)
-            + (bad.length ? ' <span class="over">&mdash; ' + bad[0] + "</span>" : "")
+        out.innerHTML = rows.length
+          ? rows.join("<br>") + "<br>" + rows.length
+            + (rows.length === 1 ? " file, " : " files, ") + kb(total)
+            + (over ? ' <span class="over">&mdash; that is over the 7 MB the form can carry.'
+                    + " Send the most useful one, or email them to info@elighting.org.</span>" : "")
           : "";
       }
-      return bad.length === 0;
+      return !over;
     }
-    input.addEventListener("change", check);
-    if (form) {
-      form.addEventListener("submit", function (e) {
-        if (!check()) { e.preventDefault(); if (out) out.scrollIntoView({ block: "center" }); }
-      });
-    }
+    inputs.forEach(function (inp) { inp.addEventListener("change", check); });
+    form.addEventListener("submit", function (e) {
+      if (!check()) { e.preventDefault(); if (out) out.scrollIntoView({ block: "center" }); }
+    });
   })();
 
 })();

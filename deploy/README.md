@@ -1,60 +1,130 @@
-# Putting the site somewhere the client can review it
+# Going live on worldwidedistributorsinc.com
 
-## Live review URL
+The site is a folder of finished files. Netlify serves `site/` straight from
+this repo with no build step, and `netlify.toml` at the repo root carries the
+settings so they are readable here rather than buried in a dashboard.
 
-**https://worldwide-distributors.netlify.app**
+**Current address:** https://worldwide-distributors.netlify.app
+**Going to:** https://www.worldwidedistributorsinc.com
 
-Netlify is linked to this GitHub repo, deploying `site/` from the branch
-`claude/website-strategy-analysis-20d1y5` with no build step. A push deploys
-itself in about a minute; nothing is uploaded by hand any more. Settings live
-in `netlify.toml` at the repo root rather than in the dashboard.
+Every canonical tag, share-card URL, `sitemap.xml` and `robots.txt` is built
+from one string — `SITE_URL` in `tools/chrome.py`. It already says
+`https://www.worldwidedistributorsinc.com`, so pointing that domain at the
+site needs no code change. Pointing a *different* one does: change that line,
+re-run `tools/build.py`, and everything follows.
 
-Paths work with or without the extension — `/commercial` and
-`/commercial.html` both serve the same page, via the non-forcing redirect in
-that file.
+## Why www and not the bare domain
 
-Still true here: the enquiry form does not send. Netlify runs no PHP, so
-`contact.php` is inert and the form looks right and does nothing. That is the
-reason the eventual home is the Hostinger subdomain below.
+Netlify recommends a subdomain as the primary when DNS is hosted elsewhere.
+An apex domain (`worldwidedistributorsinc.com` with no `www`) cannot use a
+CNAME, so it has to resolve to a single load-balancer IP instead of being
+routed to the nearest edge — measurably slower, and it breaks if that IP ever
+changes. `www` gets a CNAME and the full CDN.
 
-`site/` is the whole deliverable: 409 files, 29 MB, already built. There is no
-build step on the server — it serves finished files.
+The bare domain still works. It redirects to `www`, which Netlify does on its
+own once the primary domain is set.
 
-One thing is not static. `contact.php` is the enquiry handler, so the form only
-actually sends on a host that runs PHP. Everything else works anywhere.
+## 1. Add the domain in Netlify
 
-## Hostinger (their host, and the one the production notes assume)
+Site configuration → Domain management → Add a domain.
 
-1. hPanel → Domains → Subdomains → create `preview` (or `staging`).
-2. Upload the **contents** of `site/` into that subdomain's folder — not the
-   folder itself, or every page lands one level too deep.
-3. Upload `deploy/robots.staging.txt` over `robots.txt`. This matters: a second
-   live copy of the site competes with the real one in search.
-4. hPanel → the subdomain → password-protect it. A client-review URL that
-   anyone can find is a client-review URL a competitor can find.
-5. Check the PHP settings in `docs/production/enquiry-form.md` before testing
-   the form — the defaults reject the attachment sizes the form allows.
+1. Enter `www.worldwidedistributorsinc.com`.
+2. Netlify will offer to add `worldwidedistributorsinc.com` alongside it —
+   accept.
+3. Set **`www.worldwidedistributorsinc.com` as the primary domain.** This is
+   what makes Netlify redirect the bare domain to it rather than serving the
+   same site at two addresses, which splits the SEO between them.
 
-## If they cannot get hosting access today
+Netlify will say DNS verification is pending. That is step 2.
 
-Netlify Drop (`app.netlify.com/drop`) takes a dragged folder and returns a URL
-in about a minute, free, no account needed to start. Everything works **except
-the enquiry form**, because there is no PHP — the form will look right and do
-nothing. Say so before showing it, or the one thing that breaks will be the one
-thing they test.
+## 2. Point the DNS at GoDaddy
 
-## What not to do
+GoDaddy → My Products → the domain → DNS → Manage Zones.
 
-Do not put a review copy on the production domain root. The canonical tags all
-point at `https://www.worldwidedistributorsinc.com`, which is correct for
-launch and wrong for a preview sitting anywhere else.
+Two records. **Delete or edit whatever is already on `@` and `www`** — a
+GoDaddy parking page usually leaves an A record on `@` and a CNAME on `www`,
+and a stale one will win.
 
-## The zip
+| Type  | Name | Value                                | TTL      |
+|-------|------|--------------------------------------|----------|
+| CNAME | www  | `worldwide-distributors.netlify.app` | 1 hour   |
+| A     | @    | `75.2.60.5`                          | 1 hour   |
 
-`deploy/wwd-site.zip` is the whole of `site/` in one file, for dragging onto
-Netlify Drop. It is deliberately **not** tracked in git — it duplicates files
-that are already in the repo, and git keeps every version of every blob
-forever, so committing 28 MB on each rebuild would grow the repository
-permanently for something one command reproduces:
+`75.2.60.5` is Netlify's load balancer for apex domains on external DNS. If
+Netlify's own "Pending DNS verification" panel shows a different address for
+this site, **use the one it shows** — sites on their higher-performance tier
+get a different IP, and the panel is the authority, not this file.
 
-    cd site && zip -qr ../deploy/wwd-site.zip .
+Leave the MX records alone. Email for `elighting.org` is a separate domain and
+is not touched by any of this, but if this domain ever carries mail, deleting
+its MX records will stop it.
+
+## 3. Wait, then check
+
+DNS takes anywhere from ten minutes to a few hours. Netlify verifies on its
+own and issues a Let's Encrypt certificate once it resolves — no action
+needed, but HTTPS will fail until that lands. Do not panic at a certificate
+warning in the first hour.
+
+Then confirm all four of these:
+
+- `https://www.worldwidedistributorsinc.com` serves the site
+- `http://worldwidedistributorsinc.com` redirects to the `www` HTTPS address
+- The padlock is there, with no mixed-content warning
+- `https://www.worldwidedistributorsinc.com/sitemap.xml` loads and its URLs
+  say `www.worldwidedistributorsinc.com`
+
+## 4. The enquiry form
+
+The form uses **Netlify Forms**. Netlify finds it by reading the deployed
+HTML, so there is nothing to install — but two things still need doing in the
+dashboard, and until they are, submissions arrive and nobody is told:
+
+1. **Forms → check `enquiry` is listed.** It appears after the first deploy
+   that includes it. If it is not there, the deploy has not picked up the
+   markup.
+2. **Forms → Form notifications → Add notification → Email notification.**
+   Send to `info@elighting.org`. Without this, submissions sit in the
+   dashboard silently.
+
+Send a real test submission and confirm the email arrives before telling the
+client the form works.
+
+### What the form can and cannot carry
+
+Netlify caps a submission at **8 MB total** — text and attachments together —
+and the upload gives up after 30 seconds. The form offers three file fields
+and warns the visitor at 7 MB, which leaves room for the rest.
+
+It is three separate fields rather than one multi-select on purpose: Netlify
+Forms keeps **one file per field** and silently discards the rest. The page
+tells people to email anything bigger to `info@elighting.org`.
+
+The free tier includes 100 submissions a month. Worth watching in the first
+few months; going over means submissions are rejected, not queued.
+
+`contact.php` is gone. It was the old handler and Netlify cannot run PHP —
+every enquiry sent from the live site would have hit a 404.
+
+## 5. The other two domains
+
+`elighting.org` and `elightingindustries.com` should 301 to
+`https://www.worldwidedistributorsinc.com` rather than stay up as separate
+sites. Two live sites for one company compete with each other in search, and
+every link either has ever earned is currently pointing at a dead end.
+
+In GoDaddy that is Domains → the domain → Forwarding → Forward domain →
+permanent (301), forward with masking **off**. Masking keeps the old address
+in the bar and hides the real one from search engines, which is the opposite
+of what is wanted here.
+
+`elighting.org` carries their email, so forward the *website* only. Do not
+touch its MX records.
+
+## If it needs to move off Netlify
+
+`site/` is portable: 409 files, 29 MB, no server-side anything except the
+form. Drop the contents of that folder — the contents, not the folder — into
+any web root and every page works. The only thing that would not come along
+is the enquiry form, which is Netlify's. On a host with PHP, the old
+`contact.php` handler is in this repo's history at commit `24e728e~1`.

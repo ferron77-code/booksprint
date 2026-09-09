@@ -13,6 +13,22 @@ body = phero(
     u'<a class="btn btn-p" href="tel:+13059698754">(305) 969-8754</a>'
     u'<a class="btn btn-s" href="mailto:info@elighting.org">info@elighting.org</a>')
 
+# ── the enquiry form ──────────────────────────────────────────────────
+# Netlify detects the form by reading the deployed HTML at deploy time, so a
+# site with no build step needs nothing beyond the markup: data-netlify plus
+# a hidden form-name that matches the form's name. Submissions land in the
+# site's Forms tab and can be forwarded to an address from there.
+#
+# It posts the ordinary way rather than over fetch. Staying on the page is
+# nicer, but a failed background request loses the enquiry with the visitor
+# none the wiser, and it stops working altogether if a script is blocked.
+# Success goes to thanks.html.
+#
+# This replaced contact.php, which Netlify cannot execute — it would have
+# served the source or a 404, and every enquiry sent from the live site
+# would have gone nowhere. check.py now fails the build if the wiring is
+# missing or a PHP handler creeps back in.
+
 body += u"""
 <section class="sec">
   <div class="wrap">
@@ -34,27 +50,13 @@ body += u"""
       <p class="lede">The more you can say about the space, the more useful the first call is. Nothing here is required except a way to reach you.</p>
     </div>
 
-    <div class="note rv" id="failed" hidden>
-      <span class="t">Not sent</span>
-      <p data-why="1">Please give us a name and an email address we can reply to.</p>
-      <p data-why="big">Those files were too large for the server to accept at all. Send them under 20&nbsp;MB in total, or email them straight to <a href="mailto:info@elighting.org">info@elighting.org</a>.</p>
-      <p data-why="size">The attachments came to more than 20&nbsp;MB. Send the most useful few, or email the rest to <a href="mailto:info@elighting.org">info@elighting.org</a>.</p>
-      <p data-why="type">One of those files is a type we do not accept &mdash; photos (JPEG, PNG, HEIC, WebP, GIF) and PDFs only.</p>
-      <p data-why="count">That is more than 8 files. Send the most useful ones and we will ask for the rest.</p>
-      <p data-why="upload">A file did not finish uploading, usually a dropped connection. Worth trying again.</p>
-      <p data-why="mail">The message could not be sent from the server.</p>
-      <p data-why="">Something in that did not go through.</p>
-      <p class="formnote">Either way you can call <a href="tel:+13059698754" style="color:var(--brand)">(305) 969-8754</a> and we will take the details down the old way.</p>
-    </div>
-
-    <div class="note rv" id="sent" hidden>
-      <span class="t">Thank you</span>
-      <p><b>Your enquiry is in.</b> We will get back to you shortly. If it is urgent, call <a href="tel:+13059698754" style="color:var(--brand)">(305) 969-8754</a>.</p>
-    </div>
-
-    <!-- The action below posts to contact.php, included in this folder.
-         Confirm the destination address in contact.php before go-live. -->
-    <form class="form rv" method="post" action="contact.php" enctype="multipart/form-data">
+    <!-- Netlify Forms: the data-netlify attribute and a matching hidden
+         form-name are the whole wiring. A plain POST rather than fetch, so
+         a blocked script cannot lose an enquiry. -->
+    <form class="form rv" name="enquiry" method="post" action="thanks.html"
+          data-netlify="true" data-netlify-honeypot="website"
+          enctype="multipart/form-data">
+      <input type="hidden" name="form-name" value="enquiry">
       <div class="f2">
         <label class="field"><span>Name <i>*</i></span>
           <input type="text" name="name" required autocomplete="name"></label>
@@ -83,12 +85,26 @@ body += u"""
       </div>
       <label class="field"><span>Tell us about it</span>
         <textarea name="message" placeholder="The space, the timeline, what is already there, what you want it to become."></textarea></label>
-      <label class="field"><span>Drawings, photos or specs</span>
-        <input type="file" name="files[]" id="files" multiple
+      <!-- Three inputs rather than one multiple: Netlify Forms takes a
+           single file per field, and a "multiple" input would quietly drop
+           everything after the first. The ceiling is Netlify's, not ours —
+           8 MB for the whole request, attachments and text together — so the
+           limit quoted here is what will actually go through rather than
+           what we would like to offer. -->
+      <div class="field">
+        <span id="fileslbl">Drawings, photos or specs</span>
+        <input type="file" name="file1" id="files"
                accept=".jpg,.jpeg,.png,.heic,.heif,.webp,.gif,.pdf,image/*,application/pdf"
-               aria-describedby="fileshint">
-        <small class="hint" id="fileshint">Photos of the space, a floor plan, a fixture schedule, a spec sheet &mdash; whatever you have. Up to 8 files, 10&nbsp;MB each, 20&nbsp;MB in total. JPEG, PNG, HEIC, WebP, GIF or PDF.</small>
-        <output class="filelist" for="files" aria-live="polite"></output></label>
+               aria-labelledby="fileslbl" aria-describedby="fileshint">
+        <input type="file" name="file2" id="file2"
+               accept=".jpg,.jpeg,.png,.heic,.heif,.webp,.gif,.pdf,image/*,application/pdf"
+               aria-label="Second file" aria-describedby="fileshint">
+        <input type="file" name="file3" id="file3"
+               accept=".jpg,.jpeg,.png,.heic,.heif,.webp,.gif,.pdf,image/*,application/pdf"
+               aria-label="Third file" aria-describedby="fileshint">
+        <small class="hint" id="fileshint">Photos of the space, a floor plan, a fixture schedule, a spec sheet &mdash; whatever you have. Up to three files, about 7&nbsp;MB in total, which is two or three photos off a phone. JPEG, PNG, HEIC, WebP, GIF or PDF. Got more than that, or something large? Email it to <a href="mailto:info@elighting.org">info@elighting.org</a> and we will match it to your enquiry.</small>
+        <output class="filelist" aria-live="polite"></output>
+      </div>
       <label class="field" style="position:absolute;left:-9999px" aria-hidden="true" tabindex="-1">
         <span>Leave this blank</span><input type="text" name="website" tabindex="-1" autocomplete="off"></label>
       <button class="btn btn-p" type="submit">Send enquiry</button>
@@ -111,37 +127,6 @@ body += u"""
     </dl>
   </div>
 </section>
-
-<script>
-/* contact.php redirects back here with the outcome in the query string.
-   Every message is written in the markup above and starts hidden, so this
-   only has to reveal the panel and the one line that applies — there is no
-   HTML built in JavaScript here, and nothing to escape. With no script at
-   all the visitor simply sees the form again, which is the old behavior
-   rather than a broken one. */
-(function () {
-  var q = location.search;
-  function show(n) {
-    if (!n) return;
-    n.hidden = false;
-    n.scrollIntoView({ block: "center" });
-  }
-  if (q.indexOf("sent=1") > -1) { show(document.getElementById("sent")); return; }
-  var m = q.match(/[?&]error=([a-z0-9]+)/);
-  if (!m) return;
-  var panel = document.getElementById("failed");
-  if (!panel) return;
-  var lines = panel.querySelectorAll("p[data-why]"), hit = null;
-  for (var i = 0; i < lines.length; i++) {
-    if (lines[i].getAttribute("data-why") === m[1]) { hit = lines[i]; }
-  }
-  if (!hit) hit = panel.querySelector('p[data-why=""]');
-  for (var j = 0; j < lines.length; j++) {
-    if (lines[j] !== hit) lines[j].parentNode.removeChild(lines[j]);
-  }
-  show(panel);
-})();
-</script>
 """
 
 # The contact details row gets a labeled "Follow" item, but only if there is
@@ -155,3 +140,46 @@ page("contact.html",
      "Contact — Worldwide Distributors",
      "Talk to Worldwide Distributors about lighting, electrical or construction in Florida. Call (305) 969-8754 or send a project enquiry.",
      body)
+
+
+# ══════════════════════════════════════════════════════════════ THANK YOU
+# Where Netlify sends a successful submission. A real page rather than an
+# inline note: it has its own address, so it survives a refresh and can be
+# used as a conversion goal later, and the back button does the sensible
+# thing. Kept out of the nav and out of the sitemap — nobody arrives here
+# except by sending the form.
+thanks = u"""
+<section class="sec" style="padding-top:clamp(90px,14vh,180px)">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="eyebrow">Enquiry received</p>
+      <h2 class="disp">Thank you.<br>It is in.</h2>
+      <p class="lede">Someone will come back to you shortly &mdash; usually the same working day, and by the next one at the latest. If it is urgent, call rather than wait.</p>
+      <div class="btns" style="margin-top:26px">
+        <a class="btn btn-p" href="tel:+13059698754">(305) 969-8754</a>
+        <a class="btn btn-s" href="index.html">Back to the site</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec-tight">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="eyebrow">While you wait</p>
+      <h2 class="disp">Anything else<br>worth sending</h2>
+    </div>
+    <dl class="rows rv">
+      <div class="row"><dt>More photos</dt><dd>If you had more than three, or something too large for the form, email them to <a href="mailto:info@elighting.org" style="color:var(--brand)">info@elighting.org</a> and we will put them with your enquiry.</dd></div>
+      <div class="row"><dt>Drawings</dt><dd>A lease plan, a survey or an architect's set, if one exists and you did not attach it.</dd></div>
+      <div class="row"><dt>Hours</dt><dd>Monday to Friday, 8am &ndash; 5pm. Messages left outside those hours are picked up the next morning.</dd></div>
+    </dl>
+  </div>
+</section>
+"""
+
+page("thanks.html",
+     "Thank you — Worldwide Distributors",
+     "Your enquiry has been received. Someone from Worldwide Distributors will be in touch shortly.",
+     thanks,
+     noindex=True)

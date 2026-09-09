@@ -286,7 +286,12 @@ def social(slug, title, desc):
     )
 
 
-def page(slug, title, desc, body):
+def page(slug, title, desc, body, noindex=False):
+    """noindex is for pages that exist only as the far side of an action —
+    the thank-you page after the enquiry form. There is nothing to find by
+    searching for one, a search result landing on it skips the form that is
+    the whole point, and it has no share card drawn for it either, so the
+    og block comes off with the same switch."""
     nav = "\n".join(
         '      <a href="%s"%s>%s</a>' % (h, ' aria-current="page"' if h == slug else "", t)
         for h, t in NAV
@@ -295,8 +300,10 @@ def page(slug, title, desc, body):
     # profile icons in the footer. Different jobs, similar names.
     foot = (FOOT.replace("{licences}", licence_line())
                 .replace("{social}", social_links()))
+    head_extra = ('<meta name="robots" content="noindex,nofollow">'
+                  if noindex else social(slug, title, desc))
     html = HEAD.format(title=title, desc=desc, nav=nav,
                        url=SITE_URL + "/" + slug,
-                       social=social(slug, title, desc)) + body + foot
+                       social=head_extra) + body + foot
     io.open(os.path.join(OUT, slug), "w", encoding="utf-8").write(html)
     return len(html)
