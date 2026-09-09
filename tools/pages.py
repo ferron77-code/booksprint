@@ -320,7 +320,7 @@ body += u"""
   <div class="wrap">
     <div class="head rv">
       <p class="eyebrow">Color temperature</p>
-      <h2 class="disp">Warm, or the<br>house looks like a car park</h2>
+      <h2 class="disp">Warm, or the<br>house looks like a parking lot</h2>
       <p class="lede">This is the single most common mistake in residential exteriors. Same fixture, same wattage: one reads as a home, the other reads as a loading dock.</p>
     </div>
     <div class="kelvin grid g2 rv" style="gap:0;background:none">
