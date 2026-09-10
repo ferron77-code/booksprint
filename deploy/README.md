@@ -19,14 +19,33 @@ Netlify then reported `DNS verification was successful`. The per-row "Pending
 DNS verification" labels on the domain list lagged behind that for a while and
 were not describing a real problem.
 
-**One thing to know if this ever looks broken again.** For a while after the
-cutover the old GoDaddy site kept appearing on the office machine while the
-phone showed the new one. That is a local DNS cache, and it is diagnosable
-without guessing: Netlify has no copy of the old site and cannot serve it, so
-seeing the old site proves the browser is still being handed GoDaddy's
-address. The worst a browser can get from Netlify is a certificate warning.
-Fix is `ipconfig /flushdns`, then `chrome://net-internals/#dns` → Clear host
-cache, then a full restart of the browser. Or wait out the TTL.
+**If a DNS change ever looks like it has not taken: check for a VPN first.**
+
+That is the whole lesson from this cutover. The old GoDaddy site kept coming
+up on the office machine for half an hour after the switch while a phone on
+mobile data showed the new one — and the cause was a VPN, whose provider's
+resolver was still serving the previous answer. Changing VPN server fixed it
+instantly. Nothing else would have: `ipconfig /flushdns` clears the Windows
+cache, and a VPN does not use the Windows cache. Incognito does not help
+either; it clears cookies, not DNS.
+
+The order to check, cheapest first: VPN, then `ipconfig /flushdns`, then
+Chrome's own two caches (`chrome://net-internals/#dns` → Clear host cache and
+`chrome://net-internals/#sockets` → Flush socket pools), then the router,
+then wait out the TTL.
+
+Two things make this diagnosable rather than guesswork:
+
+`ping worldwidedistributorsinc.com` shows the IP the machine is actually
+being given. During the confusion it answered 13.248.243.5, whose reverse DNS
+is awsglobalaccelerator.com — GoDaddy's Website Builder infrastructure — while
+every public resolver said 75.2.60.5. That gap is the entire diagnosis, and it
+takes one command.
+
+Netlify holds no copy of the old site and cannot serve it. So *seeing the old
+site is proof the browser never reached Netlify*. The worst Netlify can give a
+browser is a certificate warning. If you are looking at the old site, the
+problem is in front of the DNS, not behind it.
 
 ### Still to do
 
