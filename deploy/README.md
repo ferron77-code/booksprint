@@ -72,9 +72,19 @@ problem is in front of the DNS, not behind it.
       Once the certificate has issued, Options on the www row → Set as primary
       domain. Until then the page code and the host disagree about which
       hostname is canonical: harmless for days, worth not leaving for weeks.
-- [ ] **Forms → Form notifications → Email notification → info@elighting.org.**
-      Until this is set, enquiries arrive in the dashboard and nobody is told.
-      Send a real test through the form and confirm the mail lands.
+- [x] **Form notifications working end to end** — 2026-09-10. Notification
+      set to `info@elighting.org`; a live test reached Elizabeth's mailbox and
+      she replied, which also proves Proofpoint did not quarantine it. All
+      three checks pass: thank-you page, submission logged under `enquiry`,
+      email delivered and read.
+- [ ] **Check where a Reply to the notification actually goes.** Netlify sends
+      these from its own address. If the reply-to is not the submitter, then
+      hitting Reply on a customer's enquiry answers Netlify, not the customer,
+      and the enquiry is silently lost. The submitter's address is in the body
+      either way, so the fix may simply be telling whoever answers to copy it —
+      but this needs establishing once, deliberately: submit a test with a
+      distinguishable address in the Email field and have the recipient press
+      Reply and read the To: line before sending.
 - [ ] **Unpublish the GoDaddy Website Builder site** from this domain. It is
       no longer reachable, but leaving it attached invites a future editor to
       "fix" the DNS back.
