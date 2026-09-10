@@ -60,9 +60,15 @@ problem is in front of the DNS, not behind it.
 - [ ] **Unpublish the GoDaddy Website Builder site** from this domain. It is
       no longer reachable, but leaving it attached invites a future editor to
       "fix" the DNS back.
-- [ ] **301 `worldwidedistributors.co` and `elighting.org`** here. Website
-      forwarding only; both carry live email. NOT
-      `elightingindustries.com` — see the domain audit below.
+- [ ] **`elighting.org` — needs a decision before it is forwarded**, not just
+      a click. Its `www` is a live Duda site and the client does not know what
+      is on it. Website forwarding only if it goes ahead; the email is
+      unaffected either way. NOT `elightingindustries.com` — that is a live
+      Shopify store and the login has not been recovered. See the domain audit.
+- [x] **`worldwidedistributors.co` forwarded** — done 2026-09-10.
+- [x] **Cutover confirmed by the client**, 2026-09-10: refreshing the old
+      address lands on the new site.
+- [x] **Email address settled** — the site keeps `info@elighting.org`.
 
 The site is a folder of finished files. Netlify serves `site/` straight from
 this repo with no build step, and `netlify.toml` at the repo root carries the
@@ -242,11 +248,39 @@ forwards to `http://www.elighting.org`, and that www host is a CNAME to
 `s.dudaone.com` — a **live site built on Duda**. Forwarding the bare domain
 would send everyone who types "elighting.org" away from it.
 
-The question for the client, unanswered as of writing: is that Duda site
-current, is it being replaced by this one, or does nobody remember it exists?
-Three different answers, three different actions. Note also that the new site
-advertises `info@elighting.org`, so if that Duda site is the live brand site,
-the email choice on the new site deserves a second look too.
+The question for the client, still unanswered: is that Duda site current, is
+it being replaced by this one, or does nobody remember it exists? Asked on the
+2026-09-10 call, the answer was "I don't know." Nobody has evaluated it, so
+forwarding this domain would take down a site whose contents nobody has
+looked at. That is a decision, not a tidying-up step.
+
+**Do not confuse the two elighting domains.** On that call the Duda site was
+described as being on `elightingindustries.com`. It is not. Verified against
+public resolvers the same day:
+
+- **Duda is on `www.elighting.org`** — CNAME to `s.dudaone.com`. The apex
+  already forwards to it, so the Duda site *is* the live `elighting.org`
+  website.
+- **`elightingindustries.com` is Shopify** — `23.227.38.66`, `www` CNAME to
+  `shops.myshopify.com`, on Google Cloud nameservers with mail on
+  `hostedemail.com`. No Duda involved.
+
+They are different platforms on different registrars' nameservers, and the
+consequence of acting on the wrong one is the difference between hiding a
+brochure page and taking a store offline.
+
+**If `elighting.org` is forwarded, the email survives — but say why, not just
+that.** GoDaddy serves forwarding through `A` and `CNAME` records; `MX` is a
+different record type and forwarding does not modify it. So web forwarding and
+`info@elighting.org` are independent. The record that forwarding *does*
+overwrite is the `www` CNAME to `s.dudaone.com`, and that is the Duda site,
+not the mail. GoDaddy will warn about exactly that, and the warning is
+accurate.
+
+**`elightingindustries.com` cannot be touched yet regardless.** The Shopify
+login has not been recovered — "I'm still trying to get the login." It is a
+live store; it should not be forwarded, and no part of this project is blocked
+waiting for it.
 
 **Do not touch `elightingindustries.com`.** It resolves to Shopify, on Google's
 nameservers, with its own mail host. That is a running e-commerce site, not an
@@ -289,11 +323,26 @@ systems and neither knows about the other.
   means repointing live MX away from Proofpoint. If one inbox for both is
   wanted, forward `info@elighting.org` at the Proofpoint end instead.
 
-The only real decision is which address the **site advertises**. Both can
-receive regardless, so that is a branding question and it should not hold
-anything up. It currently advertises `info@elighting.org` — which, given the
-Duda site still live on that domain, is worth putting to the client together
-with the question about that site.
+**Decided on the call of 2026-09-10: the site keeps `info@elighting.org`.**
+Asked directly whether to move to a `worldwidedistributorsinc.com` address,
+the answer was "I would keep what we have right now." So nothing changes on
+the site — it already advertises that address — and nothing changes in DNS.
+
+Two things learned on that call that are worth having written down:
+
+- **`info@elighting.org` is GoDaddy's email**, which reconciles with the
+  Proofpoint MX above: `ppe-hosted.com` is Proofpoint Essentials, which
+  GoDaddy puts in front of the mailboxes it hosts. The client's own
+  description — "that's attached to GoDaddy" — is correct.
+- **The Workspace mailboxes on `worldwidedistributorsinc.com` are not for
+  customers.** There is `elizabeth@worldwidedistributorsinc.com`, described as
+  "just the admin one," created in order to set the domain up. Ariel has no
+  mailbox there at all. So do not route enquiries to that domain on the
+  assumption that someone is reading it.
+
+What must keep being paid for, then, is both the `elighting.org` registration
+**and** the GoDaddy email plan on it. Lose either and the address on every
+page of this site stops receiving.
 
 ## If it needs to move off Netlify
 
