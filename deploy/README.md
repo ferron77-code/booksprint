@@ -331,6 +331,84 @@ not a fact.
 **`ewaterindustries.com`** is also Shopify and is a different company. Nothing
 to do with this project.
 
+## The full `elighting.org` record set
+
+Read off the GoDaddy DNS Records page, 2026-09-10. 21 records, and they say
+more about this business than the domain audit did.
+
+| Type | Name | Data | What it is |
+|---|---|---|---|
+| A | `@` | `15.197.225.128`, `3.33.251.168` | GoDaddy forwarding service |
+| NS | `@` | `ns71/ns72.domaincontrol.com` | GoDaddy nameservers |
+| SOA | `@` | `ns71.domaincontrol.com` | — |
+| MX | `@` | `mx1/2/3-usg1.ppe-hosted.com` (0) | Proofpoint filtering |
+| TXT | `@` | `NETORGFT3014538.onmicrosoft.com` | **Microsoft 365 tenant** |
+| TXT | `@` | `v=spf1 include:_spf-usg1.ppe-hosted.com include:secureserver.net ~all` | SPF |
+| CNAME | `autodiscover` | `autodiscover.outlook.com` | M365 client auto-setup |
+| CNAME | `msoid` | `clientconfig.microsoftonline-p.net` | M365 sign-in |
+| CNAME | `lyncdiscover` | `webdir.online.lync.com` | Skype for Business / Teams |
+| CNAME | `sip` | `sipdir.online.lync.com` | Skype for Business / Teams |
+| SRV | `_sip._tls` | `100 1 443 sipdir.online.lync.com` | Skype for Business / Teams |
+| CNAME | `email` | `email.secureserver.net` | GoDaddy webmail shortcut |
+| CNAME | `www` | `s.dudaone.com` | **the Duda site** |
+| CNAME | `pay` | `paylinks.commerce.godaddy.com` | **GoDaddy Payments** |
+| CNAME | `ftp` | `elighting.org` | legacy, now aimed at a web forwarder |
+| CNAME | `_domainconnect` | `_domainconnect.gd.domaincontrol.com` | GoDaddy Domain Connect |
+
+### The email is Microsoft 365, more precisely than "GoDaddy email"
+
+The `NETORGFT…onmicrosoft.com` TXT is a Microsoft 365 tenant identifier, and
+the `NETORGFT` prefix is the signature of **M365 resold by GoDaddy**. Together
+with `autodiscover`, `msoid`, `lyncdiscover`, `sip` and the SRV record, this is
+a full Microsoft 365 mailbox setup with Proofpoint filtering in front of it —
+which is exactly how GoDaddy sells M365.
+
+So `info@elighting.org` is an Outlook/M365 mailbox, reachable at
+`outlook.office.com`, on a subscription that is separate from the Duda one.
+The earlier note called it "GoDaddy's email," which was right but too vague to
+act on. It matters because **the do-not-touch list is longer than MX and SPF**:
+deleting `autodiscover` breaks Outlook's automatic setup for every client, and
+the `sip`/`lyncdiscover`/SRV set is Teams federation.
+
+### There is a payments endpoint on this domain
+
+`pay` → `paylinks.commerce.godaddy.com` is **GoDaddy Payments payment links**.
+Someone set this domain up to take money at `pay.elighting.org`. Nobody
+mentioned it. There may be a GoDaddy Payments account with transaction history
+and live payment links already sitting on invoices or in sent email.
+
+This is directly relevant to the catalog project — see
+`docs/strategy/ecommerce-and-catalog.md`. It is also the **fourth** live thing
+found on a domain that was described as an old site: Shopify, Shopify, Duda,
+and now a payment endpoint.
+
+### What this means for forwarding — the useful part
+
+The apex `A` records **are already GoDaddy's forwarding service**. The bare
+domain does not need any record change to be forwarded; it is forwarded
+today, to `http://www.elighting.org`. Changing its destination is an edit on
+the **Forwarding** tab, not in the records table.
+
+Which makes a clean middle path available now:
+
+**Forward the bare `elighting.org` to this site, and leave the `www` row
+alone.** Someone typing "elighting.org" lands on the new site. Someone
+arriving from Google — which indexes the `www` host — still reaches the Duda
+catalog. Email is untouched either way, because forwarding writes `A` and
+`CNAME` records and never `MX` or `TXT`.
+
+That gets the brand consolidation without spending the catalog's rankings, and
+it is reversible in one click. The only irreversible move in this whole area
+remains overwriting `www → s.dudaone.com`, and there is no reason to do that
+until the catalog exists.
+
+### Three subscriptions on one domain
+
+Worth surfacing to the client as a set, because they are separate products and
+cancelling one does not affect the others: the **Microsoft 365** mailboxes, the
+**Duda** site, and quite possibly **GoDaddy Payments**. Only the Duda one is a
+candidate for cancelling, and only once its content is saved.
+
 ## Email on these domains
 
 Checked directly against public resolvers on 2026-09-10:

@@ -25,6 +25,21 @@ existed and splitting the brand's search presence across two stores.
 So the order is: get into Shopify → see what is in there → then choose a
 platform. Not the reverse.
 
+## There may already be a payments account
+
+`elighting.org` carries a `pay` CNAME to `paylinks.commerce.godaddy.com` —
+**GoDaddy Payments payment links**. Someone configured this domain to take
+money at `pay.elighting.org`, and nobody has mentioned it.
+
+Add it to the list of things to establish before building: is there a GoDaddy
+Payments account, does it have transaction history, and are there live payment
+links out on invoices or in sent email? If card payments are already being
+taken somewhere, that changes both the "catalog or store" question and who the
+merchant of record would be.
+
+Full record list and the rest of what it revealed:
+`deploy/README.md`, "The full `elighting.org` record set."
+
 ## Save the Duda content before anything else
 
 **This is the only step with no undo, and it does not depend on any decision
