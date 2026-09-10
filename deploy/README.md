@@ -248,11 +248,37 @@ forwards to `http://www.elighting.org`, and that www host is a CNAME to
 `s.dudaone.com` — a **live site built on Duda**. Forwarding the bare domain
 would send everyone who types "elighting.org" away from it.
 
-The question for the client, still unanswered: is that Duda site current, is
-it being replaced by this one, or does nobody remember it exists? Asked on the
-2026-09-10 call, the answer was "I don't know." Nobody has evaluated it, so
-forwarding this domain would take down a site whose contents nobody has
-looked at. That is a decision, not a tidying-up step.
+**That Duda site is not abandoned, and it is not small.** The host is blocked
+by this session's egress proxy, so it was never loaded directly — but it is
+indexed, with hand-written SEO titles on at least seven pages:
+
+| Page | Indexed title |
+|---|---|
+| `/` | Commercial, Residential, Hospitality Lighting \| LED Lighting |
+| `/about-us` | Commercial & Residential Lighting Solutions Provider |
+| `/products` | Products |
+| `/landscape-lighting` | Landscape Lighting Kits \| Uplights & Downlights |
+| `/studio-and-stage-lighting` | Studio & Stage Lighting Kits \| Outdoor Lighting |
+| `/matrix-page` | Services Area Lighting \| Studio Lighting |
+| `/contact` | Contact us \| LED Lighting |
+
+**This is why the domain must not simply be forwarded.** Those are
+*product-catalogue* pages — kits, uplights, downlights, studio and stage
+fixtures. The new site is a services-and-capability site: it has no products
+section and nothing equivalent to any of them. A 301 from seven ranking
+product pages onto a site with no matching content does not transfer their
+rankings; search engines treat a redirect to a non-equivalent page as a soft
+404 and the rankings are simply lost. Forwarding would take the eLighting
+brand's entire product-facing presence off the web in one click.
+
+The two sites are not duplicates competing for the same visitor. They are two
+halves of the business — the catalogue and the capability — and only one of
+them has been rebuilt. So the question for the client is not "shall we tidy
+this away", it is: **do the products come into the new site, or do both stay
+up?** Either answer is workable. Forwarding before that is decided is not.
+
+Asked on the 2026-09-10 call what was on this domain, the answer was "I don't
+know," so this needs putting to Ariel rather than to Elizabeth.
 
 **Do not confuse the two elighting domains.** On that call the Duda site was
 described as being on `elightingindustries.com`. It is not. Verified against
@@ -351,3 +377,37 @@ form. Drop the contents of that folder — the contents, not the folder — into
 any web root and every page works. The only thing that would not come along
 is the enquiry form, which is Netlify's. On a host with PHP, the old
 `contact.php` handler is in this repo's history at commit `24e728e~1`.
+
+## Details the old site carries that this one does not
+
+Turned up while establishing what is on `elighting.org`, all from the
+company's own existing pages and their Procore listing rather than from
+anything invented here. None of it has been applied — each needs a yes from
+the client first, and two of them are contradictions rather than additions.
+
+- **`(305) 969-8754` is confirmed.** It appears independently as the company
+  number, which matches what the client specified and what every page of the
+  new site shows. Nothing to change; worth knowing it was verified rather than
+  taken on trust.
+- **`(305) 969-8769` looks like a second line — the showroom.** It appears
+  against the 12130 SW 114th Place address. Not an error in either place; the
+  question is whether the new site should list both.
+- **The ZIP is 33176.** The new site shows the street and city but no ZIP.
+  Adding it is a small, real improvement for local search and maps.
+- **Hours disagree.** The old site says Mon–Fri 8:00am–4:00pm. The new site
+  says 8am–5pm, which is what the client specified. Plausibly the showroom
+  shuts at four while the office runs to five — but one of the two is wrong
+  and it should not be guessed at.
+- **The Procore listing reads "Worldwide Distributors Inc. dba Elighting"** and
+  names trades the new site does not mention: Electronic Security, Concrete,
+  Electronic Life Safety, Project Management and Coordination. Confirms the
+  dba, and suggests the capability list is narrower than the real one.
+- **"Over 30 years in the lighting industry"** is claimed on the old site.
+  That is the company's own prior marketing, not a verified fact, so it stays
+  off this site until Ariel confirms it. Noting it because the new site
+  deliberately makes no experience claim, and this is where one could come
+  from legitimately.
+- **There is a podcast episode about Ariel** — "Elighting: Lighting the Way |
+  How Ariel Rodriguez Built a Lighting Empire from the Ground Up," on The
+  Plant Movement Podcast. A real, citable third-party asset if the site ever
+  wants one.
