@@ -83,10 +83,18 @@ problem is in front of the DNS, not behind it.
       **Subdomains stays "Not set up"** so `www` keeps its CNAME to
       `s.dudaone.com` and the Duda catalog and its rankings are untouched.
       That pairing is the whole point; do not add a `www` row.
-- [ ] **`elighting.org` `www` — still needs a decision, not a click.** Only
-      once the catalog exists and can receive those seven product pages page
-      to page. NOT `elightingindustries.com` — a live Shopify store whose
-      login has not been recovered. See the domain audit.
+- [ ] **`elighting.org` `www` — forward it too. Decided 2026-09-10.** The
+      recommendation here was to keep the split until the catalog existed; the
+      client's decision is to forward everything now, and that is the
+      instruction. Subdomains → Add Forwarding → `www` →
+      `https://worldwidedistributorsinc.com`, permanent 301, VPN off. GoDaddy
+      will warn that it overwrites an existing record — accept it, that record
+      is the one being replaced.
+      **Rollback value, recorded before it is overwritten:**
+      `www  CNAME  s.dudaone.com.` (TTL 1 hour). Re-adding that record restores
+      the Duda site at that address.
+      Still NOT `elightingindustries.com` — a live Shopify store whose login
+      has not been recovered.
 - [x] **`worldwidedistributors.co` forwarded** — done 2026-09-10.
 - [x] **Cutover confirmed by the client**, 2026-09-10: refreshing the old
       address lands on the new site.

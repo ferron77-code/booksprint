@@ -40,6 +40,27 @@ merchant of record would be.
 Full record list and the rest of what it revealed:
 `deploy/README.md`, "The full `elighting.org` record set."
 
+## Decision, 2026-09-10: everything forwards
+
+The client's decision is to forward `www` as well as the apex, now, rather
+than waiting for the catalog. The concern below was raised and the decision
+reaffirmed, so this is the instruction and not an open question.
+
+**What that changes, and what it does not.** Overwriting the `www` CNAME makes
+the Duda site unreachable *at that address*. It does not delete anything: the
+pages still exist inside Duda and remain retrievable from the Duda dashboard
+for as long as the subscription is paid. The destructive step is cancelling
+that subscription, not the DNS change — and the DNS change is reversible by
+re-adding `www CNAME s.dudaone.com.`
+
+So the content-saving below stays on the list. It is no longer a precondition
+for forwarding; it is a precondition for **cancelling Duda**. Keep paying until
+the seven pages are out.
+
+The SEO cost is accepted: those pages will 301 onto a site with no products,
+so their rankings are spent rather than transferred, and the catalog will
+start from zero on search.
+
 ## Save the Duda content before anything else
 
 **This is the only step with no undo, and it does not depend on any decision
