@@ -1,5 +1,49 @@
 # Going live on worldwidedistributorsinc.com
 
+## Status: live since 2026-09-10
+
+The switch is done. `worldwidedistributorsinc.com` serves this site, confirmed
+from a phone on mobile data — a path sharing no cache with the office.
+
+Both GoDaddy records went in cleanly and were verified independently by
+resolving them from outside GoDaddy:
+
+    worldwidedistributorsinc.com        -> 75.2.60.5
+    www.worldwidedistributorsinc.com    -> 18.208.88.157, 98.84.224.111
+    worldwide-distributors.netlify.app  -> 18.208.88.157, 98.84.224.111
+
+The www addresses matching the netlify.app addresses exactly is the proof the
+CNAME resolves to the project rather than to something that merely answers.
+
+Netlify then reported `DNS verification was successful`. The per-row "Pending
+DNS verification" labels on the domain list lagged behind that for a while and
+were not describing a real problem.
+
+**One thing to know if this ever looks broken again.** For a while after the
+cutover the old GoDaddy site kept appearing on the office machine while the
+phone showed the new one. That is a local DNS cache, and it is diagnosable
+without guessing: Netlify has no copy of the old site and cannot serve it, so
+seeing the old site proves the browser is still being handed GoDaddy's
+address. The worst a browser can get from Netlify is a certificate warning.
+Fix is `ipconfig /flushdns`, then `chrome://net-internals/#dns` → Clear host
+cache, then a full restart of the browser. Or wait out the TTL.
+
+### Still to do
+
+- [ ] **Set `www` as the primary domain.** Netlify made the bare domain
+      primary and locks the change while a certificate request is in flight.
+      Once the certificate has issued, Options on the www row → Set as primary
+      domain. Until then the page code and the host disagree about which
+      hostname is canonical: harmless for days, worth not leaving for weeks.
+- [ ] **Forms → Form notifications → Email notification → info@elighting.org.**
+      Until this is set, enquiries arrive in the dashboard and nobody is told.
+      Send a real test through the form and confirm the mail lands.
+- [ ] **Unpublish the GoDaddy Website Builder site** from this domain. It is
+      no longer reachable, but leaving it attached invites a future editor to
+      "fix" the DNS back.
+- [ ] **301 `elighting.org` and `elightingindustries.com`** here. Website
+      forwarding only — do not touch `elighting.org`'s MX records.
+
 The site is a folder of finished files. Netlify serves `site/` straight from
 this repo with no build step, and `netlify.toml` at the repo root carries the
 settings so they are readable here rather than buried in a dashboard.
