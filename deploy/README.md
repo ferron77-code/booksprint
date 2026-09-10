@@ -380,10 +380,16 @@ is the enquiry form, which is Netlify's. On a host with PHP, the old
 
 ## Details the old site carries that this one does not
 
-Turned up while establishing what is on `elighting.org`, all from the
-company's own existing pages and their Procore listing rather than from
-anything invented here. None of it has been applied — each needs a yes from
-the client first, and two of them are contradictions rather than additions.
+**Reviewed and declined, 2026-09-10: "We're good with our site. Everything is
+accurate."** Nothing below was applied and nothing below should be applied
+without a fresh instruction. It is kept as a record of what was checked, so
+that finding these again later does not look like finding a defect.
+
+Where the two sites disagree — the closing time, most obviously — **this site
+is the correct one.** The old page is the stale copy.
+
+All of it came from the company's own existing pages and their Procore
+listing rather than from anything invented here.
 
 - **`(305) 969-8754` is confirmed.** It appears independently as the company
   number, which matches what the client specified and what every page of the
@@ -394,10 +400,9 @@ the client first, and two of them are contradictions rather than additions.
   question is whether the new site should list both.
 - **The ZIP is 33176.** The new site shows the street and city but no ZIP.
   Adding it is a small, real improvement for local search and maps.
-- **Hours disagree.** The old site says Mon–Fri 8:00am–4:00pm. The new site
-  says 8am–5pm, which is what the client specified. Plausibly the showroom
-  shuts at four while the office runs to five — but one of the two is wrong
-  and it should not be guessed at.
+- **Hours disagree, and 8am–5pm is right.** The old site says Mon–Fri
+  8:00am–4:00pm. Confirmed by the client that this site is accurate, so the
+  old page is simply out of date.
 - **The Procore listing reads "Worldwide Distributors Inc. dba Elighting"** and
   names trades the new site does not mention: Electronic Security, Concrete,
   Electronic Life Safety, Project Management and Coordination. Confirms the
