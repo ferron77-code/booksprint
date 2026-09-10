@@ -30,7 +30,7 @@ and not on this bill — noted only so it does not cause confusion later.
 
 | Service | What it serves | Cost | Keep? | Where to check |
 |---|---|---|---|---|
-| **Netlify** | The new site — all of it | **$0 expected.** Free tier; form submissions are free and unlimited on current plans | **Keep** | Netlify → Team → Billing |
+| **Netlify** | The new site — all of it | **$0 — confirmed.** Account is on a credit-based plan, where form submissions are free and unlimited | **Keep** | verified 2026-09-10 |
 | **Duda** | Was `www.elighting.org`. **Now unreachable** — that hostname forwards to the new site | confirm | **Cancel — after exporting the seven product pages.** They are the catalog's starting inventory and vanish with the subscription | Duda account billing |
 | **Shopify** | `elightingindustries.com` | confirm | **Cancel candidate — has never taken a single order** (client confirmed) | Shopify admin → Settings → Billing |
 | **GoDaddy Website Builder** | Was `worldwidedistributorsinc.com`. **Now unreachable** — last published Mar 2024 | confirm | **Cancel** | GoDaddy → My Products |
@@ -60,3 +60,47 @@ Mail is the one thing on this list that breaks silently and costs business.
 - **One thing must not be touched:** the Microsoft 365 mail on `elighting.org`, because `info@elighting.org` is the address on the whole new site.
 - **The Shopify login is the most valuable missing item.** It gates the catalog build, tidying that domain, and cancelling a charge that has returned nothing.
 - **Only one price here has been verified.** The rest need ten minutes across the billing pages above before any total is put in front of anyone.
+
+## Someone outside the business built these
+
+Two facts landed together on 2026-09-10 and they point the same way.
+
+**Elizabeth does not know the Shopify store or its domain exists.** She was
+not involved in setting it up.
+
+**The `elighting.org` site is on Duda, which is not sold to business owners.**
+It is a white-label platform sold to agencies and web professionals, who
+rebrand the whole product — Duda advertises white labeling covering everything
+"from the editor interface to client-facing communications." A business owner
+would never know they were on Duda; they would know they were "with [some web
+company]." Not recognising the name is the expected result, not an oversight.
+
+**So the likely shape of this: there is no Duda invoice.** There is an invoice
+from a web designer or marketing company who pays Duda, holds the login, and
+may well have built the Shopify store too. Cancelling goes through them, not
+through Duda.
+
+That makes both of these the fifth and sixth things on this estate that nobody
+in the company knew about — after the two Shopify stores, the Duda site itself,
+and the `pay.elighting.org` payments endpoint.
+
+### The question that probably unlocks it
+
+**Who built the eLighting website — a designer, an agency, an employee since
+departed?** One name likely produces the Duda login, possibly the Shopify
+credentials, and an explanation for charges nobody can place. Ask Ariel; this
+appears to predate Elizabeth.
+
+### Two consequences worth acting on
+
+**The bank statement stops being a nice-to-have.** If the Shopify charge is on
+their statement, they are paying monthly for something Elizabeth does not know
+exists. If it is *not* on their statement — and the store is serving pages, so
+someone is paying — then **a third party is funding and controlling a domain
+carrying this company's brand.** That is a business exposure to raise with
+Ariel, not a billing detail.
+
+**Shopify recovery may not be a password reset.** If Elizabeth is not the
+account owner, the reset mail goes to whoever is. That route is Shopify support
+with proof of ownership — business documents, domain control — and is worth
+starting before more weeks go into the login page.
