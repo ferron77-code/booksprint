@@ -280,6 +280,13 @@ up?** Either answer is workable. Forwarding before that is decided is not.
 Asked on the 2026-09-10 call what was on this domain, the answer was "I don't
 know," so this needs putting to Ariel rather than to Elizabeth.
 
+**Since noted, there is a second reason not to forward it.** Ariel wants a
+catalog or store built, and those `/products`, `/landscape-lighting` and
+`/studio-and-stage-lighting` pages are the seed content and the starting SEO
+for exactly that project. Switching them off before a replacement exists would
+discard the only asset the work begins with. See
+`docs/strategy/ecommerce-and-catalog.md`.
+
 **Do not confuse the two elighting domains.** On that call the Duda site was
 described as being on `elightingindustries.com`. It is not. Verified against
 public resolvers the same day:
