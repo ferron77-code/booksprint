@@ -23,10 +23,19 @@ OUT = "/home/user/booksprint/site"
 # Both should 301 here at launch rather than stay live, or the new site
 # starts from nothing while the old links keep pointing elsewhere.
 #
-# STILL TO CHECK AT DEPLOY: www versus apex. This has to match the host the
-# site is actually served from, or the canonical points at a redirect. One
-# line to change once that is known.
-SITE_URL = "https://www.worldwidedistributorsinc.com"
+# Settled 2026-09-10, at the deploy. Netlify made the bare domain the primary
+# when both were added and would not hand the title to www while it had a
+# certificate attempt in flight, so the code matches what the host actually
+# serves rather than the other way round. A canonical that points at a
+# redirect is worse than a less fashionable hostname.
+#
+# The cost of the bare domain, written down so it is not a mystery later: an
+# apex cannot use a CNAME, so GoDaddy holds Netlify's load-balancer IP as a
+# literal A record (75.2.60.5). If Netlify ever moves that address the site
+# goes dark with nothing in this repo to explain it. www would have followed
+# them automatically. If the site is ever unreachable and the deploy is
+# green, check that record first.
+SITE_URL = "https://worldwidedistributorsinc.com"
 SITE_URL_CONFIRMED = True
 
 # Per-page alt text for the share card. Describes the photograph, since that

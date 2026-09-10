@@ -5,37 +5,45 @@ this repo with no build step, and `netlify.toml` at the repo root carries the
 settings so they are readable here rather than buried in a dashboard.
 
 **Current address:** https://worldwide-distributors.netlify.app
-**Going to:** https://www.worldwidedistributorsinc.com
+**Going to:** https://worldwidedistributorsinc.com
 
 Every canonical tag, share-card URL, `sitemap.xml` and `robots.txt` is built
-from one string — `SITE_URL` in `tools/chrome.py`. It already says
-`https://www.worldwidedistributorsinc.com`, so pointing that domain at the
-site needs no code change. Pointing a *different* one does: change that line,
-re-run `tools/build.py`, and everything follows.
+from one string — `SITE_URL` in `tools/chrome.py`. Change that line, re-run
+`tools/build.py`, and everything follows.
 
-## Why www and not the bare domain
+## The bare domain, and the one thing it costs
 
-Netlify recommends a subdomain as the primary when DNS is hosted elsewhere.
-An apex domain (`worldwidedistributorsinc.com` with no `www`) cannot use a
-CNAME, so it has to resolve to a single load-balancer IP instead of being
-routed to the nearest edge — measurably slower, and it breaks if that IP ever
-changes. `www` gets a CNAME and the full CDN.
+Netlify made `worldwidedistributorsinc.com` the primary domain when both were
+added, and refused to hand the title to `www` while it had a certificate
+attempt in flight. Rather than leave a pending task nobody would remember,
+`SITE_URL` was pointed at the bare domain to match what the host actually
+serves. A canonical tag aimed at a redirect is worse than an unfashionable
+hostname. `www` still works and redirects here.
 
-The bare domain still works. It redirects to `www`, which Netlify does on its
-own once the primary domain is set.
+**The cost, written down so it is not a mystery in two years:** an apex domain
+cannot use a CNAME, so GoDaddy holds Netlify's load-balancer IP as a literal
+A record. If Netlify ever changes that address this site goes dark and nothing
+in the repo will explain why — the `www` version would have followed them
+automatically. **If the site is ever unreachable while the Netlify deploy is
+green, check that A record against Netlify's current published IP first.**
+
+Do not accept the **Set up Netlify DNS** offer in the domain Options menu. It
+moves DNS hosting off GoDaddy, which means recreating all thirteen records by
+hand at Netlify — including the five Google MX records this domain's email
+runs on. Nothing here is worth that risk.
 
 ## 1. Add the domain in Netlify
 
-Site configuration → Domain management → Add a domain.
+Site configuration → Domain management → Add a domain → a domain you own.
 
 1. Enter `www.worldwidedistributorsinc.com`.
-2. Netlify will offer to add `worldwidedistributorsinc.com` alongside it —
-   accept.
-3. Set **`www.worldwidedistributorsinc.com` as the primary domain.** This is
-   what makes Netlify redirect the bare domain to it rather than serving the
-   same site at two addresses, which splits the SEO between them.
+2. Netlify offers to add `worldwidedistributorsinc.com` alongside it — accept.
+3. Netlify will make the bare domain primary on its own. Leave it.
 
-Netlify will say DNS verification is pending. That is step 2.
+It will then say DNS verification is pending, and the HTTPS panel will show
+either a red certificate error or "Waiting on DNS propagation". Both are
+correct at this point: Netlify cannot get a certificate for a domain that is
+not pointing at it yet. It clears itself after step 2.
 
 ## 2. Point the DNS at GoDaddy
 
@@ -68,11 +76,11 @@ warning in the first hour.
 
 Then confirm all four of these:
 
-- `https://www.worldwidedistributorsinc.com` serves the site
-- `http://worldwidedistributorsinc.com` redirects to the `www` HTTPS address
+- `https://worldwidedistributorsinc.com` serves the site
+- `https://www.worldwidedistributorsinc.com` redirects to it
 - The padlock is there, with no mixed-content warning
-- `https://www.worldwidedistributorsinc.com/sitemap.xml` loads and its URLs
-  say `www.worldwidedistributorsinc.com`
+- `https://worldwidedistributorsinc.com/sitemap.xml` loads, and none of the
+  URLs in it carry a `www`
 
 ## 4. The enquiry form
 
@@ -109,7 +117,7 @@ every enquiry sent from the live site would have hit a 404.
 ## 5. The other two domains
 
 `elighting.org` and `elightingindustries.com` should 301 to
-`https://www.worldwidedistributorsinc.com` rather than stay up as separate
+`https://worldwidedistributorsinc.com` rather than stay up as separate
 sites. Two live sites for one company compete with each other in search, and
 every link either has ever earned is currently pointing at a dead end.
 
