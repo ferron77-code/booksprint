@@ -85,12 +85,14 @@ body += u"""
       </div>
       <label class="field"><span>Tell us about it</span>
         <textarea name="message" placeholder="The space, the timeline, what is already there, what you want it to become."></textarea></label>
-      <!-- Three inputs rather than one multiple: Netlify Forms takes a
-           single file per field, and a "multiple" input would quietly drop
-           everything after the first. The ceiling is Netlify's, not ours —
-           8 MB for the whole request, attachments and text together — so the
-           limit quoted here is what will actually go through rather than
-           what we would like to offer. -->
+      <!-- Five inputs rather than one multiple: Netlify Forms takes a single
+           file per field and would quietly drop everything after the first.
+
+           Five of them, and not three, because site.js resizes photos in the
+           browser before they are sent — a 10 MB phone photo lands at a few
+           hundred KB — so the 8 MB Netlify allows per submission stopped
+           being the thing that decides how many a customer may attach. What
+           it still decides is PDFs, which cannot be resized. -->
       <div class="field">
         <span id="fileslbl">Drawings, photos or specs</span>
         <input type="file" name="file1" id="files"
@@ -98,15 +100,33 @@ body += u"""
                aria-labelledby="fileslbl" aria-describedby="fileshint">
         <input type="file" name="file2" id="file2"
                accept=".jpg,.jpeg,.png,.heic,.heif,.webp,.gif,.pdf,image/*,application/pdf"
-               aria-label="Second file" aria-describedby="fileshint">
+               aria-label="Photo or file 2" aria-describedby="fileshint">
         <input type="file" name="file3" id="file3"
                accept=".jpg,.jpeg,.png,.heic,.heif,.webp,.gif,.pdf,image/*,application/pdf"
-               aria-label="Third file" aria-describedby="fileshint">
-        <small class="hint" id="fileshint">Photos of the space, a floor plan, a fixture schedule, a spec sheet &mdash; whatever you have. Up to three files, about 7&nbsp;MB in total, which is two or three photos off a phone. JPEG, PNG, HEIC, WebP, GIF or PDF. Got more than that, or something large? Email it to <a href="mailto:info@elighting.org">info@elighting.org</a> and we will match it to your enquiry.</small>
+               aria-label="Photo or file 3" aria-describedby="fileshint">
+        <input type="file" name="file4" id="file4"
+               accept=".jpg,.jpeg,.png,.heic,.heif,.webp,.gif,.pdf,image/*,application/pdf"
+               aria-label="Photo or file 4" aria-describedby="fileshint">
+        <input type="file" name="file5" id="file5"
+               accept=".jpg,.jpeg,.png,.heic,.heif,.webp,.gif,.pdf,image/*,application/pdf"
+               aria-label="Photo or file 5" aria-describedby="fileshint">
+        <small class="hint" id="fileshint">Photos of the space, a floor plan, a fixture schedule, a spec sheet &mdash; whatever you have. Up to five, and photos are resized as they are sent, so send them straight off your phone without worrying about the size. Drawings and PDFs go as they are: if one is bigger than about 7&nbsp;MB, email it to <a href="mailto:info@elighting.org">info@elighting.org</a> instead. JPEG, PNG, HEIC, WebP, GIF or PDF.</small>
         <output class="filelist" aria-live="polite"></output>
       </div>
       <label class="field" style="position:absolute;left:-9999px" aria-hidden="true" tabindex="-1">
         <span>Leave this blank</span><input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+      <!-- Shown only when the attachments will not fit. Rather than telling
+           someone with 25 MB of drawings to start again somewhere else, the
+           button opens their mail app with everything they have already typed
+           carried across, so the only thing left to do is attach the files.
+           site.js fills in the href and unhides this. -->
+      <div class="note" id="toobig" hidden>
+        <span class="t">Too large to send from here</span>
+        <p><b>Those attachments are over what the form can carry.</b> Nothing is lost &mdash; the button below opens an email with everything you have typed already filled in. Attach the files there and send.</p>
+        <div class="btns" style="margin-top:14px">
+          <a class="btn btn-p" id="mailover" href="mailto:info@elighting.org">Email it instead &rarr;</a>
+        </div>
+      </div>
       <button class="btn btn-p" type="submit">Send enquiry</button>
       <p class="formnote">Prefer to talk? Call <a href="tel:+13059698754" style="color:var(--brand)">(305) 969-8754</a>. We use what you send here to answer your enquiry, nothing else.</p>
     </form>

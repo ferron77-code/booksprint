@@ -301,49 +301,158 @@
   requestAnimationFrame(tick);
 
   /* ── enquiry attachments ───────────────────────────────────────────────
-     Lists what has been picked and totals it, so an over-size batch is
-     caught here rather than after a long upload on a phone.
+     Netlify caps a submission at 8 MB, text and files together, and the
+     upload gives up after thirty seconds. Neither is negotiable: it is a
+     technical limit, not a plan limit, so paying more does not move it.
 
-     The ceiling is Netlify's: 8 MB for the whole submission, attachments and
-     text together, and the upload gives up after thirty seconds. 7.5 MB of
-     files leaves room for the rest of the form and the multipart overhead.
-     Nothing here is a security control — it saves the visitor a round trip
-     and a rejection they would not understand, and that is all. */
+     A photo straight off a phone is 4032x3024 and eight to twelve megabytes,
+     and one of them alone is over the ceiling. But that size is resolution
+     nobody needs to look at a parking lot — the same picture at 2000px on
+     its long edge is indistinguishable on any screen it will be viewed on
+     and lands around half a megabyte. So the photos are resized here, in the
+     browser, before they are sent. The visitor picks a photo and it just
+     works; they never meet the limit.
+
+     What is NOT resized, and cannot be: PDFs, and any image the browser
+     cannot decode. Those pass through at full size and are still counted, so
+     the total check below runs on what will actually be sent rather than on
+     what was picked. With scripting off nothing is resized at all and the
+     originals go, which may be refused — the hint on the page states the real
+     limit for that reason rather than relying on this running. */
   (function () {
     var form = document.querySelector('form[name="enquiry"]');
     if (!form) return;
     var inputs = [].slice.call(form.querySelectorAll('input[type="file"]'));
     if (!inputs.length) return;
     var out = form.querySelector(".filelist");
-    var MAX_TOTAL = 7.5 * 1024 * 1024;
+    var MAX_TOTAL = 7.5 * 1024 * 1024;   /* leaves room for the text fields */
+    var EDGE = 2000;                     /* long edge after resizing */
+    var QUALITY = 0.82;
+    var shrunk = false;                  /* guards the second submit */
+    var panel = document.getElementById("toobig");
+    var link  = document.getElementById("mailover");
 
     function kb(n) {
       return n >= 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB";
     }
-    function check() {
-      var total = 0, rows = [];
-      inputs.forEach(function (inp) {
-        /* one file per input: Netlify Forms takes the first and drops the
-           rest, so the markup does not offer multiple */
-        var f = inp.files && inp.files[0];
-        if (!f) return;
-        total += f.size;
-        rows.push("<b>" + f.name.replace(/[<&]/g, "") + "</b> " + kb(f.size));
-      });
-      var over = total > MAX_TOTAL;
-      if (out) {
-        out.innerHTML = rows.length
-          ? rows.join("<br>") + "<br>" + rows.length
-            + (rows.length === 1 ? " file, " : " files, ") + kb(total)
-            + (over ? ' <span class="over">&mdash; that is over the 7 MB the form can carry.'
-                    + " Send the most useful one, or email them to info@elighting.org.</span>" : "")
-          : "";
-      }
-      return !over;
+    function picked() {
+      return inputs.map(function (i) { return i.files && i.files[0]; })
+                   .filter(Boolean);
     }
-    inputs.forEach(function (inp) { inp.addEventListener("change", check); });
+    function render(note) {
+      if (!out) return;
+      var fs = picked(), total = 0;
+      var rows = fs.map(function (f) {
+        total += f.size;
+        return "<b>" + f.name.replace(/[<&]/g, "") + "</b> " + kb(f.size);
+      });
+      out.innerHTML = rows.length
+        ? rows.join("<br>") + "<br>" + rows.length
+          + (rows.length === 1 ? " file, " : " files, ") + kb(total)
+          + (note || "")
+        : "";
+      return total;
+    }
+
+    /* Draw the image at a smaller size and re-encode. Anything that is not a
+       decodable image — a PDF, a HEIC the browser has no decoder for — comes
+       back untouched rather than failing the submit. */
+    function shrink(file) {
+      return new Promise(function (done) {
+        if (!/^image\//.test(file.type) || /svg/.test(file.type)) return done(file);
+        var url = URL.createObjectURL(file);
+        var img = new Image();
+        img.onload = function () {
+          URL.revokeObjectURL(url);
+          var w = img.naturalWidth, h = img.naturalHeight;
+          if (!w || !h) return done(file);
+          var scale = Math.min(1, EDGE / Math.max(w, h));
+          var cv = document.createElement("canvas");
+          cv.width = Math.round(w * scale);
+          cv.height = Math.round(h * scale);
+          cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height);
+          cv.toBlob(function (blob) {
+            /* keep whichever is smaller: a photo already under 2000px can
+               come back bigger after a re-encode */
+            if (!blob || blob.size >= file.size) return done(file);
+            var name = file.name.replace(/\.[^.]+$/, "") + ".jpg";
+            done(new File([blob], name, { type: "image/jpeg" }));
+          }, "image/jpeg", QUALITY);
+        };
+        img.onerror = function () { URL.revokeObjectURL(url); done(file); };
+        img.src = url;
+      });
+    }
+
+    /* An input's file list is read-only; DataTransfer is the way to put a
+       different File back into one. */
+    function replace(input, file) {
+      var dt = new DataTransfer();
+      dt.items.add(file);
+      input.files = dt.files;
+    }
+
+    /* When the attachments will not fit, the worst outcome is a dead end that
+       makes someone retype everything somewhere else. So hand them the email
+       already written: every field they filled in goes into the body, and the
+       only thing left to do is attach the files.
+
+       mailto: URLs get truncated by some mail clients past roughly two
+       thousand characters, so the long free-text field is capped rather than
+       risking the whole thing arriving cut in half. */
+    function offerEmail() {
+      if (!panel || !link) return;
+      var v = function (n) {
+        var el = form.elements[n];
+        return el && el.value ? String(el.value).trim() : "";
+      };
+      var lines = [
+        ["Name", v("name")], ["Company", v("company")],
+        ["Email", v("email")], ["Phone", v("phone")],
+        ["Project", v("kind")], ["Location", v("location")]
+      ].filter(function (r) { return r[1]; })
+       .map(function (r) { return r[0] + ": " + r[1]; });
+
+      var msg = v("message");
+      if (msg.length > 900) msg = msg.slice(0, 900) + "\u2026";
+      if (msg) lines.push("", msg);
+      lines.push("", "[Attach your photos or drawings to this email before sending.]");
+
+      link.href = "mailto:info@elighting.org"
+        + "?subject=" + encodeURIComponent("Project enquiry" + (v("name") ? " \u2014 " + v("name") : ""))
+        + "&body=" + encodeURIComponent(lines.join("\n"));
+      panel.hidden = false;
+      panel.scrollIntoView({ block: "center" });
+    }
+
+    inputs.forEach(function (inp) {
+      inp.addEventListener("change", function () {
+        shrunk = false;
+        if (panel) panel.hidden = true;
+        render();
+      });
+    });
+
     form.addEventListener("submit", function (e) {
-      if (!check()) { e.preventDefault(); if (out) out.scrollIntoView({ block: "center" }); }
+      if (shrunk) return;                       /* already done, let it go */
+      if (!picked().length) return;
+      e.preventDefault();
+      render(' <span class="over">&mdash; preparing\u2026</span>');
+
+      Promise.all(inputs.map(function (inp) {
+        var f = inp.files && inp.files[0];
+        return f ? shrink(f).then(function (out) { replace(inp, out); }) : null;
+      })).then(function () {
+        var total = render();
+        if (total > MAX_TOTAL) {
+          render(' <span class="over">&mdash; too large to send from here.</span>');
+          offerEmail();
+          return;
+        }
+        if (panel) panel.hidden = true;
+        shrunk = true;
+        form.submit();
+      });
     });
   })();
 
