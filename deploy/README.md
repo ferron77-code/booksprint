@@ -150,15 +150,27 @@ Then confirm all four of these:
 ## 4. The enquiry form
 
 The form uses **Netlify Forms**. Netlify finds it by reading the deployed
-HTML, so there is nothing to install — but two things still need doing in the
-dashboard, and until they are, submissions arrive and nobody is told:
+HTML, so there is nothing to install — but three things still need doing in
+the dashboard, and until they are, submissions arrive and nobody is told:
 
-1. **Forms → check `enquiry` is listed.** It appears after the first deploy
-   that includes it. If it is not there, the deploy has not picked up the
-   markup.
-2. **Forms → Form notifications → Add notification → Email notification.**
-   Send to `info@elighting.org`. Without this, submissions sit in the
-   dashboard silently.
+1. **Forms → Enable form detection.** This is off by default and it is the
+   one that will waste your afternoon. Correct markup is not enough: with
+   detection off, Netlify never looks. The page works, the thank-you page
+   works, and every submission goes nowhere.
+
+   **Enabling it does not find the existing form.** Netlify parses HTML at
+   deploy time, so a build made while detection was off stays unscanned.
+   Trigger a fresh deploy after enabling — Deploys → Trigger deploy, or push
+   anything.
+
+2. **Forms → check `enquiry` is listed.** After that redeploy it appears in
+   place of the setup pitch. If it does not, the markup is the problem and
+   check.py's form gate is the place to start.
+3. **Forms → Form notifications → Add notification → Email notification.**
+   Without this, submissions sit in the dashboard silently. Point it at an
+   address someone actually reads today rather than waiting on a decision
+   about which address the site should advertise — that is a branding
+   question and it should not hold up a live form.
 
 Send a real test submission and confirm the email arrives before telling the
 client the form works.
