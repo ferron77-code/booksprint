@@ -60,11 +60,15 @@ problem is in front of the DNS, not behind it.
 - [ ] **Unpublish the GoDaddy Website Builder site** from this domain. It is
       no longer reachable, but leaving it attached invites a future editor to
       "fix" the DNS back.
-- [ ] **`elighting.org` — needs a decision before it is forwarded**, not just
-      a click. Its `www` is a live Duda site and the client does not know what
-      is on it. Website forwarding only if it goes ahead; the email is
-      unaffected either way. NOT `elightingindustries.com` — that is a live
-      Shopify store and the login has not been recovered. See the domain audit.
+- [x] **`elighting.org` apex forwarded** — done 2026-09-10. The Domain row
+      reads `https://worldwidedistributorsinc.com`, permanent 301, and
+      **Subdomains stays "Not set up"** so `www` keeps its CNAME to
+      `s.dudaone.com` and the Duda catalog and its rankings are untouched.
+      That pairing is the whole point; do not add a `www` row.
+- [ ] **`elighting.org` `www` — still needs a decision, not a click.** Only
+      once the catalog exists and can receive those seven product pages page
+      to page. NOT `elightingindustries.com` — a live Shopify store whose
+      login has not been recovered. See the domain audit.
 - [x] **`worldwidedistributors.co` forwarded** — done 2026-09-10.
 - [x] **Cutover confirmed by the client**, 2026-09-10: refreshing the old
       address lands on the new site.
