@@ -83,7 +83,16 @@ problem is in front of the DNS, not behind it.
       **Subdomains stays "Not set up"** so `www` keeps its CNAME to
       `s.dudaone.com` and the Duda catalog and its rankings are untouched.
       That pairing is the whole point; do not add a `www` row.
-- [ ] **`elighting.org` `www` — forward it too. Decided 2026-09-10.** The
+- [x] **`elighting.org` `www` forwarded** — done 2026-09-10, verified from
+      Google, Cloudflare and Quad9: `www.elighting.org` now answers
+      `15.197.142.173, 3.33.152.147` (GoDaddy forwarding) and the
+      `s.dudaone.com` CNAME is gone. The Duda catalog is no longer reachable
+      at that address; its pages remain inside Duda while the subscription is
+      paid, so export them before cancelling.
+- [ ] **Correct the `www` forward to `https://`.** It saved as `http://`,
+      which makes `www.elighting.org → http://…  → https://…` a two-hop chain
+      with a plaintext middle. Pencil on the Subdomains row.
+- [ ] ~~**`elighting.org` `www` — forward it too. Decided 2026-09-10.**~~ The
       recommendation here was to keep the split until the catalog existed; the
       client's decision is to forward everything now, and that is the
       instruction. Subdomains → Add Forwarding → `www` →
