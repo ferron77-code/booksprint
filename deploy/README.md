@@ -19,6 +19,22 @@ Netlify then reported `DNS verification was successful`. The per-row "Pending
 DNS verification" labels on the domain list lagged behind that for a while and
 were not describing a real problem.
 
+**If anything on this project misbehaves inexplicably: check for a VPN
+first.** It has been the cause twice, wearing a different disguise each time.
+
+The second time was not DNS at all. Saving a form notification in the Netlify
+dashboard failed with *"We're having some trouble connecting you to Netlify.
+This error may be caused by an ad blocker or browser extension"* — a message
+that names two culprits and not the actual one. Turning the VPN off fixed it
+immediately. So the rule is broader than DNS: **a VPN can break Netlify
+dashboard writes**, and Netlify's own error text will send you hunting through
+extensions instead.
+
+Consequence worth acting on: the earlier refusal to change the primary domain
+was put down to Netlify locking that setting during certificate issuance,
+which is real behaviour — but it now has a second plausible cause. Retry it
+with the VPN off before concluding anything.
+
 **If a DNS change ever looks like it has not taken: check for a VPN first.**
 
 That is the whole lesson from this cutover. The old GoDaddy site kept coming
@@ -49,8 +65,10 @@ problem is in front of the DNS, not behind it.
 
 ### Still to do
 
-- [ ] **Set `www` as the primary domain.** Netlify made the bare domain
-      primary and locks the change while a certificate request is in flight.
+- [ ] **Set `www` as the primary domain — retry with the VPN off.** The
+      earlier refusal was attributed to Netlify locking the setting during
+      certificate issuance, but a VPN has since been shown to break Netlify
+      dashboard writes, so that diagnosis is no longer the only candidate.
       Once the certificate has issued, Options on the www row → Set as primary
       domain. Until then the page code and the host disagree about which
       hostname is canonical: harmless for days, worth not leaving for weeks.
