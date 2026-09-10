@@ -60,8 +60,9 @@ problem is in front of the DNS, not behind it.
 - [ ] **Unpublish the GoDaddy Website Builder site** from this domain. It is
       no longer reachable, but leaving it attached invites a future editor to
       "fix" the DNS back.
-- [ ] **301 `elighting.org` and `elightingindustries.com`** here. Website
-      forwarding only — do not touch `elighting.org`'s MX records.
+- [ ] **301 `worldwidedistributors.co` and `elighting.org`** here. Website
+      forwarding only; both carry live email. NOT
+      `elightingindustries.com` — see the domain audit below.
 
 The site is a folder of finished files. Netlify serves `site/` straight from
 this repo with no build step, and `netlify.toml` at the repo root carries the
@@ -178,20 +179,39 @@ few months; going over means submissions are rejected, not queued.
 `contact.php` is gone. It was the old handler and Netlify cannot run PHP —
 every enquiry sent from the live site would have hit a 404.
 
-## 5. The other two domains
+## 5. The other domains — audited 2026-09-10
 
-`elighting.org` and `elightingindustries.com` should 301 to
-`https://worldwidedistributorsinc.com` rather than stay up as separate
-sites. Two live sites for one company compete with each other in search, and
-every link either has ever earned is currently pointing at a dead end.
+Checked by resolving each one rather than assuming, because the assumption was
+wrong. Earlier notes in this file said to 301 `elightingindustries.com` here.
+Do not: it is a live Shopify store.
 
-In GoDaddy that is Domains → the domain → Forwarding → Forward domain →
-permanent (301), forward with masking **off**. Masking keeps the old address
-in the bar and hides the real one from search engines, which is the opposite
-of what is wanted here.
+| Domain | DNS at | What is on it | Email |
+|---|---|---|---|
+| `worldwidedistributors.co` | GoDaddy | parked / forwarding | Google Workspace |
+| `elighting.org` | GoDaddy, a different account | parked / forwarding | Proofpoint |
+| `elightingindustries.com` | Google / Squarespace | **Shopify** (23.227.38.66) | hostedemail.com |
+| `ewaterindustries.com` | GoDaddy | **Shopify** (23.227.38.32) | none |
 
-`elighting.org` carries their email, so forward the *website* only. Do not
-touch its MX records.
+**Forward these two.** GoDaddy → the domain → Forwarding → Add Forwarding →
+`https://www.worldwidedistributorsinc.com`, permanent (301), **masking off**.
+Masking keeps the old address in the browser bar and hides the real site from
+search engines, which is the opposite of the point.
+
+- `worldwidedistributors.co` — in Ariel's account, ready to go.
+- `elighting.org` — on GoDaddy nameservers but not in that product list, so it
+  is held under a different login. Find it first.
+
+Both carry live mail. Forward the **website** only and leave every MX record
+alone: `elighting.org` runs through Proofpoint, `.co` through Google.
+
+**Do not touch `elightingindustries.com`.** It resolves to Shopify, on Google's
+nameservers, with its own mail host. That is a running e-commerce site, not an
+abandoned old page, and forwarding it would take the store down. Whether it
+gets folded into this site is a business decision for the client, not a
+tidying-up step.
+
+**`ewaterindustries.com`** is also Shopify and is a different company. Nothing
+to do with this project.
 
 ## If it needs to move off Netlify
 
