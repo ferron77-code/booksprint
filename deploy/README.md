@@ -402,6 +402,20 @@ it is reversible in one click. The only irreversible move in this whole area
 remains overwriting `www → s.dudaone.com`, and there is no reason to do that
 until the catalog exists.
 
+**The trap when actually doing this.** GoDaddy's Forwarding tab has two
+separate areas: **Domain**, which forwards the bare hostname and needs no
+subdomain, and **Subdomains**, which forwards a named host and makes the
+Subdomain field mandatory. Open the Subdomains form by mistake and Save stays
+greyed out until something is typed in that box — and the obvious thing to
+type is `www`, which is exactly the one irreversible action here.
+
+The bare domain is **already forwarded**, so the correct control is the
+existing **Domain** row's *Edit*, not an *Add* anywhere. If no such row can be
+found, do nothing: the whole gain from this change is that typed traffic
+reaches the new site, which is a nice-to-have, while the cost of getting it
+wrong is the catalog and its rankings. Leaving the domain untouched costs
+nothing.
+
 ### Three subscriptions on one domain
 
 Worth surfacing to the client as a set, because they are separate products and
