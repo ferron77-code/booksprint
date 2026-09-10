@@ -178,15 +178,41 @@ client the form works.
 ### What the form can and cannot carry
 
 Netlify caps a submission at **8 MB total** — text and attachments together —
-and the upload gives up after 30 seconds. The form offers three file fields
-and warns the visitor at 7 MB, which leaves room for the rest.
+and the upload gives up after 30 seconds. That ceiling is the same on every
+plan; no amount of money raises it.
 
-It is three separate fields rather than one multi-select on purpose: Netlify
-Forms keeps **one file per field** and silently discards the rest. The page
-tells people to email anything bigger to `info@elighting.org`.
+So the size problem is solved before the upload rather than by paying for
+headroom. `site/assets/site.js` resizes each photo in the browser — 2000px
+long edge, JPEG quality 0.82 — and only then submits. Measured: five phone
+photos totalling 53.9 MB went over the wire as **1.51 MB**, all five parts
+intact and visually indistinguishable from the originals. That is why the
+form offers **five** file fields rather than three; the Netlify ceiling
+stopped being what decides how many a customer may attach.
 
-The free tier includes 100 submissions a month. Worth watching in the first
-few months; going over means submissions are rejected, not queued.
+It is five separate fields rather than one multi-select on purpose: Netlify
+Forms keeps **one file per field** and silently discards the rest.
+
+PDFs cannot be resized, so they still go as they are. When the total will not
+fit, the `#toobig` panel appears and its button opens the visitor's mail app
+with everything they have already typed carried across — so a set of 25 MB
+drawings does not mean starting again.
+
+### What the form costs
+
+Nothing, on Netlify's current credit-based plans: as of the April 2026 pricing
+update, **form submissions are free and unlimited** — no 100-a-month cap and
+no Forms Level tiers. Attachments are counted as form file-upload storage
+against the billing period, which at roughly 1.5 MB per enquiry is not a
+figure worth watching: twenty enquiries a month is about 30 MB.
+
+The old structure still applies to **legacy** plans — 100 submissions per site
+per month, and crossing it moves the site to Forms Level 1 at $19/month for
+1,000 submissions and 1 GB of uploads. Which of the two this account is on is
+visible under **Team → Billing**; check it once rather than assuming.
+
+(`docs.netlify.com` is blocked by this session's egress proxy, so the above
+came from search results rather than the docs themselves. The billing page in
+the dashboard is the authority.)
 
 `contact.php` is gone. It was the old handler and Netlify cannot run PHP —
 every enquiry sent from the live site would have hit a 404.
@@ -237,6 +263,37 @@ not a fact.
 
 **`ewaterindustries.com`** is also Shopify and is a different company. Nothing
 to do with this project.
+
+## Email on these domains
+
+Checked directly against public resolvers on 2026-09-10:
+
+| Domain | Mail runs on |
+|---|---|
+| `worldwidedistributorsinc.com` | Google Workspace — five `aspmx.l.google.com` MX |
+| `worldwidedistributors.co` | Google — five MX, `aspmx2/3.googlemail.com` among them |
+| `elighting.org` | **Proofpoint** — `mx1/2/3-usg1.ppe-hosted.com` |
+
+Two providers, two domains, no overlap. That answers the question of whether
+the company can have `info@worldwidedistributorsinc.com` *and* keep
+`info@elighting.org`: yes, and they do not compete. They are separate mail
+systems and neither knows about the other.
+
+- **`info@elighting.org` keeps working with nothing done to it.** It is on
+  Proofpoint and none of the website work touches mail.
+- **`info@worldwidedistributorsinc.com` needs no DNS change either.** Google
+  Workspace is already receiving on that domain. Adding the address is a
+  Workspace admin action, and it should be an **alias on an existing user**,
+  not a new user — aliases are free, users are per-seat.
+- **Do not** try to unify them by moving `elighting.org` into Workspace. That
+  means repointing live MX away from Proofpoint. If one inbox for both is
+  wanted, forward `info@elighting.org` at the Proofpoint end instead.
+
+The only real decision is which address the **site advertises**. Both can
+receive regardless, so that is a branding question and it should not hold
+anything up. It currently advertises `info@elighting.org` — which, given the
+Duda site still live on that domain, is worth putting to the client together
+with the question about that site.
 
 ## If it needs to move off Netlify
 
