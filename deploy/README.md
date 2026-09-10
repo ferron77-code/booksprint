@@ -188,27 +188,40 @@ Do not: it is a live Shopify store.
 | Domain | DNS at | What is on it | Email |
 |---|---|---|---|
 | `worldwidedistributors.co` | GoDaddy | parked / forwarding | Google Workspace |
-| `elighting.org` | GoDaddy, a different account | parked / forwarding | Proofpoint |
+| `elighting.org` | GoDaddy, the "E-Lighting" account | **Duda site** on the www version | Proofpoint |
 | `elightingindustries.com` | Google / Squarespace | **Shopify** (23.227.38.66) | hostedemail.com |
 | `ewaterindustries.com` | GoDaddy | **Shopify** (23.227.38.32) | none |
 
-**Forward these two.** GoDaddy → the domain → Forwarding → Add Forwarding →
-`https://www.worldwidedistributorsinc.com`, permanent (301), **masking off**.
-Masking keeps the old address in the browser bar and hides the real site from
-search engines, which is the opposite of the point.
+**`worldwidedistributors.co` is forwarded** as of 2026-09-10. Domain row →
+`worldwidedistributorsinc.com`, permanent 301, masking off. GoDaddy → the
+domain → DNS → Forwarding tab; never by hand in the records table, because
+forwarding touches the A record only and leaves mail alone. `.co` carries
+Google Workspace mail.
 
-- `worldwidedistributors.co` — in Ariel's account, ready to go.
-- `elighting.org` — on GoDaddy nameservers but not in that product list, so it
-  is held under a different login. Find it first.
+**`elighting.org` is NOT forwarded, and should not be without asking.** It was
+found in a third GoDaddy account, named "E-Lighting". The bare domain already
+forwards to `http://www.elighting.org`, and that www host is a CNAME to
+`s.dudaone.com` — a **live site built on Duda**. Forwarding the bare domain
+would send everyone who types "elighting.org" away from it.
 
-Both carry live mail. Forward the **website** only and leave every MX record
-alone: `elighting.org` runs through Proofpoint, `.co` through Google.
+The question for the client, unanswered as of writing: is that Duda site
+current, is it being replaced by this one, or does nobody remember it exists?
+Three different answers, three different actions. Note also that the new site
+advertises `info@elighting.org`, so if that Duda site is the live brand site,
+the email choice on the new site deserves a second look too.
 
 **Do not touch `elightingindustries.com`.** It resolves to Shopify, on Google's
 nameservers, with its own mail host. That is a running e-commerce site, not an
 abandoned old page, and forwarding it would take the store down. Whether it
 gets folded into this site is a business decision for the client, not a
 tidying-up step.
+
+**The pattern here is worth naming.** Three of the four domains turned out to
+have something live on them — Shopify, Shopify, Duda — after being described
+as old sites to redirect. This company has more websites than anyone
+volunteered. Resolve a domain and look at what answers before touching it; the
+instruction "the old domains should point at the new site" is a hypothesis,
+not a fact.
 
 **`ewaterindustries.com`** is also Shopify and is a different company. Nothing
 to do with this project.
