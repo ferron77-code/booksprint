@@ -25,6 +25,47 @@ existed and splitting the brand's search presence across two stores.
 So the order is: get into Shopify → see what is in there → then choose a
 platform. Not the reverse.
 
+## Save the Duda content before anything else
+
+**This is the only step with no undo, and it does not depend on any decision
+being made first.** Copy the content off those seven pages — product lists,
+descriptions, images, copy — and commit it here.
+
+The domain can be forwarded and un-forwarded. Rankings can be lost and
+rebuilt, slowly. But the Duda subscription is presumably being paid monthly,
+and the moment it lapses those pages are gone. They are the starting inventory
+for this project; losing them means writing from scratch a catalog that
+already existed.
+
+Note also that **cancelling Duda and forwarding the domain are two separate
+actions.** Stopping the subscription is where any cost saving actually comes
+from, and it takes the pages down on its own — at which point forwarding is
+correct, because it would then be redirecting a dead page rather than a live
+one. The sequence that loses least:
+
+1. Copy the content out.
+2. Let the Duda subscription lapse.
+3. Leave the domain unforwarded meanwhile. Nothing breaks; the email is
+   unaffected either way.
+4. Once the catalog is live, map `elighting.org` into it **page to page** —
+   `/landscape-lighting` onto the new landscape page, not onto the homepage.
+   That is where the rankings transfer instead of evaporating, and it is only
+   available if the catalog exists first.
+
+### On "has it ever produced leads"
+
+Worth being careful with the answer to this, because the data to support it
+does not exist. Leads from that site arrived as email to `info@elighting.org`
+or as phone calls, indistinguishable from any other enquiry. Nobody attributes
+phone calls to a website without setting that up first, so the honest answer
+will be a guess in the direction of "not really." *We cannot see any leads* and
+*it produces no leads* are different claims.
+
+Better sources than recollection: the **GoDaddy Conversations inbox** (16
+messages, 2 in the last 30 days as of writing — these may themselves be the
+answer), **Duda's built-in visitor stats**, and Google Search Console if it was
+ever connected.
+
 ## The integration question is really the address
 
 "Integrate it into this website" resolves to one of three URL shapes, and the
