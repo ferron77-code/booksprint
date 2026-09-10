@@ -40,6 +40,45 @@ merchant of record would be.
 Full record list and the rest of what it revealed:
 `deploy/README.md`, "The full `elighting.org` record set."
 
+## The Shopify store has never taken an order
+
+Confirmed by the client on the 2026-09-10 call: `elightingindustries.com` has
+never produced a single order.
+
+**What that settles.** The catalog is a **new build, not a migration** — there
+is no order history, customer list or working sales operation to carry across,
+so the earlier "migrate or build" question resolves to build. It also removes
+the concern about breaking a live checkout or abandoned-cart links; there is no
+transaction flow to disturb.
+
+More usefully, it is strong evidence for the **catalog-with-quote-requests**
+shape over a checkout. A real Shopify store with a real cart has been live on
+this brand and taken zero orders in its lifetime. Building a second checkout
+and expecting a different result needs a reason, and "we already tried that"
+is a hard fact to argue with. The site's own words remain the better read of
+the business: fixtures sourced at distributor pricing and handed over, which
+is a quote, not a shelf price.
+
+**What it does not settle — and this is the part to hold onto.** It says
+nothing about the DNS hazard. GoDaddy forwarding would still migrate the
+domain off Google Cloud DNS and discard the zone, MX record included. "No
+orders" is about sales; the risk was always the mail. Do not read one as
+permission for the other.
+
+**The question that would settle it:** does anyone actually use an
+`@elightingindustries.com` email address? There is an MX record pointing at
+`hostedemail.com`, so a mailbox was set up at some point. If nobody uses it,
+the zone is worthless and the domain becomes genuinely free to repoint. If
+someone does, the zone has to be reproduced before anything moves. That is a
+far more answerable question than "did the site produce leads," and it is the
+one to put to Elizabeth next.
+
+**And there is probably money leaking.** A Shopify store that is still serving
+pages is almost certainly still on a paid monthly plan. Nothing has come back
+from it, ever. Recovering that login is no longer just housekeeping for the
+catalog — it likely stops a recurring charge. Worth checking the actual billing
+amount once inside.
+
 ## Decision, 2026-09-10: everything forwards
 
 The client's decision is to forward `www` as well as the apex, now, rather
