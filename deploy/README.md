@@ -354,10 +354,38 @@ login has not been recovered — "I'm still trying to get the login." It is a
 live store; it should not be forwarded, and no part of this project is blocked
 waiting for it.
 
-**Do not touch `elightingindustries.com`.** It resolves to Shopify, on Google's
-nameservers, with its own mail host. That is a running e-commerce site, not an
-abandoned old page, and forwarding it would take the store down. Whether it
-gets folded into this site is a business decision for the client, not a
+**Do not touch `elightingindustries.com` — and specifically, do not use
+GoDaddy forwarding on it.** Verified 2026-09-10:
+
+```
+elightingindustries.com       NS   ns-cloud-c1..c4.googledomains.com
+elightingindustries.com       A    23.227.38.66            (Shopify)
+elightingindustries.com       MX   mx.…cust.b.hostedemail.com
+www.elightingindustries.com   CNAME shops.myshopify.com.
+```
+
+**It is on Google Cloud DNS, not GoDaddy.** That turns the notice in GoDaddy's
+forwarding dialog — *"We'll automatically update your domain to GoDaddy
+default nameservers if it's not currently using our nameservers"* — from a
+harmless line into a destructive one. On `elighting.org` it did nothing,
+because that domain was already on GoDaddy's nameservers. Here it would
+migrate the domain and **discard the whole Google Cloud DNS zone**, including
+that MX record and every TXT, DKIM and verification record in it that nobody
+has ever looked at. The email on this domain would stop, with no copy of the
+zone to restore from.
+
+So the three clicks that worked twice on `elighting.org` do something entirely
+different here. This is a mechanism problem, not a matter of judgement.
+
+**The correct tool is Shopify's own admin** — Settings → Domains, where the
+domain can be removed or redirected without touching DNS or MX at all. That
+needs the Shopify login, which has not been recovered, so this is the second
+thing waiting on that one credential (the first being the catalog).
+
+It is also a running e-commerce site, so forwarding it would break bookmarks,
+product links in sent email, order-confirmation links and any ad or Shopping
+feed pointing at it. Whether it gets folded into this site is a business
+decision for the client, not a
 tidying-up step.
 
 **The pattern here is worth naming.** Three of the four domains turned out to
