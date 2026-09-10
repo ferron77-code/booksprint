@@ -23,19 +23,21 @@ OUT = "/home/user/booksprint/site"
 # Both should 301 here at launch rather than stay live, or the new site
 # starts from nothing while the old links keep pointing elsewhere.
 #
-# Settled 2026-09-10, at the deploy. Netlify made the bare domain the primary
-# when both were added and would not hand the title to www while it had a
-# certificate attempt in flight, so the code matches what the host actually
-# serves rather than the other way round. A canonical that points at a
-# redirect is worse than a less fashionable hostname.
+# Settled 2026-09-10, at the deploy: www, with the bare domain redirecting to
+# it. Netlify made the bare domain primary when both were added and would not
+# hand the title over while a certificate attempt was in flight — that attempt
+# cannot succeed before DNS points at Netlify, and while it runs it locks
+# custom domain changes. Once it finished failing the option came back.
 #
-# The cost of the bare domain, written down so it is not a mystery later: an
-# apex cannot use a CNAME, so GoDaddy holds Netlify's load-balancer IP as a
-# literal A record (75.2.60.5). If Netlify ever moves that address the site
-# goes dark with nothing in this repo to explain it. www would have followed
-# them automatically. If the site is ever unreachable and the deploy is
-# green, check that record first.
-SITE_URL = "https://worldwidedistributorsinc.com"
+# Both records get created in GoDaddy either way, so the choice is only about
+# which address dies if Netlify ever moves the load-balancer IP that the apex
+# A record has to hold literally. With www primary, a stale IP costs the bare
+# domain and www carries on via its CNAME. With the apex primary, a stale IP
+# is the whole site. Same risk, smaller blast radius.
+#
+# If the site is ever unreachable while the deploy is green, that A record is
+# the first thing to check.
+SITE_URL = "https://www.worldwidedistributorsinc.com"
 SITE_URL_CONFIRMED = True
 
 # Per-page alt text for the share card. Describes the photograph, since that

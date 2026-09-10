@@ -5,32 +5,31 @@ this repo with no build step, and `netlify.toml` at the repo root carries the
 settings so they are readable here rather than buried in a dashboard.
 
 **Current address:** https://worldwide-distributors.netlify.app
-**Going to:** https://worldwidedistributorsinc.com
+**Going to:** https://www.worldwidedistributorsinc.com
 
 Every canonical tag, share-card URL, `sitemap.xml` and `robots.txt` is built
 from one string — `SITE_URL` in `tools/chrome.py`. Change that line, re-run
 `tools/build.py`, and everything follows.
 
-## The bare domain, and the one thing it costs
+## www, and the one thing the bare domain costs
 
-Netlify made `worldwidedistributorsinc.com` the primary domain when both were
-added, and refused to hand the title to `www` while it had a certificate
-attempt in flight. Rather than leave a pending task nobody would remember,
-`SITE_URL` was pointed at the bare domain to match what the host actually
-serves. A canonical tag aimed at a redirect is worse than an unfashionable
-hostname. `www` still works and redirects here.
+Both records get created in GoDaddy either way, so which domain is primary is
+not about what visitors can reach — both work. It decides which address dies
+if Netlify ever moves the load-balancer IP that an apex A record has to hold
+as a literal number. An apex cannot use a CNAME; www can.
 
-**The cost, written down so it is not a mystery in two years:** an apex domain
-cannot use a CNAME, so GoDaddy holds Netlify's load-balancer IP as a literal
-A record. If Netlify ever changes that address this site goes dark and nothing
-in the repo will explain why — the `www` version would have followed them
-automatically. **If the site is ever unreachable while the Netlify deploy is
-green, check that A record against Netlify's current published IP first.**
+- **www primary:** a stale IP costs the bare domain. www carries on via its
+  CNAME, which follows Netlify automatically.
+- **apex primary:** a stale IP is the whole site.
+
+Same risk either way, much smaller blast radius with www. **If the site is
+ever unreachable while the Netlify deploy is green, check that A record
+against Netlify's current published IP before anything else.**
 
 Do not accept the **Set up Netlify DNS** offer in the domain Options menu. It
 moves DNS hosting off GoDaddy, which means recreating all thirteen records by
 hand at Netlify — including the five Google MX records this domain's email
-runs on. Nothing here is worth that risk.
+runs on. The routing gain is not worth putting their email through that.
 
 ## 1. Add the domain in Netlify
 
@@ -38,12 +37,14 @@ Site configuration → Domain management → Add a domain → a domain you own.
 
 1. Enter `www.worldwidedistributorsinc.com`.
 2. Netlify offers to add `worldwidedistributorsinc.com` alongside it — accept.
-3. Netlify will make the bare domain primary on its own. Leave it.
+3. Netlify will make the **bare** domain primary on its own. Change it:
+   Options on the www row → **Set as primary domain**.
 
-It will then say DNS verification is pending, and the HTTPS panel will show
-either a red certificate error or "Waiting on DNS propagation". Both are
-correct at this point: Netlify cannot get a certificate for a domain that is
-not pointing at it yet. It clears itself after step 2.
+Expect that to be refused at first. Netlify locks custom domain changes while
+a certificate attempt is in flight, and the first attempt cannot succeed —
+DNS is still pointing at GoDaddy. Wait for it to finish failing and the option
+comes back. Meanwhile the HTTPS panel shows a red certificate error, then
+"Waiting on DNS propagation". Both are correct at this stage.
 
 ## 2. Point the DNS at GoDaddy
 

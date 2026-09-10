@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://worldwidedistributorsinc.com/sitemap.xml
+Sitemap: https://www.worldwidedistributorsinc.com/sitemap.xml
