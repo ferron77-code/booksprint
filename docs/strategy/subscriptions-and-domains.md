@@ -104,3 +104,26 @@ Ariel, not a billing detail.
 account owner, the reset mail goes to whoever is. That route is Shopify support
 with proof of ownership — business documents, domain control — and is worth
 starting before more weeks go into the login page.
+
+## Delivering these to a client
+
+**Claude artifact links do not open for someone without a Claude account.**
+Established the hard way, 2026-09-10. So the rule for anything going to Ariel,
+Elizabeth or any customer is:
+
+- **Client-facing → PDF.** Always. It opens for everyone, on any device, gets
+  filed and forwarded, and reads as a document from the practice rather than a
+  tool's output.
+- **Internal / for Ferron → artifact link.** Fine for anyone with Claude, and it
+  updates in place while a document is still changing.
+- **Never send raw HTML.** Mail clients block or strip it, Gmail will not
+  preview it, and phones download rather than open it.
+
+One caveat on PDFs generated in the session container: **`fonts.googleapis.com`
+is blocked by the egress proxy there**, so a PDF rendered in-session falls back
+to whatever is installed locally — Liberation Sans and DejaVu Sans Mono, aliased
+onto the intended families so the layout still holds. Printing the same page
+from a normal browser gets the real typefaces, because that machine can reach
+Google Fonts. For a document where the typography matters, print it from the
+browser; for one that just needs to be correct and legible, the in-session
+render is fine.
