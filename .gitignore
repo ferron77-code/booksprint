@@ -200,3 +200,11 @@ dist
 
 ### Packaged skills (build artifacts, regenerate with package_skill.py)
 *.skill
+
+# scroll-craft skill build output (.claude/skills/scroll-craft). A single
+# build with video legs is hundreds of MB; never commit it.
+builds/
+lab/
+*.mp4
+*.mov
+*.webm
