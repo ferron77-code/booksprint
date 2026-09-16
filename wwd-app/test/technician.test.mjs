@@ -112,7 +112,7 @@ function mockRoute(route) {
 
   if (method === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } });
   if (p === '/auth/v1/token') {
-    if (body && body.password === 'fixture-4386' && body.email === 'cheo@wwdi.local') {
+    if (body && body.password === 'test-pass-0000' && body.email === 'cheo@wwdi.local') {
       return json(200, { access_token: token(), token_type: 'bearer', expires_in: 3600,
         expires_at: Math.floor(Date.now() / 1000) + 3600, refresh_token: 'r1',
         user: { id: CHEO.auth, aud: 'authenticated', role: 'authenticated', email: 'cheo@wwdi.local',
@@ -210,7 +210,7 @@ try {
   ok((await page.textContent('#s_err')).includes('Wrong'), 'bad password gives a plain message');
   eq(find('POST', '/auth/v1/token')[0].body.email, 'cheo@wwdi.local', 'email is trimmed and lowercased');
 
-  await page.fill('#s_pass', 'fixture-4386');
+  await page.fill('#s_pass', 'test-pass-0000');
   await page.click('#s_go');
   await page.waitForSelector('#signin[hidden]', { state: 'attached' });
   await page.waitForSelector('.job[data-i]');
@@ -464,7 +464,7 @@ try {
   eq(rows, [], 'session token removed from the phone');
 
   console.log('\n-- session expiry: told plainly, queue kept');
-  await page.fill('#s_email', 'cheo@wwdi.local'); await page.fill('#s_pass', 'fixture-4386'); await page.click('#s_go');
+  await page.fill('#s_email', 'cheo@wwdi.local'); await page.fill('#s_pass', 'test-pass-0000'); await page.click('#s_go');
   await page.waitForSelector('.job[data-i]');
   await page.evaluate(() => document.body.classList.add('offline'));
   await page.click('.job[data-i="0"]');
