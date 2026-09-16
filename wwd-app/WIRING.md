@@ -18,7 +18,8 @@ technician preview stopped running on hardcoded arrays.
 | `technician/config.js` | Project URL, anon key, bucket name. **The anon key is not filled in.** |
 | `technician/vendor/supabase.js` | supabase-js 2.116.0, vendored. A field app must not depend on a CDN being reachable at load time. |
 | `build-preview.mjs` | `node build-preview.mjs` inlines everything into `technician-preview.html`. |
-| `04-views-and-storage.sql` | Migration. Two gaps, described below. Run it. |
+| `02b-fix-stage-trigger.sql` | Already applied. Kept here so the run order is complete: 00, 01, 02, 02b, 03, 04. |
+| `04-views-and-storage.sql` | Migration. Two gaps, described below. Not yet run. |
 | `test/technician.test.mjs` | Playwright test of the wiring against a fake Supabase. 65 checks. |
 
 ## Before it will run: three things
@@ -28,9 +29,11 @@ technician preview stopped running on hardcoded arrays.
    then the sign-in screen says the app is not set up. Never the service
    role key: it bypasses every policy, and the key ships in the page.
 
-2. **Run `02-auth-users.sql` and `03-test-data.sql`** if they have not
-   been run (HANDOFF.md says to check, not assume). Without 02 nobody
-   can sign in; without 03 Cheo has no jobs to see.
+2. **Migrations 02, 02b and 03 are applied** to the live project as of
+   16 Sep. 02b splits the stage trigger so the history row is written
+   after the work order row exists. The app's stage writes go through
+   `apply_synced_stage`, which 02b does not touch, so nothing in the
+   app depends on which version of the trigger is installed.
 
 3. **Run `04-views-and-storage.sql`.** The app works for reads and
    typed notes without it, but every photo, voice recording and
