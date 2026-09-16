@@ -242,6 +242,14 @@ textarea:focus{outline:2px solid var(--blue-soft);border-color:var(--blue)}
 .sbox input{width:100%;border:1px solid var(--line);border-radius:8px;padding:13px;
   font:inherit;font-size:16px;min-height:48px;background:#fff}
 .sbox input:focus{outline:2px solid var(--blue-soft);border-color:var(--blue)}
+.pwfield{position:relative}
+.pwfield input{padding-right:46px}
+.pwtoggle{position:absolute;top:0;bottom:0;right:0;width:44px;display:flex;align-items:center;
+  justify-content:center;background:none;border:0;padding:0;margin:0;cursor:pointer;color:var(--mute)}
+.pwtoggle:focus-visible{outline:2px solid var(--blue-soft);border-radius:8px}
+.pwtoggle .eyeoff{display:none}
+.pwtoggle.on .eye{display:none}
+.pwtoggle.on .eyeoff{display:block}
 .sbox .err{background:#FBE9E9;color:#9B1C1C;padding:10px 12px;border-radius:8px;
   font-size:14.5px;margin-top:12px;font-weight:600}
 .sbox .err[hidden]{display:none}

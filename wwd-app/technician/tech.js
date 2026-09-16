@@ -659,7 +659,7 @@ const T = {
         kind_title:'What is this photo?', k_before:'Before', k_after:'After', k_receipt:'Receipt', k_other:'Other',
         a_sent:'sent', a_queued:'queued', a_failed:'not sent',
         signin_sub:'Use the sign-in on your card.', email:'Sign-in', password:'Password',
-        signin_btn:'Sign in', signing:'Signing in…',
+        signin_btn:'Sign in', signing:'Signing in…', show_pw:'Show password', hide_pw:'Hide password',
         err_creds:'Wrong sign-in or password.', err_net:'No signal. Connect to sign in the first time.',
         err_roster:'This sign-in is not on the roster. Tell Charlie.',
         err_expired:'Your session expired. Sign in again — nothing has been lost.',
@@ -702,7 +702,7 @@ const T = {
         kind_title:'¿Qué es esta foto?', k_before:'Antes', k_after:'Después', k_receipt:'Recibo', k_other:'Otro',
         a_sent:'enviado', a_queued:'en cola', a_failed:'no enviado',
         signin_sub:'Use el usuario de su tarjeta.', email:'Usuario', password:'Contraseña',
-        signin_btn:'Iniciar sesión', signing:'Iniciando…',
+        signin_btn:'Iniciar sesión', signing:'Iniciando…', show_pw:'Mostrar contraseña', hide_pw:'Ocultar contraseña',
         err_creds:'Usuario o contraseña incorrectos.', err_net:'Sin señal. Conéctese para iniciar sesión la primera vez.',
         err_roster:'Este usuario no está en la lista. Avise a Charlie.',
         err_expired:'Su sesión venció. Inicie sesión otra vez — no se perdió nada.',
@@ -716,8 +716,18 @@ let LANG = localStorage.getItem('wwd.lang') || 'en';
 const t = k => (T[LANG][k] || T.en[k] || k);
 function setLang(l) { LANG = l; localStorage.setItem('wwd.lang', LANG); paintLang(); }
 
+function paintPwToggle() {
+  const btn = document.getElementById('s_pass_toggle');
+  if (!btn) return;
+  const shown = document.getElementById('s_pass').type === 'text';
+  btn.classList.toggle('on', shown);
+  btn.setAttribute('aria-pressed', String(shown));
+  btn.setAttribute('aria-label', t(shown ? 'hide_pw' : 'show_pw'));
+}
+
 function paintLang() {
   document.querySelectorAll('[data-t]').forEach(el => { el.textContent = t(el.dataset.t); });
+  paintPwToggle();
   document.querySelectorAll('[data-tp]').forEach(el => { el.placeholder = t(el.dataset.tp); });
   ['en', 's_en', 'l_en'].forEach(i => document.getElementById(i).setAttribute('aria-pressed', LANG === 'en'));
   ['es', 's_es', 'l_es'].forEach(i => document.getElementById(i).setAttribute('aria-pressed', LANG === 'es'));
@@ -1109,6 +1119,14 @@ onReady(() => {
   };
   document.getElementById('l_en').onclick = () => setLang('en');
   document.getElementById('l_es').onclick = () => setLang('es');
+
+  document.getElementById('s_pass_toggle').onclick = () => {
+    const inp = document.getElementById('s_pass');
+    const show = inp.type === 'password';
+    inp.type = show ? 'text' : 'password';
+    paintPwToggle();
+    inp.focus();
+  };
 
   document.getElementById('who').onclick = () => {
     if (!ME) return;

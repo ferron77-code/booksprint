@@ -251,6 +251,14 @@ textarea:focus{outline:2px solid var(--blue-soft);border-color:var(--blue)}
 .sbox input{width:100%;border:1px solid var(--line);border-radius:8px;padding:13px;
   font:inherit;font-size:16px;min-height:48px;background:#fff}
 .sbox input:focus{outline:2px solid var(--blue-soft);border-color:var(--blue)}
+.pwfield{position:relative}
+.pwfield input{padding-right:46px}
+.pwtoggle{position:absolute;top:0;bottom:0;right:0;width:44px;display:flex;align-items:center;
+  justify-content:center;background:none;border:0;padding:0;margin:0;cursor:pointer;color:var(--mute)}
+.pwtoggle:focus-visible{outline:2px solid var(--blue-soft);border-radius:8px}
+.pwtoggle .eyeoff{display:none}
+.pwtoggle.on .eye{display:none}
+.pwtoggle.on .eyeoff{display:block}
 .sbox .err{background:#FBE9E9;color:#9B1C1C;padding:10px 12px;border-radius:8px;
   font-size:14.5px;margin-top:12px;font-weight:600}
 .sbox .err[hidden]{display:none}
@@ -301,7 +309,17 @@ textarea:focus{outline:2px solid var(--blue-soft);border-color:var(--blue)}
       <input id="s_email" type="email" autocomplete="username" inputmode="email"
              autocapitalize="none" autocorrect="off" spellcheck="false" required>
       <label for="s_pass" data-t="password">Password</label>
-      <input id="s_pass" type="password" autocomplete="current-password" required>
+      <div class="pwfield">
+        <input id="s_pass" type="password" autocomplete="current-password" required>
+        <button type="button" id="s_pass_toggle" class="pwtoggle" aria-label="Show password" aria-pressed="false">
+          <svg class="eye" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <svg class="eyeoff" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>
+          </svg>
+        </button>
+      </div>
       <div class="err" id="s_err" hidden></div>
       <button class="act" id="s_go" type="submit" data-t="signin_btn">Sign in</button>
     </form>
@@ -1138,7 +1156,7 @@ const T = {
         kind_title:'What is this photo?', k_before:'Before', k_after:'After', k_receipt:'Receipt', k_other:'Other',
         a_sent:'sent', a_queued:'queued', a_failed:'not sent',
         signin_sub:'Use the sign-in on your card.', email:'Sign-in', password:'Password',
-        signin_btn:'Sign in', signing:'Signing in…',
+        signin_btn:'Sign in', signing:'Signing in…', show_pw:'Show password', hide_pw:'Hide password',
         err_creds:'Wrong sign-in or password.', err_net:'No signal. Connect to sign in the first time.',
         err_roster:'This sign-in is not on the roster. Tell Charlie.',
         err_expired:'Your session expired. Sign in again — nothing has been lost.',
@@ -1181,7 +1199,7 @@ const T = {
         kind_title:'¿Qué es esta foto?', k_before:'Antes', k_after:'Después', k_receipt:'Recibo', k_other:'Otro',
         a_sent:'enviado', a_queued:'en cola', a_failed:'no enviado',
         signin_sub:'Use el usuario de su tarjeta.', email:'Usuario', password:'Contraseña',
-        signin_btn:'Iniciar sesión', signing:'Iniciando…',
+        signin_btn:'Iniciar sesión', signing:'Iniciando…', show_pw:'Mostrar contraseña', hide_pw:'Ocultar contraseña',
         err_creds:'Usuario o contraseña incorrectos.', err_net:'Sin señal. Conéctese para iniciar sesión la primera vez.',
         err_roster:'Este usuario no está en la lista. Avise a Charlie.',
         err_expired:'Su sesión venció. Inicie sesión otra vez — no se perdió nada.',
@@ -1195,8 +1213,18 @@ let LANG = localStorage.getItem('wwd.lang') || 'en';
 const t = k => (T[LANG][k] || T.en[k] || k);
 function setLang(l) { LANG = l; localStorage.setItem('wwd.lang', LANG); paintLang(); }
 
+function paintPwToggle() {
+  const btn = document.getElementById('s_pass_toggle');
+  if (!btn) return;
+  const shown = document.getElementById('s_pass').type === 'text';
+  btn.classList.toggle('on', shown);
+  btn.setAttribute('aria-pressed', String(shown));
+  btn.setAttribute('aria-label', t(shown ? 'hide_pw' : 'show_pw'));
+}
+
 function paintLang() {
   document.querySelectorAll('[data-t]').forEach(el => { el.textContent = t(el.dataset.t); });
+  paintPwToggle();
   document.querySelectorAll('[data-tp]').forEach(el => { el.placeholder = t(el.dataset.tp); });
   ['en', 's_en', 'l_en'].forEach(i => document.getElementById(i).setAttribute('aria-pressed', LANG === 'en'));
   ['es', 's_es', 'l_es'].forEach(i => document.getElementById(i).setAttribute('aria-pressed', LANG === 'es'));
@@ -1588,6 +1616,14 @@ onReady(() => {
   };
   document.getElementById('l_en').onclick = () => setLang('en');
   document.getElementById('l_es').onclick = () => setLang('es');
+
+  document.getElementById('s_pass_toggle').onclick = () => {
+    const inp = document.getElementById('s_pass');
+    const show = inp.type === 'password';
+    inp.type = show ? 'text' : 'password';
+    paintPwToggle();
+    inp.focus();
+  };
 
   document.getElementById('who').onclick = () => {
     if (!ME) return;
