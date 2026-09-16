@@ -15,7 +15,7 @@ technician preview stopped running on hardcoded arrays.
 | `technician/index.html` | The shell. Gained a sign-in screen, an account sheet, a photo picker, a "what kind of photo" prompt, and a customer-name field on closeout. |
 | `technician/tech.js` | Rewritten data layer. Same screens, same offline queue, but the queue now drains into real tables, RPCs and Storage. |
 | `technician/tech.css` | Styles for the above. |
-| `technician/config.js` | Project URL, public key, bucket name. **The key is not filled in.** |
+| `technician/config.js` | Project URL, publishable key, bucket name. Filled in 16 Sep. |
 | `technician/vendor/supabase.js` | supabase-js 2.116.0, vendored. A field app must not depend on a CDN being reachable at load time. |
 | `build-preview.mjs` | `node build-preview.mjs` inlines everything into `technician-preview.html`. |
 | `02b-fix-stage-trigger.sql` | Already applied. Kept here so the run order is complete: 00, 01, 02, 02b, 03, 04. |
@@ -24,13 +24,12 @@ technician preview stopped running on hardcoded arrays.
 
 ## Before it will run: three things
 
-1. **Paste the public key** into `technician/config.js` (Supabase →
-   Project Settings → API Keys), then `node build-preview.mjs`. The
-   newer `sb_publishable_…` key and the legacy `eyJ…` anon JWT both work
-   with the vendored library; prefer the publishable one. Until a key is
-   in, the sign-in screen says the app is not set up. Never the service
-   role or `sb_secret_…` key: it bypasses every policy, and the key ships
-   in the page.
+1. **The publishable key is in `technician/config.js`** and the preview
+   is built with it. If the key is ever rotated, paste the new one and
+   run `node build-preview.mjs`. The newer `sb_publishable_…` key and
+   the legacy `eyJ…` anon JWT both work with the vendored library.
+   Never the service role or `sb_secret_…` key: it bypasses every
+   policy, and the key ships in the page.
 
 2. **Migrations 02, 02b and 03 are applied** to the live project as of
    16 Sep. 02b splits the stage trigger so the history row is written
@@ -128,8 +127,8 @@ session expiry. It cannot check RLS: that needs the live project.
 This is the test that matters and it has not been run yet — the
 project is not reachable from where this was built.
 
-1. Fill in the anon key, build, open `technician-preview.html` on a
-   phone or in a desktop browser at phone width.
+1. Open `technician-preview.html` on a phone, or in a desktop browser
+   at phone width. The key is already in it.
 2. Sign in as `cheo@wwdi.local` (password on the sign-in sheet).
 3. He should see WO-9001 and WO-9002 and nothing else. If WO-9003
    (Tony's) or WO-9004 (closed and paid) appears, **stop**: RLS is
