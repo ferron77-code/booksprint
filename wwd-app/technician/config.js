@@ -12,5 +12,5 @@
 window.WWD = {
   SUPABASE_URL: 'https://sdjheotlpvvkdovrccol.supabase.co',
   SUPABASE_ANON_KEY: 'sb_publishable_abafpRmVSoginW2Nsn6b2A_7OazBHIh',
-  BUCKET: 'wwd'          // private storage bucket, created by 04-views-and-storage.sql
+  BUCKET: 'wwd'          // private storage bucket, created by 04-storage.sql (applied 22 Sep 2026)
 };
