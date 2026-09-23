@@ -1,11 +1,10 @@
-// Worldwide Distributors: scan-ticket (Supabase Edge Function), live version 3.
+// Worldwide Distributors: scan-ticket (Supabase Edge Function).
 // The office photographs a handwritten eLighting/eBuilt work order; this reads it
 // and returns the fields for the New Work Order form. It never saves anything:
 // the office checks the result and presses Create. Only signed-in owner/office
 // accounts may call it. Needs the ANTHROPIC_API_KEY secret.
 // On their ticket, REP holds the technician(s) the job goes to; the office page
-// sends the crew's names so a messy REP can be read as the right person, and
-// ticks that technician's box.
+// sends the crew's names so a messy REP can be read as the right person.
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
@@ -37,12 +36,45 @@ Deno.serve(async (req) => {
   if (!key) return json({ error: "Scanning is not set up yet (missing API key)." }, 503);
   let body: any; try { body = await req.json(); } catch { return json({ error: "Bad request" }, 400); }
 
-  const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_ANON_KEY")!,
-    { global: { headers: { Authorization: req.headers.get("Authorization") ?? "" } }, auth: { persistSession: false } });
-  const { data: { user } } = await db.auth.getUser();
-  if (!user) return json({ error: "Sign in first." }, 401);
-  const { data: me } = await db.from("app_user").select("role").eq("auth_id", user.id).maybeSingle();
-  if (!me || !["owner", "office"].includes(me.role)) return json({ error: "Office accounts only." }, 403);
+  // Identify the caller.
+  //
+  // getUser() with no argument resolves the user from the *client's own stored
+  // session*, and this client deliberately has none (persistSession: false).
+  // The forwarded Authorization header below applies to the data/PostgREST
+  // calls, not to the auth endpoint — so the bare call never consulted the
+  // caller's token and returned no user however valid that token was. Every
+  // request answered "Sign in first." to people who were correctly signed in.
+  // The token has to be handed to getUser() explicitly.
+  //
+  // The key falls back to SUPABASE_PUBLISHABLE_KEY because projects on the
+  // newer API-key scheme are not guaranteed the legacy SUPABASE_ANON_KEY name,
+  // and an undefined key fails the auth call the same silent way.
+  const authz = req.headers.get("Authorization") ?? "";
+  const token = authz.replace(/^Bearer\s+/i, "");
+  const anon = Deno.env.get("SUPABASE_ANON_KEY") ?? Deno.env.get("SUPABASE_PUBLISHABLE_KEY") ?? "";
+
+  const db = createClient(Deno.env.get("SUPABASE_URL")!, anon,
+    { global: { headers: { Authorization: authz } }, auth: { persistSession: false } });
+
+  const { data: { user }, error: authErr } = await db.auth.getUser(token);
+  if (!user) {
+    // Say which of the several "not signed in" cases this actually was, so the
+    // next failure explains itself instead of sending the office in circles.
+    return json({
+      error: "Sign in first.",
+      detail: authErr?.message ?? (token ? "token present but no user resolved" : "no Authorization header"),
+      had_token: !!token,
+      had_key: !!anon,
+    }, 401);
+  }
+
+  const { data: me, error: roleErr } = await db.from("app_user").select("role").eq("auth_id", user.id).maybeSingle();
+  if (!me || !["owner", "office"].includes(me.role)) {
+    return json({
+      error: "Office accounts only.",
+      detail: roleErr?.message ?? (me ? `role is ${me.role}` : "no app_user row for this sign-in"),
+    }, 403);
+  }
 
   const img = String(body.image_base64 || ""), mt = String(body.media_type || "image/jpeg");
   if (!img || img.length > 8_000_000) return json({ error: "Photo missing or too large." }, 400);

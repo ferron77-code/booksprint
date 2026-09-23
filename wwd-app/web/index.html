@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<meta name="theme-color" content="#0E151C">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="app-version" content="20260922-1912">
+<title>My Jobs — Worldwide Distributors</title>
+<meta name="description" content="Work orders for the Worldwide Distributors crew. Órdenes de trabajo para el equipo.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Worldwide Distributors">
+<meta property="og:title" content="Worldwide Distributors — Work Orders">
+<meta property="og:description" content="Your jobs, photos and notes in one place. Sus trabajos, fotos y notas en un solo lugar.">
+<meta property="og:url" content="https://wwd-workorders.netlify.app/">
+<meta property="og:image" content="https://wwd-workorders.netlify.app/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="WWD Jobs">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tech.css?v=20260922-1912">
+</head>
+<body>
+
+<!-- ===== sign-in. Shown until Supabase has a session. ===== -->
+<section class="signin" id="signin" hidden>
+  <div class="sbox">
+    <div class="mark">WWD</div>
+    <h1>Worldwide Distributors</h1>
+    <p data-t="signin_sub">Use the sign-in on your card.</p>
+    <form id="sform" autocomplete="on" novalidate>
+      <label for="s_email" data-t="email">Sign-in</label>
+      <input id="s_email" type="text" autocomplete="username"
+             autocapitalize="none" autocorrect="off" spellcheck="false" required>
+      <label for="s_pass" data-t="password">Password</label>
+      <div class="pwfield">
+        <input id="s_pass" type="password" autocomplete="current-password"
+               autocapitalize="off" autocorrect="off" spellcheck="false" required>
+        <button type="button" id="s_pass_toggle" class="pwtoggle" aria-label="Show password" aria-pressed="false">
+          <svg class="eye" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <svg class="eyeoff" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="err" id="s_err" hidden></div>
+      <button class="act" id="s_go" type="submit" data-t="signin_btn">Sign in</button>
+    </form>
+    <div class="lang center" role="group">
+      <button id="l_en" type="button" aria-pressed="true">EN</button>
+      <button id="l_es" type="button" aria-pressed="false">ES</button>
+    </div>
+  </div>
+</section>
+
+<div class="net" id="net"><span data-t="offline">Working offline</span>
+  <span class="q" id="queued"></span></div>
+<button class="fail" id="fail" hidden></button>
+
+<header class="top">
+  <div class="me" id="me">–</div>
+  <button class="who" id="who" type="button">
+    <div class="nm" id="myname" role="heading" aria-level="1">…</div>
+    <small id="myrole" data-t="role">Technician</small>
+  </button>
+  <div class="sp"></div>
+  <div class="lang" role="group">
+    <button id="en" aria-pressed="true">EN</button>
+    <button id="es" aria-pressed="false">ES</button>
+  </div>
+</header>
+
+<main class="list">
+  <div class="day" id="dayhdr">My jobs</div>
+  <div id="jobs"></div>
+</main>
+
+<!-- ===== job detail ===== -->
+<section class="sheet" id="sheet" aria-hidden="true">
+  <header>
+    <button class="back" id="back">‹</button>
+    <div>
+      <div class="t" id="d_cust"></div>
+      <small id="d_wo"></small>
+    </div>
+    <div class="sp" style="flex:1"></div>
+    <div class="lang" role="group">
+      <button id="s_en" aria-pressed="true">EN</button>
+      <button id="s_es" aria-pressed="false">ES</button>
+    </div>
+  </header>
+
+  <div class="body">
+    <div class="card">
+      <div class="big" id="d_addr"></div>
+      <div class="sub" id="d_scope" style="margin-top:6px"></div>
+      <div id="d_wait"></div>
+    </div>
+
+    <div class="card">
+      <h2 data-t="crew">On this job</h2>
+      <div class="crew" id="d_crew"></div>
+    </div>
+
+    <div class="card">
+      <h2 data-t="helpers">Helpers</h2>
+      <div class="crew" id="d_helpers"></div>
+      <button class="act ghost small" id="addhelper" data-t="h_add" style="margin-top:10px">+ Add helper</button>
+    </div>
+
+    <div class="card">
+      <h2 data-t="scope">Work to do</h2>
+      <div id="d_items"></div>
+    </div>
+
+    <div class="card">
+      <h2 data-t="notes">Notes</h2>
+      <div id="d_notes"></div>
+      <textarea id="notebox" data-tp="noteph" placeholder="Add a note…"></textarea>
+      <div class="two" style="display:flex;gap:9px">
+        <button class="act ghost" id="voice" data-t="voice" style="flex:1">🎤 Voice note</button>
+        <button class="act" id="addnote" data-t="addnote" style="flex:1">Add note</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 data-t="photos">Photos and receipts</h2>
+      <button class="act ghost" id="photo" data-t="photo">📷 Add photo or receipt</button>
+      <input type="file" id="photofile" accept="image/*" capture="environment" hidden>
+      <div id="d_atts" style="margin-top:8px"></div>
+    </div>
+  </div>
+
+  <div class="foot" id="foot"></div>
+</section>
+
+<!-- ===== photo kind ===== -->
+<div class="modal" id="kindmodal" aria-hidden="true">
+  <div class="panel">
+    <h3 data-t="kind_title">What is this photo?</h3>
+    <button class="opt" data-k="before"  data-t="k_before">Before</button>
+    <button class="opt" data-k="after"   data-t="k_after">After</button>
+    <button class="opt" data-k="receipt" data-t="k_receipt">Receipt</button>
+    <button class="opt" data-k="other"   data-t="k_other">Other</button>
+    <button class="act ghost" id="k_cancel" data-t="cancel">Cancel</button>
+  </div>
+</div>
+
+<!-- ===== closeout modal ===== -->
+<div class="modal" id="closemodal" aria-hidden="true">
+  <div class="panel">
+    <h3 data-t="cl_title">Close this job</h3>
+    <p data-t="cl_sub">Ask the customer to sign. If nobody is here, that is fine.</p>
+    <div id="cl_helpers" class="clhelpers"></div>
+    <label class="lbl" for="signer" data-t="signer">Customer name</label>
+    <input class="inp" id="signer" data-tp="signer_ph" placeholder="Who is signing" autocomplete="off">
+    <canvas class="sigpad" id="pad"></canvas>
+    <p class="sighint" data-t="cl_hint">Customer signs above</p>
+    <button class="act go" id="cl_sign" data-t="cl_sign">Save signature and close</button>
+    <button class="act ghost" id="cl_nosig" data-t="cl_nosig">No one here to sign</button>
+    <button class="act ghost" id="cl_cancel" data-t="cancel">Cancel</button>
+  </div>
+</div>
+
+<!-- ===== add helper ===== -->
+<div class="modal" id="helpermodal" aria-hidden="true">
+  <div class="panel">
+    <h3 data-t="h_title">Add a helper</h3>
+    <p data-t="h_sub">Someone not on the crew list who worked on this job.</p>
+    <label class="lbl" for="h_name_in" data-t="h_name">Helper’s name</label>
+    <input class="inp" id="h_name_in" autocomplete="off">
+    <label class="lbl" for="h_co_in" data-t="h_co">Company (if subcontractor)</label>
+    <input class="inp" id="h_co_in" autocomplete="off">
+    <label class="lbl" for="h_hours_in" data-t="h_hours">Hours on this job</label>
+    <input class="inp" id="h_hours_in" type="number" inputmode="decimal" min="0.25" max="24" step="0.25">
+    <div class="err" id="h_err"></div>
+    <button class="act go" id="h_save" data-t="h_save">Add helper</button>
+    <button class="act ghost" id="h_cancel" data-t="cancel">Cancel</button>
+  </div>
+</div>
+
+<!-- ===== no-signature reason modal ===== -->
+<div class="modal" id="reasonmodal" aria-hidden="true">
+  <div class="panel">
+    <h3 data-t="rs_title">Why no signature?</h3>
+    <p data-t="rs_sub">The job still closes. This is just for the record.</p>
+    <button class="opt" data-r="customer_not_present" data-t="rs_notpresent">Customer not here</button>
+    <button class="opt" data-r="customer_declined" data-t="rs_declined">Customer would not sign</button>
+    <button class="opt" data-r="unattended_property" data-t="rs_unattended">Nobody at the property</button>
+    <button class="act ghost" id="rs_cancel" data-t="cancel">Cancel</button>
+  </div>
+</div>
+
+<!-- ===== account ===== -->
+<div class="modal" id="acctmodal" aria-hidden="true">
+  <div class="panel">
+    <h3 id="a_name"></h3>
+    <p id="a_sub"></p>
+    <button class="act ghost" id="a_refresh" data-t="refresh">Refresh</button>
+    <button class="act ghost" id="a_signout" data-t="signout">Sign out</button>
+    <button class="act ghost" id="a_cancel" data-t="cancel">Cancel</button>
+  </div>
+</div>
+
+<script src="vendor/supabase.js"></script>
+<script src="config.js?v=20260922-1912"></script>
+<script src="tech.js?v=20260922-1912"></script>
+<script>if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));</script>
+</body>
+</html>
