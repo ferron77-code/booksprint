@@ -36,19 +36,31 @@ Deno.serve(async (req) => {
   if (!key) return json({ error: "Scanning is not set up yet (missing API key)." }, 503);
   let body: any; try { body = await req.json(); } catch { return json({ error: "Bad request" }, 400); }
 
-  // Identify the caller.
+  // ── Who is calling ──────────────────────────────────────────────────────
   //
-  // getUser() with no argument resolves the user from the *client's own stored
-  // session*, and this client deliberately has none (persistSession: false).
-  // The forwarded Authorization header below applies to the data/PostgREST
-  // calls, not to the auth endpoint — so the bare call never consulted the
-  // caller's token and returned no user however valid that token was. Every
-  // request answered "Sign in first." to people who were correctly signed in.
-  // The token has to be handed to getUser() explicitly.
+  // Ask Postgres, not the auth client. Two attempts went the other way and
+  // both failed on people who were correctly signed in:
+  //
+  //   v3  auth.getUser()        no argument, so it looked for a session this
+  //                             client deliberately does not keep
+  //                             (persistSession: false) and found none.
+  //   v4  auth.getUser(token)   still answered "Auth session missing!" — the
+  //                             library falls back to stored-session handling
+  //                             regardless, and a function has no store.
+  //
+  // Both times the gateway log showed a perfectly good `authenticated` JWT
+  // arriving. So the token was never the problem; the auth client was.
+  //
+  // The forwarded Authorization header below is attached to the PostgREST
+  // client, which is the path every other query in this app already uses
+  // successfully. Inside Postgres auth.uid() reads the JWT claims, and
+  // current_app_user_id() (STABLE SECURITY DEFINER, executable by
+  // `authenticated`, already relied on by the stage triggers) turns that into
+  // the app_user row. No auth client involved.
   //
   // The key falls back to SUPABASE_PUBLISHABLE_KEY because projects on the
-  // newer API-key scheme are not guaranteed the legacy SUPABASE_ANON_KEY name,
-  // and an undefined key fails the auth call the same silent way.
+  // newer API-key scheme are not guaranteed the legacy name. Never the
+  // service-role key: that bypasses RLS and would defeat this whole check.
   const authz = req.headers.get("Authorization") ?? "";
   const token = authz.replace(/^Bearer\s+/i, "");
   const anon = Deno.env.get("SUPABASE_ANON_KEY") ?? Deno.env.get("SUPABASE_PUBLISHABLE_KEY") ?? "";
@@ -56,23 +68,25 @@ Deno.serve(async (req) => {
   const db = createClient(Deno.env.get("SUPABASE_URL")!, anon,
     { global: { headers: { Authorization: authz } }, auth: { persistSession: false } });
 
-  const { data: { user }, error: authErr } = await db.auth.getUser(token);
-  if (!user) {
-    // Say which of the several "not signed in" cases this actually was, so the
-    // next failure explains itself instead of sending the office in circles.
+  const { data: meId, error: idErr } = await db.rpc("current_app_user_id");
+  if (!meId) {
+    // Say which case this actually was, so a failure explains itself rather
+    // than telling a signed-in person to sign in and leaving it there.
     return json({
       error: "Sign in first.",
-      detail: authErr?.message ?? (token ? "token present but no user resolved" : "no Authorization header"),
+      detail: idErr?.message
+        ?? (token ? "a token arrived but Postgres matched no app_user to it" : "no Authorization header"),
       had_token: !!token,
       had_key: !!anon,
     }, 401);
   }
 
-  const { data: me, error: roleErr } = await db.from("app_user").select("role").eq("auth_id", user.id).maybeSingle();
-  if (!me || !["owner", "office"].includes(me.role)) {
+  const { data: me, error: roleErr } = await db.from("app_user").select("role, active").eq("id", meId).maybeSingle();
+  if (!me || me.active === false || !["owner", "office"].includes(me.role)) {
     return json({
       error: "Office accounts only.",
-      detail: roleErr?.message ?? (me ? `role is ${me.role}` : "no app_user row for this sign-in"),
+      detail: roleErr?.message
+        ?? (me ? `role is ${me.role}${me.active === false ? ", and the account is inactive" : ""}` : "no app_user row for this sign-in"),
     }, 403);
   }
 
