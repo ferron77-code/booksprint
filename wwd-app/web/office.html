@@ -689,6 +689,25 @@ async function openJob(id){
   const allNotes = notes.data||[];
   const shownNotes = allNotes.filter(n => !n.hidden_at || S.showRemoved);
   const removedCount = allNotes.filter(n => n.hidden_at).length;
+  // The office can write a note too. Everything the database needs is
+  // already in place: RLS lets owner/office write freely, note.source
+  // defaults to 'typed' and transcribe_state to 'done', and translate_state
+  // defaults to 'pending' — which is exactly what claim_translations looks
+  // for, so the crew gets it in Spanish without anything extra here.
+  //
+  // original_lang is NOT NULL, hence the toggle. It is only a hint: the
+  // translation worker detects the real language and corrects the row if the
+  // writer picked wrong, so a mis-set toggle costs a round trip, not the note.
+  const noteBox = `<div class="newbox">
+      <textarea class="in" id="newnote" placeholder="Something the crew needs to know on this job\u2026"></textarea>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px">
+        <label for="newnotelang" class="muted" style="font-size:12.5px">Written in</label>
+        <select class="in" id="newnotelang" style="width:auto"><option value="en">English</option><option value="es">Spanish</option></select>
+        <button class="primary" type="button" id="addnote">Add note</button>
+        <span class="muted" style="font-size:12.5px">The crew sees this on their phones, translated automatically.</span>
+      </div>
+    </div>`;
+
   const noteHtml = shownNotes.map(n => {
     const lang = n.original_lang === 'es' ? 'Spanish' : 'English';
     const empty = !n.original_body;
@@ -748,7 +767,7 @@ async function openJob(id){
     </div>
     ${(sc.data||[]).length?`<section class="panel"><h3>Checklist</h3><ul class="scope">${(sc.data||[]).map(i=>`<li><span class="ck">${i.done?'✓':''}</span><span>${esc(i.body)}${i.body_es?`<div class="es">${esc(i.body_es)}</div>`:''}</span></li>`).join('')}</ul></section>`:''}
     <section class="panel"><h3 style="display:flex;justify-content:space-between;align-items:center">Photos (${allAtt.length-removedPh})${removedPh?`<button class="btn small" type="button" id="togremovedph">${S.showRemovedPh?'Hide':'Show'} removed (${removedPh})</button>`:''}</h3>${photos ? `<div class="photos">${photos}</div>` : '<p class="muted">No photos.</p>'}</section>
-    <section class="panel"><h3 style="display:flex;justify-content:space-between;align-items:center">Notes (${allNotes.length-removedCount})${removedCount?`<button class="btn small" type="button" id="togremoved">${S.showRemoved?'Hide':'Show'} removed (${removedCount})</button>`:''}</h3>${noteHtml || '<p class="muted">No notes.</p>'}</section>
+    <section class="panel"><h3 style="display:flex;justify-content:space-between;align-items:center">Notes (${allNotes.length-removedCount})${removedCount?`<button class="btn small" type="button" id="togremoved">${S.showRemoved?'Hide':'Show'} removed (${removedCount})</button>`:''}</h3>${noteBox}${noteHtml || '<p class="muted">No notes.</p>'}</section>
     <section class="panel sig"><h3>Customer signature</h3>${sigHtml}</section>
     <section class="panel"><h3>History</h3><ul class="hist">${hist || '<li class="muted">No stage changes recorded.</li>'}</ul></section>`;
   $('detail').querySelectorAll('button[data-full]').forEach(b => b.onclick = () => { $('lbimg').src=b.dataset.full; $('lightbox').hidden=false; });
@@ -771,6 +790,21 @@ async function openJob(id){
     if (error) { toast(error.message, true); b.disabled=false; return; }
     toast('Photo restored.'); load(true);
   });
+  const an = $('addnote');
+  if (an) an.onclick = async () => {
+    const body = $('newnote').value.trim();
+    if (!body) { $('newnote').focus(); return; }
+    an.disabled = true;
+    const { error } = await SB.from('note').insert({
+      work_order_id: id, author_id: S.me.id, source: 'typed',
+      original_lang: $('newnotelang').value, original_body: body,
+      client_created_at: new Date().toISOString(),
+    });
+    if (error) { toast(error.message, true); an.disabled = false; return; }
+    toast('Note added. The crew sees it now; the Spanish follows within a minute.');
+    openJob(id);
+  };
+
   $('detail').querySelectorAll('button[data-remove]').forEach(b => b.onclick = async () => {
     if (!confirm('Remove this note? It disappears from the job and the crew’s phones. It is kept on record and can be restored.')) return;
     b.disabled = true;
