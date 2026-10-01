@@ -418,6 +418,15 @@ const STAGE_LABEL = {intake:'Intake',scheduled:'Scheduled',in_progress:'In progr
 const KIND_LABEL = {before:'Before',after:'After',receipt:'Receipt',ticket_scan:'Ticket scan',other:'Other'};
 const NOSIG = {customer_not_present:'Customer not present',customer_declined:'Customer declined',unattended_property:'Unattended property'};
 const DIV = {elighting:'eLighting',ebuilt:'eBuilt',supply:'Supply'};
+// The trail stores column names. These turn them into what the office calls them.
+const ENTITY_LABEL = {work_order:'Job',site:'Site',customer:'Customer',scope_item:'Checklist',note:'Note'};
+const FIELD_LABEL = {stage:'Stage',summary:'Work',division:'Division',number:'Number',opened_on:'Opened',
+  high_priority:'Priority',expected_date:'Expected date',waiting_reason:'On hold for',waiting_since:'On hold since',
+  invoiced:'Invoiced',paid:'Paid',customer_id:'Customer',site_id:'Site',
+  label:'Location',address_line:'Address',city:'City',state:'State',postal_code:'ZIP',
+  name:'Customer name',contact_name:'Contact',contact_phone:'Phone',contact_email:'Email',
+  body:'Line',position:'Order',done:'Ticked off',
+  original_body:'Note text',hidden_at:'Removed',translation_edited:'Translation'};
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -478,7 +487,7 @@ async function boot(){
 async function load(keepOpen){
   const [u,c,s2,j,a,at,sc] = await Promise.all([
     SB.from('app_user').select('id,full_name,short_name,role,active'),
-    SB.from('customer').select('id,name,contact_name,contact_phone'),
+    SB.from('customer').select('id,name,contact_name,contact_phone,contact_email'),
     SB.from('site').select('id,customer_id,label,address_line,city,state,postal_code'),
     SB.from('work_order').select('*').order('updated_at',{ascending:false}),
     SB.from('work_order_assignment').select('work_order_id,technician_id,unassigned_at'),
@@ -653,7 +662,7 @@ async function openJob(id){
     SB.from('attachment').select('*').eq('work_order_id',id).order('created_at'),
     SB.from('note').select('*').eq('work_order_id',id).order('created_at'),
     SB.from('work_order_signoff').select('*').eq('work_order_id',id).maybeSingle(),
-    SB.from('stage_event').select('*').eq('work_order_id',id).order('changed_at'),
+    SB.from('work_order_history').select('*').eq('work_order_id',id).order('changed_at',{ascending:false}),
     SB.from('scope_item').select('*').eq('work_order_id',id).order('position'),
     SB.from('job_helper').select('*').eq('work_order_id',id).order('recorded_at')
   ]);
@@ -741,8 +750,25 @@ async function openJob(id){
       <p style="margin:8px 0 0"><b>${esc(s.signer_name||'')}</b></p><p class="muted" style="margin:0">${when(s.signed_at)}${s.captured_by?' · captured by '+name(s.captured_by):''}</p>`;
   }
 
-  const hist = (ev.data||[]).map(e => `<li><time>${when(e.changed_at)}</time>
-    <span>${e.from_stage?esc(STAGE_LABEL[e.from_stage]||e.from_stage)+' → ':''}<b>${esc(STAGE_LABEL[e.to_stage]||e.to_stage)}</b> · ${name(e.changed_by)}</span></li>`).join('');
+  // One line per change, newest first. Stage moves still come from stage_event;
+  // everything else comes from record_edit. The view unions the two.
+  const hval = (f, v) => {
+    if (v === null || v === undefined || v === '') return '—';
+    if (f === 'stage') return STAGE_LABEL[v] || v;
+    if (f === 'division') return DIV[v] || v;
+    if (v === 'true') return 'yes';
+    if (v === 'false') return 'no';
+    if (f === 'customer_id' || f === 'site_id') return '(changed)';
+    return v;
+  };
+  const hist = (ev.data||[]).map(e => {
+    const where = e.entity === 'work_order' ? '' : esc(ENTITY_LABEL[e.entity] || e.entity) + ' ';
+    let what;
+    if (e.action === 'added')        what = `${where}line added · <b>${esc(hval(null, e.value_after))}</b>`;
+    else if (e.action === 'deleted') what = `${where}line removed · <b>${esc(hval(null, e.value_before))}</b>`;
+    else what = `${where}${esc(FIELD_LABEL[e.field] || e.field)}: ${esc(hval(e.field, e.value_before))} → <b>${esc(hval(e.field, e.value_after))}</b>`;
+    return `<li><time>${when(e.changed_at)}</time><span>${what} · ${esc(e.changed_by_name || '—')}</span></li>`;
+  }).join('');
 
   $('detail').innerHTML = `
     <button class="back" type="button" id="back">← Jobs</button>
@@ -751,7 +777,7 @@ async function openJob(id){
     <div class="track" aria-label="Stage">${STAGES.map((s,i)=>`<button type="button" class="${i<idx?'done':i===idx?'now':''}" data-goto="${s}"${i===idx?' aria-current="step" disabled':''} title="Move to ${STAGE_LABEL[s]}">${STAGE_LABEL[s]}</button>`).join('')}</div>
     <section class="panel" id="actpanel">${actionsHtml(x)}</section>
     <div class="grid2">
-      <section class="panel"><h3>Job</h3><dl class="kv">
+      <section class="panel"><h3 style="display:flex;justify-content:space-between;align-items:center">Job<button class="btn small" type="button" id="editdet">Correct details</button></h3><dl class="kv">
         <dt>Work</dt><dd>${esc(x.summary||'')}</dd>
         <dt>Crew</dt><dd>${esc(crew(x.id).join(', ')||'Unassigned')}</dd>
         ${S.helpers.length?`<dt>Helpers</dt><dd>${S.helpers.map(h=>esc(h.full_name)+(h.company?` (${esc(h.company)})`:'')+(h.hours?` · ${h.hours} h`:'')).join(', ')}</dd>`:''}
@@ -765,14 +791,55 @@ async function openJob(id){
         ${(cu?.contact_name||cu?.contact_phone)?`<dt>Contact</dt><dd>${esc([cu?.contact_name,cu?.contact_phone].filter(Boolean).join(' · '))}</dd>`:''}
       </dl></section>
     </div>
-    ${(sc.data||[]).length?`<section class="panel"><h3>Checklist</h3><ul class="scope">${(sc.data||[]).map(i=>`<li><span class="ck">${i.done?'✓':''}</span><span>${esc(i.body)}${i.body_es?`<div class="es">${esc(i.body_es)}</div>`:''}</span></li>`).join('')}</ul></section>`:''}
+    <section class="panel" id="detedit" hidden>
+      <h3>Correct the details</h3>
+      <p class="muted" style="margin:-4px 0 14px;font-size:13.5px">Anything typed in wrong can be fixed here — a wrong address, the wrong contact, work described badly. Every change is listed in History with your name against it. The job number cannot be changed.</p>
+      <div class="two">
+        <div>
+          <div class="f"><label for="e_summary">Work</label><textarea id="e_summary">${esc(x.summary||'')}</textarea></div>
+          <div class="f"><label for="e_division">Division</label><select id="e_division">${Object.keys(DIV).map(d=>`<option value="${d}"${x.division===d?' selected':''}>${esc(DIV[d])}</option>`).join('')}</select></div>
+          <div class="two">
+            <div class="f"><label for="e_opened">Opened</label><input class="in" type="date" id="e_opened" value="${esc(x.opened_on||'')}"></div>
+            <div class="f"><label for="e_expected">Expected</label><input class="in" type="date" id="e_expected" value="${esc(x.expected_date||'')}"></div>
+          </div>
+          <div class="checks"><label><input type="checkbox" id="e_priority"${x.high_priority?' checked':''}> High priority</label></div>
+        </div>
+        <div>
+          <div class="f"><label for="e_label">Location name</label><input class="in" id="e_label" value="${esc(site?.label||'')}" placeholder="e.g. Rear parking deck"></div>
+          <div class="f"><label for="e_addr">Address</label><input class="in" id="e_addr" value="${esc(site?.address_line||'')}"></div>
+          <div class="two">
+            <div class="f"><label for="e_city">City</label><input class="in" id="e_city" value="${esc(site?.city||'')}"></div>
+            <div class="two">
+              <div class="f"><label for="e_state">State</label><input class="in" id="e_state" value="${esc(site?.state||'')}" maxlength="2"></div>
+              <div class="f"><label for="e_zip">ZIP</label><input class="in" id="e_zip" value="${esc(site?.postal_code||'')}"></div>
+            </div>
+          </div>
+          <div class="f"><label for="e_cname">Customer</label><input class="in" id="e_cname" value="${esc(cu?.name||'')}"></div>
+          <div class="two">
+            <div class="f"><label for="e_contact">Contact</label><input class="in" id="e_contact" value="${esc(cu?.contact_name||'')}"></div>
+            <div class="f"><label for="e_phone">Phone</label><input class="in" id="e_phone" value="${esc(cu?.contact_phone||'')}"></div>
+          </div>
+          <div class="f"><label for="e_email">Email</label><input class="in" type="email" id="e_email" value="${esc(cu?.contact_email||'')}"></div>
+        </div>
+      </div>
+      <p class="muted" style="font-size:13px;margin:4px 0 12px">The address and customer details belong to the site, so fixing them here fixes them on every job at that address.</p>
+      <div style="display:flex;gap:8px"><button class="btn go" type="button" id="e_save">Save changes</button><button class="btn" type="button" id="e_cancel">Cancel</button></div>
+    </section>
+    <section class="panel"><h3 style="display:flex;justify-content:space-between;align-items:center">Checklist<button class="btn small" type="button" id="scadd">Add a line</button></h3>
+      ${(sc.data||[]).length?`<ul class="scope">${(sc.data||[]).map(i=>`<li><span class="ck">${i.done?'✓':''}</span><span style="flex:1">${esc(i.body)}${i.body_es?`<div class="es">${esc(i.body_es)}</div>`:''}${i.done?`<div class="es">Ticked off by ${name(i.done_by)} ${when(i.done_at)}</div>`:''}</span><span style="flex:none;display:flex;gap:6px"><button class="btn small" type="button" data-scedit="${i.id}">Edit</button><button class="btn small warn" type="button" data-scdel="${i.id}">Remove</button></span></li>`).join('')}</ul>`:'<p class="muted">Nothing on the checklist yet.</p>'}
+      <div class="newbox" id="scbox" hidden>
+        <div class="f"><label for="scbody">Checklist line</label><textarea id="scbody" placeholder="e.g. Replace 6 LED heads on the north wall"></textarea></div>
+        <div style="display:flex;gap:8px"><button class="btn go" type="button" id="scsave">Save</button><button class="btn" type="button" id="sccancel">Cancel</button></div>
+      </div>
+    </section>
     <section class="panel"><h3 style="display:flex;justify-content:space-between;align-items:center">Photos (${allAtt.length-removedPh})${removedPh?`<button class="btn small" type="button" id="togremovedph">${S.showRemovedPh?'Hide':'Show'} removed (${removedPh})</button>`:''}</h3>${photos ? `<div class="photos">${photos}</div>` : '<p class="muted">No photos.</p>'}</section>
     <section class="panel"><h3 style="display:flex;justify-content:space-between;align-items:center">Notes (${allNotes.length-removedCount})${removedCount?`<button class="btn small" type="button" id="togremoved">${S.showRemoved?'Hide':'Show'} removed (${removedCount})</button>`:''}</h3>${noteBox}${noteHtml || '<p class="muted">No notes.</p>'}</section>
     <section class="panel sig"><h3>Customer signature</h3>${sigHtml}</section>
-    <section class="panel"><h3>History</h3><ul class="hist">${hist || '<li class="muted">No stage changes recorded.</li>'}</ul></section>`;
+    <section class="panel"><h3>History</h3><ul class="hist">${hist || '<li class="muted">Nothing has changed since this job was created.</li>'}</ul></section>`;
   $('detail').querySelectorAll('button[data-full]').forEach(b => b.onclick = () => { $('lbimg').src=b.dataset.full; $('lightbox').hidden=false; });
 
   wireActions(x);
+  wireEdits(x, site, cu, sc.data||[]);
   const tg = $('togremoved'); if (tg) tg.onclick = () => { S.showRemoved = !S.showRemoved; openJob(id); };
   const tgp = $('togremovedph'); if (tgp) tgp.onclick = () => { S.showRemovedPh = !S.showRemovedPh; openJob(id); };
   $('detail').querySelectorAll('button[data-phremove]').forEach(b => b.onclick = async () => {
@@ -897,6 +964,122 @@ function busy(){ return !!document.querySelector('dialog[open]') || !$('lightbox
   || !!document.querySelector('#detail textarea:focus, #detail input:focus, #detail select:focus'); }
 setInterval(() => { if (!document.hidden && !$('app').hidden && !busy()) load(false); }, 60000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden && !$('app').hidden && !busy()) load(false); });
+
+// ---------- correcting what was typed in wrong ----------
+// Everything here was already allowed by the database: office_writes,
+// office_manages_sites, office_manages_customers and office_manages_scope are
+// all FOR ALL. What was missing was anywhere to do it from. Migration 13 added
+// the trail, so none of this is silent.
+function wireEdits(x, site, cu, items){
+  const E = $('detedit'); if (!E) return;
+
+  const open = $('editdet');
+  if (open) open.onclick = () => {
+    E.hidden = !E.hidden;
+    if (!E.hidden) { E.scrollIntoView({ block:'nearest' }); $('e_summary').focus(); }
+  };
+  const cancel = $('e_cancel'); if (cancel) cancel.onclick = () => { E.hidden = true; };
+
+  const save = $('e_save'); if (save) save.onclick = async () => {
+    const v = id => ($(id).value || '').trim();
+    const same = (a, b) => (a || null) === (b || null);
+
+    if (!v('e_summary')) { toast('A job needs a line of work.', true); $('e_summary').focus(); return; }
+    if (!v('e_addr'))    { toast('A job needs an address.', true); $('e_addr').focus(); return; }
+    if (!v('e_cname'))   { toast('A job needs a customer name.', true); $('e_cname').focus(); return; }
+    if (!v('e_opened'))  { toast('A job needs an opened date.', true); $('e_opened').focus(); return; }
+
+    const wo = {}, st = {}, cs = {};
+    // Wiping the Spanish when the English changes is the point: the translation
+    // worker only picks up rows where the _es column is null, so this is what
+    // re-queues it. Leaving it would show the crew the old wording.
+    if (!same(v('e_summary'), x.summary)) { wo.summary = v('e_summary'); wo.summary_es = null; }
+    if ($('e_division').value !== x.division) wo.division = $('e_division').value;
+    if ($('e_priority').checked !== !!x.high_priority) wo.high_priority = $('e_priority').checked;
+    if (!same(v('e_opened'), x.opened_on)) wo.opened_on = v('e_opened');
+    if (!same(v('e_expected'), x.expected_date)) wo.expected_date = v('e_expected') || null;
+
+    if (!same(v('e_label'), site?.label)) st.label = v('e_label') || null;
+    if (!same(v('e_addr'), site?.address_line)) st.address_line = v('e_addr');
+    if (!same(v('e_city'), site?.city)) st.city = v('e_city') || null;
+    if (!same(v('e_state'), site?.state)) st.state = v('e_state') || null;
+    if (!same(v('e_zip'), site?.postal_code)) st.postal_code = v('e_zip') || null;
+
+    if (!same(v('e_cname'), cu?.name)) cs.name = v('e_cname');
+    if (!same(v('e_contact'), cu?.contact_name)) cs.contact_name = v('e_contact') || null;
+    if (!same(v('e_phone'), cu?.contact_phone)) cs.contact_phone = v('e_phone') || null;
+    if (!same(v('e_email'), cu?.contact_email)) cs.contact_email = v('e_email') || null;
+
+    const jobs = [];
+    if (Object.keys(wo).length) jobs.push(['job', SB.from('work_order').update(wo).eq('id', x.id)]);
+    if (Object.keys(st).length && x.site_id) jobs.push(['site', SB.from('site').update(st).eq('id', x.site_id)]);
+    if (Object.keys(cs).length && x.customer_id) jobs.push(['customer', SB.from('customer').update(cs).eq('id', x.customer_id)]);
+    if (!jobs.length) { toast('Nothing changed.'); E.hidden = true; return; }
+
+    save.disabled = true;
+    const res = await Promise.all(jobs.map(j => j[1]));
+    const bad = res.findIndex(r => r.error);
+    save.disabled = false;
+    if (bad > -1) { toast(`Could not save the ${jobs[bad][0]}: ${res[bad].error.message}`, true); return; }
+    E.hidden = true;
+    toast(`${x.number} corrected`);
+    await load(true);
+  };
+
+  // ---- checklist lines ----
+  const box = $('scbox'), body = $('scbody'), sc_save = $('scsave');
+  let editing = null;   // the id being reworded, or null when adding a new line
+
+  const openBox = (id, text) => {
+    editing = id;
+    body.value = text || '';
+    box.hidden = false;
+    sc_save.textContent = id ? 'Save the wording' : 'Add the line';
+    body.focus();
+  };
+  const addBtn = $('scadd'); if (addBtn) addBtn.onclick = () => openBox(null, '');
+  const noBox = $('sccancel'); if (noBox) noBox.onclick = () => { box.hidden = true; editing = null; };
+
+  $('detail').querySelectorAll('[data-scedit]').forEach(b => b.onclick = () => {
+    const it = items.find(i => i.id === b.dataset.scedit);
+    openBox(b.dataset.scedit, it?.body || '');
+    box.scrollIntoView({ block:'nearest' });
+  });
+
+  $('detail').querySelectorAll('[data-scdel]').forEach(b => b.onclick = async () => {
+    const it = items.find(i => i.id === b.dataset.scdel);
+    // A line the crew already ticked off is work that was done; removing it is
+    // a different thing from removing a line nobody has touched, so say so.
+    const warn = it?.done
+      ? `Remove "${it.body}"? The crew already ticked this one off as done.`
+      : `Remove "${it?.body || 'this line'}" from the checklist?`;
+    if (!confirm(warn)) return;
+    b.disabled = true;
+    const { error } = await SB.from('scope_item').delete().eq('id', b.dataset.scdel);
+    if (error) { toast(error.message, true); b.disabled = false; return; }
+    toast('Line removed'); await load(true);
+  });
+
+  if (sc_save) sc_save.onclick = async () => {
+    const t = (body.value || '').trim();
+    if (!t) { body.focus(); return; }
+    sc_save.disabled = true;
+    let error;
+    if (editing) {
+      // Same reason as the summary: new English, so the old Spanish has to go.
+      ({ error } = await SB.from('scope_item').update({ body: t, body_es: null }).eq('id', editing));
+    } else {
+      const next = items.reduce((m, i) => Math.max(m, i.position || 0), 0) + 1;
+      ({ error } = await SB.from('scope_item').insert({ work_order_id: x.id, position: next, body: t }));
+    }
+    sc_save.disabled = false;
+    if (error) { toast(error.message, true); return; }
+    box.hidden = true;
+    toast(editing ? 'Wording changed' : 'Line added');
+    editing = null;
+    await load(true);
+  };
+}
 
 function wireActions(x){
   const P = $('actpanel'); if (!P) return;
