@@ -1,6 +1,10 @@
 # wwd-app/web — what is actually deployed
 
-This directory is the **deployable bundle, exactly as it ships**: flat, every
+This file used to live inside `wwd-app/web/`. It was moved out when that
+directory became Netlify's publish directory, so it would not be served at
+`/WEB-BUNDLE.md` on the live site. Everything left in `wwd-app/web/` ships.
+
+`wwd-app/web/` is the **deployable bundle, exactly as it ships**: flat, every
 file a sibling, because that is how the app resolves its own paths.
 `office.html` loads `config.js` and `vendor/supabase.js` as siblings, `sw.js`
 must sit at the root to claim the whole scope, and `_headers` is Netlify's.
