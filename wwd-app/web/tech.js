@@ -656,7 +656,7 @@ function stopTimers() { timers.forEach(clearInterval); timers = []; clearTimeout
 /* ---------------- language ---------------- */
 const T = {
   en: { v_pending:'Voice note — text will appear when there is signal', v_listening:'Listening…', v_recording:'Recording…',
-        v_release:'Release to save', v_left:'%s seconds left',
+        v_stophint:'Tap Stop when you are done', v_stop:'Stop recording', v_left:'%s seconds left',
         v_nolive:'No signal — recording anyway, words come later',
         v_saved:'Voice note saved', v_saved_nowords:'Voice note saved — text will follow',
         v_nothing:'Nothing recorded', v_short:'Too short', v_rv_title:'Send this voice note?', v_rv_send:'Send', v_rv_del:'Delete', v_rv_nowords:'No words were picked up. You can still send the recording.', v_rv_deleted:'Voice note deleted',
@@ -699,7 +699,7 @@ const T = {
         signout_block:'%s change(s) still waiting to send. Sign out once they have gone.',
         account:'Account' },
   es: { v_pending:'Nota de voz — el texto aparecerá cuando haya señal', v_listening:'Escuchando…', v_recording:'Grabando…',
-        v_release:'Suelta para guardar', v_left:'%s segundos restantes',
+        v_stophint:'Toca Detener cuando termines', v_stop:'Detener grabación', v_left:'%s segundos restantes',
         v_nolive:'Sin señal — grabando igual, el texto llega después',
         v_saved:'Nota de voz guardada', v_saved_nowords:'Nota guardada — el texto llegará',
         v_nothing:'No se grabó nada', v_short:'Muy corto', v_rv_title:'¿Enviar esta nota de voz?', v_rv_send:'Enviar', v_rv_del:'Borrar', v_rv_nowords:'No se captaron palabras. Puede enviar la grabación de todos modos.', v_rv_deleted:'Nota de voz borrada',
@@ -1059,7 +1059,7 @@ onReady(() => {
   };
 
   /* ---------------- voice capture ----------------
-     Two things happen at once when he holds the button:
+     Two things happen at once once recording starts:
        1. MediaRecorder captures audio to a local blob. Always works.
        2. SpeechRecognition tries to transcribe live. Needs network.
      If (2) fails the note is still real: it carries audio and gets
@@ -1106,6 +1106,8 @@ onReady(() => {
       try { sr.start(); VOICE.sr = sr; } catch (e) { VOICE.sr = null; }
     }
     vOpen();
+    const sb = document.getElementById('vstop');
+    if (sb) sb.onclick = ev => { ev.preventDefault(); ev.stopPropagation(); voiceStop(); };
     if (VOICE.released) { voiceStop(); return; }
     VOICE.timer = setInterval(() => {
       if (Date.now() - VOICE.started > VMAX) { voiceStop(); return; }
@@ -1186,18 +1188,37 @@ onReady(() => {
     document.getElementById('vr_del').onclick = () => { close(); toast(t('v_rv_deleted')); };
   }
 
+  // Tap once to start, tap Stop to finish. Previously this was hold-to-talk,
+  // which meant a thumb had to stay down for the whole note -- awkward one-handed
+  // on a ladder, and a stray lift ended the note mid-sentence.
+  //
+  // The toggle lives here as well as on the overlay because a second tap can
+  // land while getUserMedia is still resolving, before the overlay exists:
+  // voiceStop() sets VOICE.released in that window and voiceStart() honours it
+  // the moment the stream arrives, so an early cancel is not lost.
+  //
+  // Stopping is the overlay's Stop button; while a recording runs the overlay
+  // covers this button entirely. The toggle here exists only for the gap before
+  // the overlay appears, where the mic is still opening: if the permission
+  // prompt is sitting unanswered, a tap has to be able to back out.
+  //
+  // But a second tap inside that gap is far more often a fat finger or someone
+  // unsure the first one registered than a real cancel, and cancelling leaves
+  // nothing on screen to explain why nothing happened. So repeats within the
+  // first moment are ignored, and only a considered second tap backs out.
+  const RETAP_GRACE = 1200;
+  let tappedAt = 0;
   const vb = document.getElementById('voice');
-  vb.addEventListener('pointerdown', e => {
+  vb.addEventListener('click', e => {
     e.preventDefault();
-    try { vb.setPointerCapture(e.pointerId); } catch (err) {}
+    if (VOICE.active || VOICE.arming) {
+      if (Date.now() - tappedAt < RETAP_GRACE) return;
+      voiceStop();
+      return;
+    }
+    tappedAt = Date.now();
     voiceStart();
   });
-  vb.addEventListener('pointerup', e => {
-    e.preventDefault();
-    try { vb.releasePointerCapture(e.pointerId); } catch (err) {}
-    voiceStop();
-  });
-  vb.addEventListener('pointercancel', () => voiceStop());
 
   /* ---------------- photos ----------------
      The file is shrunk on the phone to ~1600px before it is queued.
@@ -1473,6 +1494,7 @@ function vOpen() {
         '<div class="vnet" id="vnet"></div>' +
         '<div class="vtext" id="vtext"></div>' +
         '<div class="vhint" id="vhint"></div>' +
+        '<button type="button" class="vstop" id="vstop"></button>' +
       '</div>';
     document.body.appendChild(el);
   }
@@ -1502,5 +1524,7 @@ function vPaint() {
     txt.className = 'vtext' + (shown ? '' : ' dim');
   }
   const h = document.getElementById('vhint');
-  if (h) h.textContent = left <= 15 ? t('v_left').replace('%s', left) : t('v_release');
+  if (h) h.textContent = left <= 15 ? t('v_left').replace('%s', left) : t('v_stophint');
+  const sb = document.getElementById('vstop');
+  if (sb) sb.textContent = t('v_stop');
 }

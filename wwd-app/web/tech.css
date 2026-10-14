@@ -272,6 +272,13 @@ textarea:focus{outline:2px solid var(--blue-soft);border-color:var(--blue)}
 .vtext{font-size:18px;line-height:1.4;margin:16px 0 10px;min-height:56px}
 .vtext.dim{color:#8FA0B2;font-size:16px}
 .vhint{font-size:14px;color:#93A2B4;margin-top:4px}
+/* The only way out of the overlay: it is fixed inset:0, so the Voice note
+   button underneath is unreachable while a recording is running. Sized for a
+   thumb on a job site rather than a cursor. */
+.vstop{display:block;width:100%;max-width:320px;margin:26px auto 0;padding:16px 20px;
+  font:inherit;font-size:17px;font-weight:650;color:#fff;background:#E03B3B;
+  border:0;border-radius:12px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.vstop:active{background:#B82E2E}
 
 #toast{position:fixed;left:50%;transform:translateX(-50%) translateY(20px);
   bottom:calc(24px + env(safe-area-inset-bottom));background:#0E151C;color:#fff;
