@@ -272,6 +272,13 @@ textarea:focus{outline:2px solid var(--blue-soft);border-color:var(--blue)}
 .vtext{font-size:18px;line-height:1.4;margin:16px 0 10px;min-height:56px}
 .vtext.dim{color:#8FA0B2;font-size:16px}
 .vhint{font-size:14px;color:#93A2B4;margin-top:4px}
+/* Above the sign-in screen (z-index 100) on purpose: when the phone will not
+   store anything, that is the screen he is stuck on, and the reason has to be
+   readable from there. */
+#nostore{position:fixed;left:0;right:0;top:0;z-index:110;padding:12px 14px;
+  background:#7A1B1B;color:#FFE9E9;font-size:14px;line-height:1.45;
+  box-shadow:0 2px 10px rgba(0,0,0,.35)}
+#nostore[hidden]{display:none}
 /* Shown on the review sheet when words came through but the sound did not. */
 .vwarn{margin-top:12px;padding:9px 12px;border-radius:8px;font-size:13.5px;
   background:rgba(224,59,59,.14);border:1px solid rgba(224,59,59,.45);color:#FFC9C9}

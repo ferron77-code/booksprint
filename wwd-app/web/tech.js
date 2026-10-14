@@ -48,8 +48,19 @@ const uuid = () => (crypto.randomUUID ? crypto.randomUUID()
 const iso = () => new Date().toISOString();
 
 const DEV_KEY = 'wwd.device_id';
-let DEVICE_ID = localStorage.getItem(DEV_KEY);
-if (!DEVICE_ID) { DEVICE_ID = uuid(); localStorage.setItem(DEV_KEY, DEVICE_ID); }
+const LS_OK = (() => {
+  try { localStorage.setItem('wwd.probe', '1');
+        const ok = localStorage.getItem('wwd.probe') === '1';
+        localStorage.removeItem('wwd.probe'); return ok; }
+  catch (e) { return false; }
+})();
+let DEVICE_ID = null;
+if (LS_OK) {
+  DEVICE_ID = localStorage.getItem(DEV_KEY);
+  if (!DEVICE_ID) { DEVICE_ID = uuid(); localStorage.setItem(DEV_KEY, DEVICE_ID); }
+} else {
+  DEVICE_ID = uuid();   // this session only; the warning below explains why
+}
 
 /* ---------------- durable queue ----------------
    Append-only. Rows leave only once the server has acknowledged them.
@@ -659,6 +670,8 @@ const T = {
         v_stophint:'Touch anywhere to stop', v_stop:'Stop recording', v_left:'%s seconds left',
         v_nolive:'No signal — recording anyway, words come later',
         v_saved:'Voice note saved', v_saved_nowords:'Voice note saved — text will follow',
+        store_none:'This phone is not saving anything. You will be asked to sign in every time, and a note can be lost before it sends. In Settings > Safari > Advanced, turn off Block All Cookies, then open this app again.',
+        store_idb:'This phone can only save a little. Notes still send, but do not close the app with photos or recordings waiting.',
         v_rv_noaudio:'The sound did not record \u2014 only these words will be sent.',
         v_nothing:'Nothing recorded', v_short:'Too short', v_rv_title:'Send this voice note?', v_rv_send:'Send', v_rv_del:'Delete', v_rv_nowords:'No words were picked up. You can still send the recording.', v_rv_deleted:'Voice note deleted',
         v_denied:'Microphone blocked. Allow it in Settings.',
@@ -703,6 +716,8 @@ const T = {
         v_stophint:'Toca en cualquier lugar para detener', v_stop:'Detener grabación', v_left:'%s segundos restantes',
         v_nolive:'Sin señal — grabando igual, el texto llega después',
         v_saved:'Nota de voz guardada', v_saved_nowords:'Nota guardada — el texto llegará',
+        store_none:'Este teléfono no está guardando nada. Le va a pedir la contraseña cada vez, y una nota se puede perder antes de enviarse. En Ajustes > Safari > Avanzado, apague Bloquear todas las cookies y vuelva a abrir la app.',
+        store_idb:'Este teléfono solo puede guardar un poco. Las notas se envían, pero no cierre la app con fotos o grabaciones pendientes.',
         v_rv_noaudio:'El sonido no se grabó — solo se enviarán estas palabras.',
         v_nothing:'No se grabó nada', v_short:'Muy corto', v_rv_title:'¿Enviar esta nota de voz?', v_rv_send:'Enviar', v_rv_del:'Borrar', v_rv_nowords:'No se captaron palabras. Puede enviar la grabación de todos modos.', v_rv_deleted:'Nota de voz borrada',
         v_denied:'Micrófono bloqueado. Permítelo en Ajustes.',
@@ -1038,12 +1053,59 @@ function tap(dir) {
 const VOICE = { rec: null, chunks: [], sr: null, heard: '', partial: '', started: 0, timer: null, active: false, finishing: false };
 const VMAX = 120000;
 
+/* ---------------- can this phone keep anything? ----------------
+   Everything that has to survive the app closing lives in storage the
+   browser can refuse: the sign-in (localStorage 'wwd.auth'), the unsent
+   queue (IndexedDB, falling back to localStorage), the job snapshot. Every
+   write in this file is wrapped in a swallowed catch, so when a phone will
+   not store, the app has been carrying on in silence -- signing the man out
+   on every open and dropping notes he thought he had sent.
+
+   iOS turns this off whole: Settings > Safari > Advanced > Block All Cookies
+   disables localStorage outright, and a home-screen web app keeps a storage
+   container separate from Safari's. Either way the app cannot fix it, so it
+   says so instead of losing work quietly. */
+let PERSISTED = null;   // null until asked; true/false after
+
+// Without this, what the app stores is best-effort and the phone is free to
+// throw it away when it wants the space -- which takes the sign-in and the
+// unsent queue with it. Safari grants this to a web app on the home screen.
+async function askToKeepStorage() {
+  try {
+    if (!navigator.storage || !navigator.storage.persist) return null;
+    PERSISTED = await navigator.storage.persisted();
+    if (!PERSISTED) PERSISTED = await navigator.storage.persist();
+    return PERSISTED;
+  } catch (e) { return null; }
+}
+
+function storageProbe() {
+  return { ls: LS_OK, idb: !!window.indexedDB, persisted: PERSISTED };
+}
+
+function warnNoStorage(probe) {
+  let el = document.getElementById('nostore');
+  if (!el) { el = document.createElement('div'); el.id = 'nostore'; document.body.appendChild(el); }
+  el.textContent = probe.ls ? t('store_idb') : t('store_none');
+  el.hidden = false;
+}
+
+function checkStorage() {
+  const probe = storageProbe();
+  // Only the hard failure gets a banner. Storage that exists but is evictable
+  // is reported in Account, so nobody is alarmed on a phone that is fine.
+  if (!probe.ls || !probe.idb) warnNoStorage(probe);
+  return probe;
+}
+
 function onReady(fn) {
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
   else fn();
 }
 
 onReady(() => {
+  checkStorage();
+  askToKeepStorage();
   /* typed note */
   document.getElementById('addnote').onclick = () => {
     const box = document.getElementById('notebox');
