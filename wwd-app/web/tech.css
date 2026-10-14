@@ -272,6 +272,9 @@ textarea:focus{outline:2px solid var(--blue-soft);border-color:var(--blue)}
 .vtext{font-size:18px;line-height:1.4;margin:16px 0 10px;min-height:56px}
 .vtext.dim{color:#8FA0B2;font-size:16px}
 .vhint{font-size:14px;color:#93A2B4;margin-top:4px}
+/* Shown on the review sheet when words came through but the sound did not. */
+.vwarn{margin-top:12px;padding:9px 12px;border-radius:8px;font-size:13.5px;
+  background:rgba(224,59,59,.14);border:1px solid rgba(224,59,59,.45);color:#FFC9C9}
 /* The only way out of the overlay: it is fixed inset:0, so the Voice note
    button underneath is unreachable while a recording is running. Sized for a
    thumb on a job site rather than a cursor. */

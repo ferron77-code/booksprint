@@ -659,6 +659,7 @@ const T = {
         v_stophint:'Tap Stop when you are done', v_stop:'Stop recording', v_left:'%s seconds left',
         v_nolive:'No signal — recording anyway, words come later',
         v_saved:'Voice note saved', v_saved_nowords:'Voice note saved — text will follow',
+        v_rv_noaudio:'The sound did not record \u2014 only these words will be sent.',
         v_nothing:'Nothing recorded', v_short:'Too short', v_rv_title:'Send this voice note?', v_rv_send:'Send', v_rv_del:'Delete', v_rv_nowords:'No words were picked up. You can still send the recording.', v_rv_deleted:'Voice note deleted',
         v_denied:'Microphone blocked. Allow it in Settings.',
         v_nomic:'No microphone on this device',
@@ -702,6 +703,7 @@ const T = {
         v_stophint:'Toca Detener cuando termines', v_stop:'Detener grabación', v_left:'%s segundos restantes',
         v_nolive:'Sin señal — grabando igual, el texto llega después',
         v_saved:'Nota de voz guardada', v_saved_nowords:'Nota guardada — el texto llegará',
+        v_rv_noaudio:'El sonido no se grabó — solo se enviarán estas palabras.',
         v_nothing:'No se grabó nada', v_short:'Muy corto', v_rv_title:'¿Enviar esta nota de voz?', v_rv_send:'Enviar', v_rv_del:'Borrar', v_rv_nowords:'No se captaron palabras. Puede enviar la grabación de todos modos.', v_rv_deleted:'Nota de voz borrada',
         v_denied:'Micrófono bloqueado. Permítelo en Ajustes.',
         v_nomic:'Este equipo no tiene micrófono',
@@ -1033,7 +1035,7 @@ function tap(dir) {
 }
 
 /* ---------------- voice capture state ---------------- */
-const VOICE = { rec: null, chunks: [], sr: null, heard: '', partial: '', started: 0, timer: null, active: false };
+const VOICE = { rec: null, chunks: [], sr: null, heard: '', partial: '', started: 0, timer: null, active: false, finishing: false };
 const VMAX = 120000;
 
 function onReady(fn) {
@@ -1079,7 +1081,8 @@ onReady(() => {
       return;
     }
     VOICE.arming = false;
-    VOICE.active = true; VOICE.chunks = []; VOICE.heard = ''; VOICE.partial = ''; VOICE.started = Date.now();
+    VOICE.active = true; VOICE.finishing = false;
+    VOICE.chunks = []; VOICE.heard = ''; VOICE.partial = ''; VOICE.started = Date.now();
     try { VOICE.rec = new MediaRecorder(stream); }
     catch (e) { VOICE.rec = new MediaRecorder(stream, { mimeType: 'audio/webm' }); }
     VOICE.rec.ondataavailable = ev => { if (ev.data && ev.data.size) VOICE.chunks.push(ev.data); };
@@ -1118,19 +1121,36 @@ onReady(() => {
   function voiceStop() {
     if (VOICE.arming) { VOICE.released = true; return; }
     if (!VOICE.active) return;
-    VOICE.active = false;
-    clearInterval(VOICE.timer);
-    if (VOICE.sr) { try { VOICE.sr.stop(); } catch (e) {} VOICE.sr = null; }
+    // No teardown here. Asking the recorder to stop comes back through
+    // onstop -> voiceFinish, which owns it; a recorder that already stopped on
+    // its own goes straight there.
     if (VOICE.rec && VOICE.rec.state !== 'inactive') VOICE.rec.stop();
     else voiceFinish();
   }
 
+  // The recorder can stop without being asked: on iOS an audio-session
+  // interruption, an incoming call, the tab going to the background, the mic
+  // track ending. When that happened, onstop ran this and showed the review,
+  // but VOICE.active stayed true and VOICE.heard still held the transcript. The
+  // next tap of Stop then found the recorder already inactive and ran this a
+  // second time, committing the same words again -- two notes, identical text,
+  // neither with audio, because the dead recorder had flushed no chunks.
   function voiceFinish() {
+    if (VOICE.finishing) return;        // onstop and Stop can both land here
+    VOICE.finishing = true;
+    VOICE.active = false;
+    clearInterval(VOICE.timer); VOICE.timer = null;
+    if (VOICE.sr) { try { VOICE.sr.stop(); } catch (e) {} VOICE.sr = null; }
+
     const secs = Math.round((Date.now() - VOICE.started) / 1000);
     const text = (VOICE.heard + ' ' + VOICE.partial).trim();
     const blob = VOICE.chunks.length
       ? new Blob(VOICE.chunks, { type: (VOICE.rec && VOICE.rec.mimeType) || 'audio/webm' })
       : null;
+    // Handed to the review sheet, then cleared: whatever happens after this,
+    // these words cannot be sent a second time.
+    VOICE.heard = ''; VOICE.partial = ''; VOICE.chunks = [];
+
     vClose();
     if (!blob && !text) { toast(t('v_nothing')); return; }
     if (secs < 1 && !text) { toast(t('v_short')); return; }
@@ -1175,7 +1195,8 @@ onReady(() => {
       '<div class="vbox">' +
         '<div class="vrtitle">' + esc(t('v_rv_title')) + ' <span class="vrlen">' + mm + '</span></div>' +
         '<div class="vtext' + (r.text ? '' : ' dim') + '">' + esc(r.text || t('v_rv_nowords')) + '</div>' +
-        (audioUrl ? '<audio controls src="' + audioUrl + '"></audio>' : '') +
+        (audioUrl ? '<audio controls src="' + audioUrl + '"></audio>'
+                  : '<div class="vwarn">' + esc(t('v_rv_noaudio')) + '</div>') +
         '<div class="vrbtns">' +
           '<button type="button" class="act ghost" id="vr_del">' + esc(t('v_rv_del')) + '</button>' +
           '<button type="button" class="act go" id="vr_send">' + esc(t('v_rv_send')) + '</button>' +
