@@ -1,4 +1,4 @@
-// Worldwide Distributors: translation worker (Supabase Edge Function "translate-notes"), v5.
+// Worldwide Distributors: translation worker (Supabase Edge Function "translate-notes"), v6.
 // Called once a minute by pg_cron.
 // Every piece of text is first identified as English or Spanish, then stored in
 // BOTH languages, so the English view is all English and the Spanish view is
@@ -24,26 +24,83 @@ Rules for both versions:
 - NEVER translate brand or product/model names; keep them exactly (e.g. Epic, Bentley, Kichler, FX Luminaire, Hunter). Keep quantities like (11), part numbers, measurements.
 - Trade meaning: "cut lines" = damaged/cut wires ("líneas/cables cortados"); "palm rings" = tree-mounting rings for palm uplights ("anillos para palmas"); "bury wires" = "enterrar los cables"; "monument" = entrance sign ("monumento"); "transformer" = "transformador"; "timer" = "temporizador"; "fixture" = "lámpara"/"luminaria".
 - Spanish: correct spelling and accents, everyday wording a Cuban tradesman in Miami uses; never spell out pronunciation.
-- English: fix obvious speech-to-text slips only when the meaning is certain.`;
+- English: fix obvious speech-to-text slips only when the meaning is certain.
+- ALWAYS return the JSON object, whatever the text is. A greeting, a thank-you, a
+  single word, a half-finished sentence or an unclear recording still gets the
+  envelope: put the text in its own language and the translation in the other.
+  Never reply conversationally and never answer the text — only translate it.`;
+
+// The shape is a property of the request, not something we ask for and hope for.
+// Voice notes are the reason: a transcript is often a fragment or a pleasantry,
+// and asked to handle "Thank you" the model would reply with a pleasantry of its
+// own instead of the envelope, which the parser below saw as "no json".
+const FORMAT = {
+  type: "json_schema",
+  schema: {
+    type: "object",
+    properties: {
+      lang: { type: "string", enum: ["en", "es"] },
+      en: { type: "string" },
+      es: { type: "string" },
+    },
+    required: ["lang", "en", "es"],
+    additionalProperties: false,
+  },
+} as const;
+
+// Thrown only when the API rejects output_config itself, so that an unsupported
+// parameter costs us the guarantee and nothing else. Any other failure is real
+// and propagates to translate_error as before.
+class FormatUnsupported extends Error {}
 
 const json = (b: unknown, s = 200) =>
   new Response(JSON.stringify(b), { status: s, headers: { "Content-Type": "application/json" } });
 
-async function both(key: string, text: string): Promise<{ lang: "en" | "es"; en: string; es: string }> {
+type Pair = { lang: "en" | "es"; en: string; es: string };
+
+async function ask(key: string, text: string, structured: boolean): Promise<Pair> {
+  const body: Record<string, unknown> = {
+    model: MODEL, max_tokens: 1500, system: SYSTEM,
+    messages: [{ role: "user", content: text }],
+  };
+  if (structured) body.output_config = { format: FORMAT };
+
   const r = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: { "x-api-key": key, "anthropic-version": "2023-06-01", "content-type": "application/json" },
-    body: JSON.stringify({ model: MODEL, max_tokens: 1500, system: SYSTEM,
-      messages: [{ role: "user", content: text }] }),
+    body: JSON.stringify(body),
   });
-  if (!r.ok) throw new Error(`api ${r.status}: ${(await r.text()).slice(0, 200)}`);
+  if (!r.ok) {
+    const detail = (await r.text()).slice(0, 300);
+    if (structured && r.status === 400 && /output_config|format|schema/i.test(detail)) {
+      throw new FormatUnsupported(detail);
+    }
+    throw new Error(`api ${r.status}: ${detail}`);
+  }
+
   const out = await r.json();
+  // A policy decline comes back 200 with no usable content; say so plainly
+  // rather than reporting it as malformed JSON.
+  if (out.stop_reason === "refusal") throw new Error("refused by the model");
+
   const t = (out.content ?? []).filter((c: any) => c.type === "text").map((c: any) => c.text).join("");
+  // With output_config the text is the object itself; the brace match also
+  // covers the fallback path, where the model may wrap it in a sentence.
   const m = t.match(/\{[\s\S]*\}/);
-  if (!m) throw new Error("no json");
+  if (!m) throw new Error(`no json: ${t.slice(0, 120) || "(empty reply)"}`);
   const o = JSON.parse(m[0]);
   if (!o.en || !o.es || !/^(en|es)$/.test(o.lang)) throw new Error("incomplete");
   return { lang: o.lang, en: String(o.en).trim(), es: String(o.es).trim() };
+}
+
+async function both(key: string, text: string): Promise<Pair> {
+  try {
+    return await ask(key, text, true);
+  } catch (e) {
+    if (!(e instanceof FormatUnsupported)) throw e;
+    console.warn("output_config rejected, falling back to the prompt contract:", e.message);
+    return await ask(key, text, false);
+  }
 }
 
 Deno.serve(async () => {
