@@ -57,6 +57,9 @@ button{font:inherit;cursor:pointer}
 .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:500;color:var(--mute)}
 .chip[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:#fff}
 .chip .n{font-weight:650;margin-left:4px}
+.filtered{grid-column:1/-1;background:#FDF0DF;border:1px solid #F0CC98;color:#6B3C00;
+  border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:14px;line-height:1.5}
+.filtered .btn{margin-left:10px;vertical-align:baseline}
 .job{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:#fff;padding:13px 16px}
 .job:hover{background:#FAFAF8}
 .job[aria-current=true]{background:var(--blue-soft);box-shadow:inset 3px 0 0 var(--blue)}
@@ -569,11 +572,30 @@ function cardHtml(x){
 }
 function renderBoard(){
   const recentClosed = x => x.stage!=='closed_paid' || (Date.now() - new Date(x.updated_at)) < 30*DAY;
-  $('view_board').innerHTML = COLS.map(([k,l]) => {
+  let shown = 0;
+  const cols = COLS.map(([k,l]) => {
     const cards = S.jobs.filter(x => x.stage===k && inDiv(x) && recentClosed(x))
       .sort((a,b) => (b.high_priority - a.high_priority) || (new Date(a.updated_at) - new Date(b.updated_at)));
+    shown += cards.length;
     return `<div class="col" data-stage="${k}"><h3>${l}<span>${cards.length}</span></h3>${cards.map(cardHtml).join('') || '<div class="none">Nothing here</div>'}</div>`;
   }).join('');
+
+  // A division filter that matches nothing empties every column AND zeroes the
+  // tiles along the top, which reads as the board having lost its jobs rather
+  // than as a filter being on. Every job is currently eLighting, so one tap on
+  // eBuilt or Supply does exactly that. Say which filter is on and offer the
+  // way back, where he is already looking.
+  const hidden = S.jobs.filter(x => OPEN(x)).length;
+  const notice = (S.div !== 'all' && shown === 0 && hidden > 0)
+    ? `<div class="filtered"><b>No jobs in ${esc(DIV[S.div] || S.div)}.</b>
+         There ${hidden === 1 ? 'is 1 job' : `are ${hidden} jobs`} on the board under All divisions \u2014
+         this view is filtered, nothing has been lost.
+         <button class="btn small" type="button" id="showall">Show all divisions</button></div>`
+    : '';
+
+  $('view_board').innerHTML = notice + cols;
+  const sa = $('showall');
+  if (sa) sa.onclick = () => { S.div = 'all'; renderAll(); };
   $('view_board').querySelectorAll('.card').forEach(b => b.onclick = () => openJob(b.dataset.id));
   wireDrag();
 }
