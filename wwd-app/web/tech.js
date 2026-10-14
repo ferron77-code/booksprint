@@ -1170,17 +1170,34 @@ onReady(() => {
       sr.onend = () => { if (VOICE.active && VOICE.sr) { try { sr.start(); } catch (e) {} } };
       try { sr.start(); VOICE.sr = sr; } catch (e) { VOICE.sr = null; }
     }
+    // vOpen() creates #vsheet the first time, so the element has to be looked
+    // up after it, not before -- otherwise this is null on the first recording
+    // of a session and the backdrop never gets wired at all.
     vOpen();
+    VOICE.opened = Date.now();
     const sheet = document.getElementById('vsheet');
     const sb = document.getElementById('vstop');
-    // Guarded on elapsed time rather than a timer: on a touch screen the tap
-    // that opened this can still be in flight, and it must not close it again.
+    if (sheet) sheet.onclick = null;      // never carry a handler across recordings
+
+    // iOS sends the tap that opened this screen to whatever ends up under the
+    // finger, which is this full-screen overlay. Measuring from VOICE.started
+    // was wrong: that is stamped before MediaRecorder.start() and before
+    // SpeechRecognition is constructed and started, and sr.start() alone can
+    // take a few hundred milliseconds on a phone. The window had already
+    // elapsed by the time the overlay existed, so the opening tap closed it
+    // again and all he saw was a flicker.
+    //
+    // Measured from the overlay opening now, and the backdrop gets no handler
+    // at all until that window has passed, so the stray click has nothing to
+    // land on. The Stop button is safe immediately: it sits mid-screen, not
+    // where the Voice note button was tapped.
+    const GHOST_TAP = 700;
     const stopFromSheet = ev => {
-      if (Date.now() - VOICE.started < 400) return;
+      if (Date.now() - VOICE.opened < GHOST_TAP) return;
       ev.preventDefault(); ev.stopPropagation(); voiceStop();
     };
-    if (sheet) sheet.onclick = stopFromSheet;
     if (sb) sb.onclick = stopFromSheet;
+    setTimeout(() => { if (VOICE.active && sheet) sheet.onclick = stopFromSheet; }, GHOST_TAP);
     if (VOICE.released) { voiceStop(); return; }
     VOICE.timer = setInterval(() => {
       if (Date.now() - VOICE.started > VMAX) { voiceStop(); return; }
