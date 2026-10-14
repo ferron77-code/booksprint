@@ -656,7 +656,7 @@ function stopTimers() { timers.forEach(clearInterval); timers = []; clearTimeout
 /* ---------------- language ---------------- */
 const T = {
   en: { v_pending:'Voice note — text will appear when there is signal', v_listening:'Listening…', v_recording:'Recording…',
-        v_stophint:'Tap Stop when you are done', v_stop:'Stop recording', v_left:'%s seconds left',
+        v_stophint:'Touch anywhere to stop', v_stop:'Stop recording', v_left:'%s seconds left',
         v_nolive:'No signal — recording anyway, words come later',
         v_saved:'Voice note saved', v_saved_nowords:'Voice note saved — text will follow',
         v_rv_noaudio:'The sound did not record \u2014 only these words will be sent.',
@@ -700,7 +700,7 @@ const T = {
         signout_block:'%s change(s) still waiting to send. Sign out once they have gone.',
         account:'Account' },
   es: { v_pending:'Nota de voz — el texto aparecerá cuando haya señal', v_listening:'Escuchando…', v_recording:'Grabando…',
-        v_stophint:'Toca Detener cuando termines', v_stop:'Detener grabación', v_left:'%s segundos restantes',
+        v_stophint:'Toca en cualquier lugar para detener', v_stop:'Detener grabación', v_left:'%s segundos restantes',
         v_nolive:'Sin señal — grabando igual, el texto llega después',
         v_saved:'Nota de voz guardada', v_saved_nowords:'Nota guardada — el texto llegará',
         v_rv_noaudio:'El sonido no se grabó — solo se enviarán estas palabras.',
@@ -1109,8 +1109,16 @@ onReady(() => {
       try { sr.start(); VOICE.sr = sr; } catch (e) { VOICE.sr = null; }
     }
     vOpen();
+    const sheet = document.getElementById('vsheet');
     const sb = document.getElementById('vstop');
-    if (sb) sb.onclick = ev => { ev.preventDefault(); ev.stopPropagation(); voiceStop(); };
+    // Guarded on elapsed time rather than a timer: on a touch screen the tap
+    // that opened this can still be in flight, and it must not close it again.
+    const stopFromSheet = ev => {
+      if (Date.now() - VOICE.started < 400) return;
+      ev.preventDefault(); ev.stopPropagation(); voiceStop();
+    };
+    if (sheet) sheet.onclick = stopFromSheet;
+    if (sb) sb.onclick = stopFromSheet;
     if (VOICE.released) { voiceStop(); return; }
     VOICE.timer = setInterval(() => {
       if (Date.now() - VOICE.started > VMAX) { voiceStop(); return; }
