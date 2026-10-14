@@ -671,6 +671,7 @@ const T = {
         v_nolive:'No signal — recording anyway, words come later',
         v_saved:'Voice note saved', v_saved_nowords:'Voice note saved — text will follow',
         v_micbusy:'The microphone is still busy from the last note. Wait a moment and tap again.',
+        v_deaf:'No sound is coming in. Stop, close the app and open it again.',
         store_none:'This phone is not saving anything. You will be asked to sign in every time, and a note can be lost before it sends. In Settings > Safari > Advanced, turn off Block All Cookies, then open this app again.',
         store_idb:'This phone can only save a little. Notes still send, but do not close the app with photos or recordings waiting.',
         v_rv_noaudio:'The sound did not record \u2014 only these words will be sent.',
@@ -718,6 +719,7 @@ const T = {
         v_nolive:'Sin señal — grabando igual, el texto llega después',
         v_saved:'Nota de voz guardada', v_saved_nowords:'Nota guardada — el texto llegará',
         v_micbusy:'El micrófono sigue ocupado de la nota anterior. Espere un momento y toque otra vez.',
+        v_deaf:'No está entrando sonido. Detenga, cierre la app y ábrala otra vez.',
         store_none:'Este teléfono no está guardando nada. Le va a pedir la contraseña cada vez, y una nota se puede perder antes de enviarse. En Ajustes > Safari > Avanzado, apague Bloquear todas las cookies y vuelva a abrir la app.',
         store_idb:'Este teléfono solo puede guardar un poco. Las notas se envían, pero no cierre la app con fotos o grabaciones pendientes.',
         v_rv_noaudio:'El sonido no se grabó — solo se enviarán estas palabras.',
@@ -1165,7 +1167,7 @@ onReady(() => {
     catch (e) { VOICE.rec = new MediaRecorder(stream, { mimeType: 'audio/webm' }); }
     VOICE.rec.ondataavailable = ev => { if (ev.data && ev.data.size) VOICE.chunks.push(ev.data); };
     VOICE.rec.onstop = () => voiceFinish();   // voiceFinish releases the mic
-    VOICE.rec.start();
+    VOICE.rec.start(1000);   // a chunk a second: see 'not picking up' in vPaint
 
     const SR = srCtor();
     if (SR) {
@@ -1256,7 +1258,7 @@ onReady(() => {
     VOICE.finishing = true;
     VOICE.active = false;
     clearInterval(VOICE.timer); VOICE.timer = null;
-    if (VOICE.sr) { try { VOICE.sr.stop(); } catch (e) {} VOICE.sr = null; }
+    if (VOICE.sr) { try { VOICE.sr.abort(); } catch (e) { try { VOICE.sr.stop(); } catch (e2) {} } VOICE.sr = null; }
     releaseMic();                       // every path out of a recording, not just onstop
 
     const secs = Math.round((Date.now() - VOICE.started) / 1000);
@@ -1658,8 +1660,13 @@ function vPaint() {
   const txt = document.getElementById('vtext');
   if (txt) {
     const shown = (VOICE.heard + ' ' + VOICE.partial).trim();
-    txt.textContent = shown || (VOICE.sr ? t('v_listening') : t('v_recording'));
-    txt.className = 'vtext' + (shown ? '' : ' dim');
+    // The recorder hands over a chunk a second. None of them after a few
+    // seconds means the microphone is open but silent -- say that, instead of
+    // sitting on "Listening" while nothing is captured.
+    const deaf = !shown && secs >= 4 && VOICE.chunks.length === 0;
+    txt.textContent = deaf ? t('v_deaf')
+                           : (shown || (VOICE.sr ? t('v_listening') : t('v_recording')));
+    txt.className = 'vtext' + (shown ? '' : (deaf ? ' warn' : ' dim'));
   }
   const h = document.getElementById('vhint');
   if (h) h.textContent = left <= 15 ? t('v_left').replace('%s', left) : t('v_stophint');

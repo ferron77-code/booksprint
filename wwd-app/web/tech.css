@@ -271,6 +271,9 @@ textarea:focus{outline:2px solid var(--blue-soft);border-color:var(--blue)}
 .vnet.warn{color:#F0B84A}
 .vtext{font-size:18px;line-height:1.4;margin:16px 0 10px;min-height:56px}
 .vtext.dim{color:#8FA0B2;font-size:16px}
+/* The microphone is open but nothing is arriving. Loud on purpose: the screen
+   otherwise says "Listening" and looks like it is working. */
+.vtext.warn{color:#FFC9C9;font-size:16px;font-weight:600}
 .vhint{font-size:14px;color:#93A2B4;margin-top:4px}
 /* Above the sign-in screen (z-index 100) on purpose: when the phone will not
    store anything, that is the screen he is stuck on, and the reason has to be
