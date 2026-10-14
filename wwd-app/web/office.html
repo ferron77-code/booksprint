@@ -143,6 +143,11 @@ dialog::backdrop{background:rgba(14,21,28,.55)}
 .checks label{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;font-weight:500;color:var(--ink);cursor:pointer}
 .checks input{width:18px;height:18px;accent-color:var(--blue)}
 .newbox{border:1px dashed var(--line);border-radius:10px;padding:12px;margin-top:8px;background:#FAFAF8}
+.recline{display:flex;gap:8px;align-items:center;margin-top:8px;font-size:13px}
+.recdot{width:11px;height:11px;border-radius:50%;background:#E03B3B;flex:none;animation:recpulse 1.2s ease-in-out infinite}
+@keyframes recpulse{0%,100%{opacity:1}50%{opacity:.35}}
+.recplay{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.recplay audio{height:34px}
 .dfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:6px}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;z-index:30}
 .toast{display:flex;align-items:center;gap:14px}
@@ -731,9 +736,12 @@ async function openJob(id){
   // writer picked wrong, so a mis-set toggle costs a round trip, not the note.
   const noteBox = `<div class="newbox">
       <textarea class="in" id="newnote" placeholder="Something the crew needs to know on this job\u2026"></textarea>
+      <div class="recline" id="recline" hidden><span class="recdot"></span><span id="rectime">0:00</span><span class="muted" id="recsay"></span></div>
+      <div class="recplay" id="recplay" hidden></div>
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px">
         <label for="newnotelang" class="muted" style="font-size:12.5px">Written in</label>
         <select class="in" id="newnotelang" style="width:auto"><option value="en">English</option><option value="es">Spanish</option></select>
+        <button class="btn" type="button" id="recnote">\u{1F3A4} Record</button>
         <button class="primary" type="button" id="addnote">Add note</button>
         <span class="muted" style="font-size:12.5px">The crew sees this on their phones, translated automatically.</span>
       </div>
@@ -879,18 +887,170 @@ async function openJob(id){
     if (error) { toast(error.message, true); b.disabled=false; return; }
     toast('Photo restored.'); load(true);
   });
+  // ---------- the office can speak a note too ----------
+  // Same thing the crew's phones do, with two differences that suit a desk:
+  // what the browser hears goes into the textarea so Charlie can correct it
+  // before sending, and there is no offline queue here, so the audio uploads
+  // on Send rather than being parked for later.
+  const VMAX = 120000;                       // same two-minute cap as the phones
+  const EXT = { 'audio/webm':'webm', 'audio/mp4':'m4a', 'audio/mpeg':'mp3',
+                'audio/ogg':'ogg', 'audio/wav':'wav', 'audio/x-m4a':'m4a', 'audio/aac':'aac' };
+  const extFor = m => EXT[String(m||'').split(';')[0].trim()] || 'webm';
+  let R = null;                              // the live recorder, while one is running
+
+  const recBtn = $('recnote'), recLine = $('recline'), recPlay = $('recplay');
+
+  function recReset() {
+    S.recording = false; S.noteAudio = null;
+    if (recLine) recLine.hidden = true;
+    if (recPlay) { recPlay.hidden = true; recPlay.innerHTML = ''; }
+    if (recBtn) { recBtn.textContent = '\u{1F3A4} Record'; recBtn.classList.remove('warn'); recBtn.disabled = false; }
+  }
+  recReset();
+
+  function recShowClip(blob, secs) {
+    S.noteAudio = { blob, secs };
+    const url = URL.createObjectURL(blob);
+    const mm = Math.floor(secs/60) + ':' + String(secs%60).padStart(2,'0');
+    recPlay.innerHTML = `<audio controls src="${url}"></audio>
+      <span class="muted" style="font-size:12.5px">${mm} recorded \u2014 it sends with the note</span>
+      <button class="btn small warn" type="button" id="recdrop">Drop the recording</button>`;
+    recPlay.hidden = false;
+    $('recdrop').onclick = () => {
+      URL.revokeObjectURL(url); S.noteAudio = null;
+      recPlay.hidden = true; recPlay.innerHTML = '';
+    };
+  }
+
+  async function recStart() {
+    if (S.recording) return;
+    if (!(navigator.mediaDevices && window.MediaRecorder)) {
+      toast('This browser cannot record audio. Type the note instead.', true); return;
+    }
+    recBtn.disabled = true;
+    let stream;
+    try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
+    catch (e) {
+      recBtn.disabled = false;
+      toast(e && e.name === 'NotAllowedError'
+        ? 'The microphone is blocked for this site. Allow it in the address bar and try again.'
+        : 'No microphone found.', true);
+      return;
+    }
+
+    const chunks = [];
+    const started = Date.now();
+    let heard = '', partial = '', sr = null;
+    const lang = $('newnotelang').value === 'es' ? 'es-US' : 'en-US';
+
+    const mr = new MediaRecorder(stream);
+    mr.ondataavailable = ev => { if (ev.data && ev.data.size) chunks.push(ev.data); };
+    mr.onstop = () => {
+      stream.getTracks().forEach(tr => tr.stop());
+      clearInterval(R.tick);
+      if (sr) { try { sr.stop(); } catch (e) {} }
+      const secs = Math.max(1, Math.round((Date.now() - started) / 1000));
+      const text = (heard + ' ' + partial).trim();
+      // The words land in the textarea, appended to whatever was already
+      // typed, so they can be read and fixed before anyone sees them.
+      if (text) {
+        const ta = $('newnote');
+        ta.value = ta.value.trim() ? ta.value.trim() + '\n' + text : text;
+      }
+      R = null;
+      recReset();
+      if (chunks.length) {
+        recShowClip(new Blob(chunks, { type: mr.mimeType || 'audio/webm' }), secs);
+        if (!text) toast('No words were picked up \u2014 the recording sends, but type what it says so the crew can read it.', true);
+      } else {
+        toast('Nothing was recorded.', true);
+      }
+    };
+
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SR) {
+      sr = new SR();
+      sr.lang = lang; sr.continuous = true; sr.interimResults = true;
+      sr.onresult = ev => {
+        let fin = '', part = '';
+        for (let i = ev.resultIndex; i < ev.results.length; i++) {
+          const res = ev.results[i];
+          if (res.isFinal) fin += res[0].transcript; else part += res[0].transcript;
+        }
+        if (fin) heard += fin;
+        partial = part;
+        $('recsay').textContent = (heard + ' ' + partial).trim().slice(-90);
+      };
+      sr.onerror = () => { sr = null; };
+      sr.onend = () => { if (S.recording && sr) { try { sr.start(); } catch (e) {} } };
+      try { sr.start(); } catch (e) { sr = null; }
+    }
+
+    S.recording = true;
+    R = { mr, tick: setInterval(() => {
+      const secs = Math.floor((Date.now() - started) / 1000);
+      $('rectime').textContent = Math.floor(secs/60) + ':' + String(secs%60).padStart(2,'0');
+      if (Date.now() - started > VMAX) recStop();
+    }, 250) };
+
+    recLine.hidden = false;
+    $('rectime').textContent = '0:00';
+    $('recsay').textContent = SR ? 'Listening\u2026' : 'Recording \u2014 this browser will not write it out, so type it after.';
+    recBtn.disabled = false;
+    recBtn.textContent = 'Stop recording';
+    recBtn.classList.add('warn');
+    mr.start();
+  }
+
+  function recStop() {
+    if (!S.recording || !R) return;
+    S.recording = false;
+    if (R.mr.state !== 'inactive') R.mr.stop(); else { clearInterval(R.tick); R = null; recReset(); }
+  }
+
+  // One click starts, one click stops \u2014 the same as the crew's phones.
+  if (recBtn) recBtn.onclick = () => { if (S.recording) recStop(); else recStart(); };
+
   const an = $('addnote');
   if (an) an.onclick = async () => {
+    if (S.recording) { toast('Stop the recording first.', true); return; }
     const body = $('newnote').value.trim();
-    if (!body) { $('newnote').focus(); return; }
+    const clip = S.noteAudio;
+    if (!body && !clip) { $('newnote').focus(); return; }
+
     an.disabled = true;
+    // The row id is decided here so the audio can be stored under it, matching
+    // what the phones do: {work_order_id}/audio/{note_id}.{ext}
+    const noteId = crypto.randomUUID();
+    let path = null;
+
+    // Upload before inserting. There is no retry queue on this screen, so a
+    // row written first with a path that never arrives would show the crew a
+    // note they cannot play and cannot read. An unused object is the cheaper
+    // failure, and storage-sweep already exists for those.
+    if (clip) {
+      path = `${id}/audio/${noteId}.${extFor(clip.blob.type)}`;
+      const up = await SB.storage.from(BUCKET).upload(path, clip.blob,
+        { contentType: clip.blob.type || 'audio/webm', upsert: true });
+      if (up.error) { toast('Could not upload the recording: ' + up.error.message, true); an.disabled = false; return; }
+    }
+
     const { error } = await SB.from('note').insert({
-      work_order_id: id, author_id: S.me.id, source: 'typed',
-      original_lang: $('newnotelang').value, original_body: body,
+      id: noteId, work_order_id: id, author_id: S.me.id,
+      source: clip ? 'voice' : 'typed',
+      original_lang: $('newnotelang').value, original_body: body || null,
+      audio_path: path,
+      // Only claim the words are done when there are words. claim_translations
+      // waits on transcribe_state, so a note sent with audio and no text sits
+      // untranslated until someone types it in.
+      transcribe_state: body ? 'done' : 'pending',
       client_created_at: new Date().toISOString(),
     });
     if (error) { toast(error.message, true); an.disabled = false; return; }
-    toast('Note added. The crew sees it now; the Spanish follows within a minute.');
+    toast(body
+      ? 'Note added. The crew sees it now; the Spanish follows within a minute.'
+      : 'Recording added. It has no text yet, so the crew hears it but cannot read it.');
+    recReset();
     openJob(id);
   };
 
@@ -982,7 +1142,7 @@ async function setStage(x, stage, extra={}){
 }
 
 // ---------- keep the board current without anyone pressing Refresh ----------
-function busy(){ return !!document.querySelector('dialog[open]') || !$('lightbox').hidden
+function busy(){ return !!document.querySelector('dialog[open]') || !$('lightbox').hidden || !!S.recording || !!S.noteAudio
   || !!document.querySelector('#detail textarea:focus, #detail input:focus, #detail select:focus'); }
 setInterval(() => { if (!document.hidden && !$('app').hidden && !busy()) load(false); }, 60000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden && !$('app').hidden && !busy()) load(false); });
