@@ -358,8 +358,17 @@ body{background:#F2F2EE}
     <div class="f"><label for="f_cname">Customer name</label><input class="in" id="f_cname" list="dl_cust" autocomplete="off" placeholder="Southpoint Crossing"><datalist id="dl_cust"></datalist></div>
     <div class="f"><label for="f_contact">Contact info</label><input class="in" id="f_contact" autocomplete="off" placeholder="Name / phone"></div>
   </div>
+  <div class="f"><label for="f_email">Contact email</label><input class="in" type="email" id="f_email" autocomplete="off" placeholder="Optional"></div>
   <div class="f"><label for="f_addr">Address</label><input class="in" id="f_addr" list="dl_addr" autocomplete="off" placeholder="897 West Lucy St. 33034"><datalist id="dl_addr"></datalist>
     <div class="help" id="f_addrhint"></div></div>
+  <div class="two">
+    <div class="f"><label for="f_label">Location name</label><input class="in" id="f_label" autocomplete="off" placeholder="Optional — e.g. Rear parking deck"></div>
+    <div class="f"><label for="f_city">City</label><input class="in" id="f_city" autocomplete="off" placeholder="Miami"></div>
+  </div>
+  <div class="two">
+    <div class="f"><label for="f_state">State</label><input class="in" id="f_state" autocomplete="off" maxlength="2" placeholder="FL"></div>
+    <div class="f"><label for="f_zip">ZIP</label><input class="in" id="f_zip" autocomplete="off" placeholder="Read from the address if left blank"></div>
+  </div>
   <div class="f"><label for="f_scope">Scope of work</label><textarea id="f_scope" rows="5" placeholder="One line per task&#10;Check Bld. A - half of building not turning on&#10;Check Bld. G - timer&#10;Reset timer"></textarea>
     <div class="help">Write it in English or Spanish. Within a minute it shows in both, so the English view and the Spanish view each read in one language. Each line becomes a box the crew ticks.</div></div>
   <div class="addbox">
@@ -679,6 +688,19 @@ async function openJob(id){
     (data||[]).forEach(d => { if (d.signedUrl) url[d.path] = d.signedUrl; });
   }
   const site = S.sites[x.site_id]; const cu = S.customers[x.customer_id];
+  // The address lives on the site and the contact lives on the customer, so an
+  // edit here reaches every job that shares them. Say how many, and name them,
+  // rather than a general caution nobody reads twice.
+  const sameSite = x.site_id ? S.jobs.filter(j => j.site_id === x.site_id && j.id !== x.id) : [];
+  const sameCust = x.customer_id ? S.jobs.filter(j => j.customer_id === x.customer_id && j.id !== x.id) : [];
+  const andMore = (list, n) => list.slice(0, n).map(j => j.number).join(', ')
+    + (list.length > n ? ` and ${list.length - n} more` : '');
+  const shareNote = (sameSite.length || sameCust.length)
+    ? `<div class="verifynote"><b>These details are shared.</b>
+        ${sameSite.length ? `The address fields belong to this site, which ${sameSite.length === 1 ? 'one other job uses' : `${sameSite.length} other jobs use`}: ${esc(andMore(sameSite, 4))}.` : ''}
+        ${sameCust.length ? `The customer fields belong to ${esc(cu?.name || 'this customer')}, who has ${sameCust.length === 1 ? 'one other job' : `${sameCust.length} other jobs`}: ${esc(andMore(sameCust, 4))}.` : ''}
+        Changing them here changes them on ${(sameSite.length || sameCust.length) === 1 ? 'that job' : 'those jobs'} too. The job fields on the left affect only ${esc(x.number)}.</div>`
+    : `<p class="muted" style="font-size:13px;margin:4px 0 12px">This is the only job at this address and the only one for this customer, so nothing else is affected.</p>`;
   const idx = STAGES.indexOf(x.stage);
   const name = uid => esc(S.users[uid]?.full_name || '—');
 
@@ -822,7 +844,7 @@ async function openJob(id){
           <div class="f"><label for="e_email">Email</label><input class="in" type="email" id="e_email" value="${esc(cu?.contact_email||'')}"></div>
         </div>
       </div>
-      <p class="muted" style="font-size:13px;margin:4px 0 12px">The address and customer details belong to the site, so fixing them here fixes them on every job at that address.</p>
+      ${shareNote}
       <div style="display:flex;gap:8px"><button class="btn go" type="button" id="e_save">Save changes</button><button class="btn" type="button" id="e_cancel">Cancel</button></div>
     </section>
     <section class="panel"><h3 style="display:flex;justify-content:space-between;align-items:center">Checklist<button class="btn small" type="button" id="scadd">Add a line</button></h3>
@@ -1010,6 +1032,19 @@ function wireEdits(x, site, cu, items){
     if (!same(v('e_phone'), cu?.contact_phone)) cs.contact_phone = v('e_phone') || null;
     if (!same(v('e_email'), cu?.contact_email)) cs.contact_email = v('e_email') || null;
 
+    // A shared row is the only thing in this form with reach beyond this job,
+    // so it gets a confirmation that counts the jobs instead of a vague warning.
+    const alsoSite = Object.keys(st).length && x.site_id
+      ? S.jobs.filter(j => j.site_id === x.site_id && j.id !== x.id) : [];
+    const alsoCust = Object.keys(cs).length && x.customer_id
+      ? S.jobs.filter(j => j.customer_id === x.customer_id && j.id !== x.id) : [];
+    if (alsoSite.length || alsoCust.length) {
+      const parts = [];
+      if (alsoSite.length) parts.push(`the address on ${alsoSite.length} other job${alsoSite.length > 1 ? 's' : ''}`);
+      if (alsoCust.length) parts.push(`the customer details on ${alsoCust.length} other job${alsoCust.length > 1 ? 's' : ''}`);
+      if (!confirm(`This also changes ${parts.join(' and ')}:\n\n${[...new Set([...alsoSite, ...alsoCust].map(j => j.number))].join(', ')}\n\nGo ahead?`)) return;
+    }
+
     const jobs = [];
     if (Object.keys(wo).length) jobs.push(['job', SB.from('work_order').update(wo).eq('id', x.id)]);
     if (Object.keys(st).length && x.site_id) jobs.push(['site', SB.from('site').update(st).eq('id', x.site_id)]);
@@ -1165,12 +1200,27 @@ function custChanged(){
   const ss = c ? Object.values(S.sites).filter(s2=>s2.customer_id===c.id) : [];
   $('dl_addr').innerHTML = ss.map(s2=>`<option value="${esc(s2.address_line)}">${esc(s2.label||'')}</option>`).join('');
   if (c && !$('f_contact').value) $('f_contact').value = [c.contact_name, c.contact_phone].filter(Boolean).join(' / ');
+  if (c && !$('f_email').value && c.contact_email) $('f_email').value = c.contact_email;
   if (c && ss.length===1 && !$('f_addr').value) $('f_addr').value = ss[0].address_line;
   addrHint();
 }
 function addrHint(){
   const c = custMatch(), st = siteMatch(c);
-  $('f_addrhint').textContent = !$('f_addr').value ? '' : st ? 'Existing job site for this customer.' : (c ? 'New job site for this customer.' : 'New customer and job site.');
+  // On a site we already hold, show what is on file and fill only the blanks, so
+  // the operator can see they are adding to a shared row rather than editing it.
+  if (st) {
+    ['label','city','state','postal_code'].forEach((k, i) => {
+      const el = $(['f_label','f_city','f_state','f_zip'][i]);
+      if (st[k] && !el.value) el.value = st[k];
+      el.readOnly = !!st[k];
+      el.title = st[k] ? 'Already on file for this site. Change it from Correct details on the job.' : '';
+    });
+  } else {
+    ['f_label','f_city','f_state','f_zip'].forEach(id => { $(id).readOnly = false; $(id).title = ''; });
+  }
+  $('f_addrhint').textContent = !$('f_addr').value ? '' : st
+    ? `Existing job site for this customer${[st.city, st.state].filter(Boolean).length ? ' \u2014 ' + [st.city, st.state].filter(Boolean).join(', ') + ' on file' : ''}.`
+    : (c ? 'New job site for this customer.' : 'New customer and job site.');
 }
 $('f_cname').addEventListener('input', custChanged);
 $('f_addr').addEventListener('input', addrHint);
@@ -1181,6 +1231,7 @@ function openForm(keepBatch){
   $('f_rep').innerHTML = office.map(u=>`<option value="${u.id}"${u.id===S.me.id?' selected':''}>${esc(u.full_name)}</option>`).join('');
   $('dl_cust').innerHTML = Object.values(S.customers).sort((a,b)=>a.name.localeCompare(b.name)).map(c=>`<option value="${esc(c.name)}"></option>`).join('');
   $('dl_addr').innerHTML = ''; $('f_addrhint').textContent = '';
+  ['f_label','f_city','f_state','f_zip'].forEach(id => { $(id).readOnly = false; $(id).title = ''; });
   S.scanBlob = null; $('f_scanimg').hidden = true; $('f_scanmsg').textContent = ''; $('f_verify').hidden = true; markVerify([]);
   $('f_crew').innerHTML = techs().map(t=>`<label><input type="checkbox" value="${t.id}"> ${esc(t.short_name||t.full_name)}</label>`).join('');
   if (!$('dlg').open) $('dlg').showModal(); $('f_cname').focus();
@@ -1200,18 +1251,37 @@ $('jobform').addEventListener('submit', async ev => {
   const ci = $('f_contact').value.trim();
   const phone = (ci.match(/(\+?1[\s.-]?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/)||[])[0] || null;
   const cname2 = phone ? ci.replace(phone,'').replace(/[\/,|-]+\s*$|^\s*[\/,|-]+/g,'').trim() || null : (ci || null);
+  const email = $('f_email').value.trim() || null;
+  const label = $('f_label').value.trim() || null;
+  const city  = $('f_city').value.trim() || null;
+  const state = $('f_state').value.trim().toUpperCase() || null;
+  const zip   = $('f_zip').value.trim() || (addr.match(/\b(\d{5})(?:-\d{4})?\s*$/)||[])[1] || null;
+
+  // Filling in blanks on a row that already exists is safe. OVERWRITING one is
+  // not: a site or customer is shared by every job that uses it, so a typo here
+  // would silently rewrite the address on other people's jobs. Intake only ever
+  // adds what is missing. Changing something already on file is a deliberate act
+  // and belongs in Correct details on the job, which counts what it affects.
+  const fillBlanks = (row, wanted) => Object.fromEntries(
+    Object.entries(wanted).filter(([k, v]) => v && !row[k]));
+
   let cust = custMatch();
   if (!cust) {
-    const { data, error } = await SB.from('customer').insert({ name:cname, contact_name:cname2, contact_phone:phone }).select('*').single();
+    const { data, error } = await SB.from('customer')
+      .insert({ name:cname, contact_name:cname2, contact_phone:phone, contact_email:email }).select('*').single();
     if (error) return err(error.message); cust = data;
-  } else if (ci && ci !== [cust.contact_name, cust.contact_phone].filter(Boolean).join(' / ')) {
-    await SB.from('customer').update({ contact_name:cname2, contact_phone:phone }).eq('id', cust.id);
+  } else {
+    const patch = fillBlanks(cust, { contact_name:cname2, contact_phone:phone, contact_email:email });
+    if (Object.keys(patch).length) await SB.from('customer').update(patch).eq('id', cust.id);
   }
   let site = siteMatch(cust);
   if (!site) {
-    const zip = (addr.match(/\b(\d{5})(?:-\d{4})?\s*$/)||[])[1] || null;
-    const { data, error } = await SB.from('site').insert({ customer_id:cust.id, address_line:addr, postal_code:zip }).select('*').single();
+    const { data, error } = await SB.from('site')
+      .insert({ customer_id:cust.id, address_line:addr, label, city, state, postal_code:zip }).select('*').single();
     if (error) return err(error.message); site = data;
+  } else {
+    const patch = fillBlanks(site, { label, city, state, postal_code:zip });
+    if (Object.keys(patch).length) await SB.from('site').update(patch).eq('id', site.id);
   }
   const crewSel = [...$('f_crew').querySelectorAll('input:checked')].map(i=>i.value);
   const row = { division:$('f_div').value, customer_id:cust.id, site_id:site.id, summary:lines[0],
