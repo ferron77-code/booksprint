@@ -670,6 +670,7 @@ const T = {
         v_stophint:'Touch anywhere to stop', v_stop:'Stop recording', v_left:'%s seconds left',
         v_nolive:'No signal — recording anyway, words come later',
         v_saved:'Voice note saved', v_saved_nowords:'Voice note saved — text will follow',
+        v_micbusy:'The microphone is still busy from the last note. Wait a moment and tap again.',
         store_none:'This phone is not saving anything. You will be asked to sign in every time, and a note can be lost before it sends. In Settings > Safari > Advanced, turn off Block All Cookies, then open this app again.',
         store_idb:'This phone can only save a little. Notes still send, but do not close the app with photos or recordings waiting.',
         v_rv_noaudio:'The sound did not record \u2014 only these words will be sent.',
@@ -716,6 +717,7 @@ const T = {
         v_stophint:'Toca en cualquier lugar para detener', v_stop:'Detener grabación', v_left:'%s segundos restantes',
         v_nolive:'Sin señal — grabando igual, el texto llega después',
         v_saved:'Nota de voz guardada', v_saved_nowords:'Nota guardada — el texto llegará',
+        v_micbusy:'El micrófono sigue ocupado de la nota anterior. Espere un momento y toque otra vez.',
         store_none:'Este teléfono no está guardando nada. Le va a pedir la contraseña cada vez, y una nota se puede perder antes de enviarse. En Ajustes > Safari > Avanzado, apague Bloquear todas las cookies y vuelva a abrir la app.',
         store_idb:'Este teléfono solo puede guardar un poco. Las notas se envían, pero no cierre la app con fotos o grabaciones pendientes.',
         v_rv_noaudio:'El sonido no se grabó — solo se enviarán estas palabras.',
@@ -1050,7 +1052,7 @@ function tap(dir) {
 }
 
 /* ---------------- voice capture state ---------------- */
-const VOICE = { rec: null, chunks: [], sr: null, heard: '', partial: '', started: 0, timer: null, active: false, finishing: false };
+const VOICE = { rec: null, stream: null, chunks: [], sr: null, heard: '', partial: '', started: 0, timer: null, active: false, finishing: false, opened: 0 };
 const VMAX = 120000;
 
 /* ---------------- can this phone keep anything? ----------------
@@ -1145,10 +1147,24 @@ onReady(() => {
     VOICE.arming = false;
     VOICE.active = true; VOICE.finishing = false;
     VOICE.chunks = []; VOICE.heard = ''; VOICE.partial = ''; VOICE.started = Date.now();
+    releaseMic();                 // anything left open from last time
+    VOICE.stream = stream;
+
+    const track = stream.getAudioTracks()[0];
+    if (!track || track.readyState !== 'live') {
+      releaseMic();
+      VOICE.active = false;
+      toast(t('v_micbusy'), true);
+      return;
+    }
+    // If the phone takes the microphone away mid-note -- a call, another app,
+    // the session being reclaimed -- end the recording rather than carry on
+    // drawing a timer over a dead track.
+    track.onended = () => { if (VOICE.active) voiceStop(); };
     try { VOICE.rec = new MediaRecorder(stream); }
     catch (e) { VOICE.rec = new MediaRecorder(stream, { mimeType: 'audio/webm' }); }
     VOICE.rec.ondataavailable = ev => { if (ev.data && ev.data.size) VOICE.chunks.push(ev.data); };
-    VOICE.rec.onstop = () => { stream.getTracks().forEach(tr => tr.stop()); voiceFinish(); };
+    VOICE.rec.onstop = () => voiceFinish();   // voiceFinish releases the mic
     VOICE.rec.start();
 
     const SR = srCtor();
@@ -1205,6 +1221,19 @@ onReady(() => {
     }, 200);
   }
 
+  // The microphone used to be released only inside onstop. voiceStop() has a
+  // path that calls voiceFinish() directly -- taken when the recorder has
+  // already stopped on its own, which is what keeps happening on an iPhone --
+  // and on that path the stream stayed open. iOS then holds the audio session,
+  // and the next getUserMedia hands back a track that is already dead: the
+  // screen opens, the timer runs, and nothing is captured. That is the second
+  // recording failing after the first one worked.
+  function releaseMic() {
+    if (!VOICE.stream) return;
+    try { VOICE.stream.getTracks().forEach(tr => tr.stop()); } catch (e) {}
+    VOICE.stream = null;
+  }
+
   function voiceStop() {
     if (VOICE.arming) { VOICE.released = true; return; }
     if (!VOICE.active) return;
@@ -1228,6 +1257,7 @@ onReady(() => {
     VOICE.active = false;
     clearInterval(VOICE.timer); VOICE.timer = null;
     if (VOICE.sr) { try { VOICE.sr.stop(); } catch (e) {} VOICE.sr = null; }
+    releaseMic();                       // every path out of a recording, not just onstop
 
     const secs = Math.round((Date.now() - VOICE.started) / 1000);
     const text = (VOICE.heard + ' ' + VOICE.partial).trim();
