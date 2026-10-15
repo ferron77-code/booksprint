@@ -1,10 +1,23 @@
 # Work order app — handover checklist
 
-Written 15 Oct 2026. The aim is that Worldwide Distributors can run this
-without me, and that I keep access to help. Both, not either.
+Written 15 Oct 2026.
 
-Nothing here is urgent in the sense of breaking today. All of it matters the
-day I am not reachable.
+**Decision, 15 Oct 2026: the transfer is deferred.** I run everything for now
+and hand the accounts over in a year or two, once the app has stopped changing
+weekly. Sections 1 (ownership half), 3 and 4 are on hold until then.
+
+Two items are **not** deferred, because they are not about who owns the
+account:
+
+- **Backups** (section 1). The free plan takes none. That risk is identical
+  whether the account is in my name or theirs -- except that while I run it,
+  losing the data is on me.
+- **Emergency access** (section 7). Everything sits in personal accounts with
+  my email and my 2FA. Today, if I were unreachable, nobody could get into any
+  of it. Not reduced access -- none.
+
+The aim of the rest is that Worldwide Distributors can run this without me, and
+that I keep access to help. Both, not either.
 
 ---
 
@@ -106,6 +119,29 @@ Two options, pick one before handover:
   Fine while the crew is small and someone technical is reachable.
 - Move the office accounts to real email addresses so they can self-serve.
   The crew can stay on `.local` — they rarely sign out.
+
+---
+
+## 7. Emergency access — do this regardless of the transfer timing
+
+Deferring the handover is fine. Being the only person who can reach any of it
+is not, and that is the state today: Supabase, Netlify, GitHub and the
+Anthropic account are all under my email with my 2FA.
+
+This is not about the client running the app. It is about the company not
+losing its job history because one person is unreachable for a fortnight.
+
+- [ ] Write down, somewhere Worldwide Distributors can actually reach: which
+      four services the app depends on, the account email each is under, and
+      that Supabase holds the data
+- [ ] Decide who at WWD holds that (Elizabeth is the obvious one) and tell them
+      what it is for
+- [ ] Either store recovery codes with it, or add a second owner on the
+      Supabase org now — that one alone keeps the data reachable, and is the
+      cheapest insurance here
+
+None of this hands over control. It means the data survives me being
+unavailable.
 
 ---
 
